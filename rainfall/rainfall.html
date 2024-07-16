@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rainfall Problem</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Rainfall Problem</h1>
+        <div class="iteration-control">
+            <button onclick="decrementLoop()">Previous Iteration</button>
+            <span id="iteration-info">Iteration i = 0, j = 0</span>
+            <button onclick="incrementLoop()">Next Iteration</button>
+            <button onclick="runAllIterations()">Run All Iterations</button>
+            <button onclick="resetLoop()">Reset</button>
+        </div>
+        <div class="visual-window">
+            <h3>Visual</h3>
+            <div id="visual"></div>
+        </div>
+        <div class="code-window">
+            <h3>Code</h3>
+            <pre id="code">
+        <code><span id="line1">total = 0</span>
+        <span id="line2">lst = [[20, 12, -1, 5], [25, 10, 7, 17], [12, 30, 19, 0]]</span>
+        <span id="line3">for i in range(len(lst)): <button onclick="showQuestion('range')">?</button></span>
+        <span id="line4">    for j in range(len(lst[i])):</span>
+        <span id="line5">        total += lst[i][j] <button onclick="showQuestion('increment')">?</button></span></code>
+            </pre>
+        </div>
+        <div class="memory-window">
+            <h3>Memory</h3>
+            <div id="memory">
+                <div class="memory-block" id="memory-total">
+                    <div class="variable-name">total <button onclick="showInfo('total')">i</button></div>
+                    <div class="pointer"></div>
+                    <div class="memory-value" id="memory-total-value">0</div>
+                </div>
+                <div class="memory-block" id="memory-i">
+                    <div class="variable-name">i <button onclick="showInfo('i')">i</button></div>
+                    <div class="pointer"></div>
+                    <div class="memory-value" id="memory-i-value">0</div>
+                </div>
+                <div class="memory-block" id="memory-j">
+                    <div class="variable-name">j <button onclick="showInfo('j')">i</button></div>
+                    <div class="pointer"></div>
+                    <div class="memory-value" id="memory-j-value">0</div>
+                </div>
+                <div class="memory-block" id="memory-lst">
+                    <div class="variable-name">lst <button onclick="showInfo('lst')">i</button></div>
+                    <div class="pointer"></div>
+                    <div class="memory-value" id="memory-lst-value">
+                        <div class="nested-list">
+                            <div>[</div>
+                            <div class="inner-list">
+                                <div class="list-index">0:</div>
+                                <div>[20, 12, -1, 5]</div>
+                            </div>
+                            <div class="inner-list">
+                                <div class="list-index">1:</div>
+                                <div>[25, 10, 7, 17]</div>
+                            </div>
+                            <div class="inner-list">
+                                <div class="list-index">2:</div>
+                                <div>[12, 30, 19, 0]</div>
+                            </div>
+                            <div>]</div>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+        </div>
+        <div id="interactive-element" class="hidden">
+            <div id="question"></div>
+            <button onclick="hideInteractive()">Close</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
