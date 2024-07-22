@@ -98,6 +98,9 @@ function updateVisual() {
         varNode.setAttribute("fill", colors[variable]);
         varNode.setAttribute("stroke", "black");
         varNode.setAttribute("stroke-width", 2);
+        if (i === currentStep) {
+            varNode.classList.add("highlight-changes");
+        }
         svg.appendChild(varNode);
 
         const varText = document.createElementNS("http://www.w3.org/2000/svg", "text");
@@ -106,6 +109,9 @@ function updateVisual() {
         varText.setAttribute("text-anchor", "middle");
         varText.setAttribute("fill", "black");
         varText.textContent = variable;
+        if (i === currentStep) {
+            varText.classList.add("highlight-changes");
+        }
         svg.appendChild(varText);
     }
 
@@ -212,6 +218,9 @@ function updateMemory() {
             varNode.setAttribute("width", 70);
             varNode.setAttribute("height", 30);
             varNode.setAttribute("fill", "lightblue");
+            if (steps[currentStep].changes.some(change => change.variable === variable)) {
+                varNode.classList.add("highlight-changes");
+            }
             svg.appendChild(varNode);
 
             const varText = document.createElementNS("http://www.w3.org/2000/svg", "text");
@@ -220,6 +229,9 @@ function updateMemory() {
             varText.setAttribute("text-anchor", "middle");
             varText.setAttribute("fill", "black");
             varText.textContent = variable;
+            if (steps[currentStep].changes.some(change => change.variable === variable)) {
+                varText.classList.add("highlight-changes");
+            }
             svg.appendChild(varText);
 
             const arrow = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -230,6 +242,9 @@ function updateMemory() {
             arrow.setAttribute("stroke", "black");
             arrow.setAttribute("stroke-width", 2);
             arrow.setAttribute("marker-end", "url(#arrow)");
+            if (steps[currentStep].changes.some(change => change.variable === variable)) {
+                arrow.classList.add("highlight-changes");
+            }
             svg.appendChild(arrow);
 
             const valueNode = document.createElementNS("http://www.w3.org/2000/svg", "rect");
@@ -240,6 +255,9 @@ function updateMemory() {
             valueNode.setAttribute("fill", "#ffa");
             valueNode.setAttribute("stroke", "#cc0");  // Set the border color
             valueNode.setAttribute("stroke-width", 2); // Set the border width (you can adjust the width as needed)
+            if (steps[currentStep].changes.some(change => change.variable === variable)) {
+                valueNode.classList.add("highlight-changes");
+            }
             svg.appendChild(valueNode);
             
 
@@ -249,6 +267,9 @@ function updateMemory() {
             valueText.setAttribute("text-anchor", "middle");
             valueText.setAttribute("fill", "black");
             valueText.textContent = value;
+            if (steps[currentStep].changes.some(change => change.variable === variable)) {
+                valueText.classList.add("highlight-changes");
+            }
             svg.appendChild(valueText);
         }
     });
