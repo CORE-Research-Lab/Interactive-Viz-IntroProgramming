@@ -49,17 +49,23 @@ function updateRange() {
 
 function updateCodeHighlight() {
     const lines = ["line1", "line2", "line3"];
-    lines.forEach(line => document.getElementById(line).classList.remove("highlight"));
+    lines.forEach(line => {
+        document.getElementById(line).classList.remove("highlight");
+        document.getElementById(line).querySelector('.iteration-values')?.remove();  // Remove previous iteration values if any
+    });
 
     if (currentIteration === 0) {
         document.getElementById("line1").classList.add("highlight");
     } else if (currentIteration <= maxIterations) {
         document.getElementById("line2").classList.add("highlight");
+        document.getElementById("line2").insertAdjacentHTML('beforeend', `<span class="iteration-values" style="color: lightblue; font-size: small; margin-left: 10px;">i = ${currentIteration}</span>`);
         setTimeout(() => {
             document.getElementById("line3").classList.add("highlight");
+            document.getElementById("line3").insertAdjacentHTML('beforeend', `<span class="iteration-values" style="color: lightblue; font-size: small; margin-left: 10px;">i = ${currentIteration}</span>`);
         }, 500);
     }
 }
+
 
 function updateMemory() {
     const memoryIValue = document.getElementById('memory-i-value');
@@ -76,7 +82,7 @@ function updateMemory() {
 
 function updateVisual() {
     const starsDiv = document.getElementById('stars');
-    starsDiv.innerHTML = '★'.repeat(star);
+    starsDiv.innerHTML = '★'.repeat(star - 1) + '<span style="color: red;">★</span>';
     document.getElementById('iteration-info').textContent = `Iteration i = ${currentIteration}`;
 }
 

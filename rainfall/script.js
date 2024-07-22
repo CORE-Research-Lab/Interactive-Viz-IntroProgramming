@@ -56,16 +56,21 @@ function runAllIterations() {
 
 function updateCodeHighlight() {
     const lines = ["line1", "line2", "line3", "line4", "line5"];
-    lines.forEach(line => document.getElementById(line).classList.remove("highlight"));
+    lines.forEach(line => {
+        document.getElementById(line).classList.remove("highlight");
+        document.getElementById(line).querySelector('.iteration-values')?.remove();  // Remove previous iteration values if any
+    });
 
     if (currentIteration === 0) {
         document.getElementById("line1").classList.add("highlight");
     } else if (currentIteration <= maxIterations) {
         const step = currentIteration % 2;
         if (step === 0) {
-            document.getElementById("line3").classList.add("highlight");
+            document.getElementById("line5").classList.add("highlight");
+            document.getElementById("line5").insertAdjacentHTML('beforeend', `<span class="iteration-values" style="color: blue; font-size: small;"> i = ${Math.floor(currentIteration / 4)}, j = ${(currentIteration - 1) % 4}</span>`);
         } else {
             document.getElementById("line5").classList.add("highlight");
+            document.getElementById("line5").insertAdjacentHTML('beforeend', `<span class="iteration-values" style="color: blue; font-size: small;"> i = ${Math.floor((currentIteration - 1) / 4)}, j = ${(currentIteration - 1) % 4}</span>`);
         }
     }
 }
@@ -102,7 +107,10 @@ function updateVisual() {
     const visualDiv = document.getElementById('visual');
     visualDiv.innerHTML = lst.flatMap((row, rowIndex) =>
         row.map((value, colIndex) => 
-            `<div class="visual-box ${(rowIndex === Math.floor(currentIteration / 4) && colIndex === currentIteration % 4) ? 'light-blue' : ''}">${value}</div>`
+            `<div class="visual-box ${(rowIndex === Math.floor(currentIteration / 4) && colIndex === currentIteration % 4) ? 'light-blue' : ''}">
+                ${value}
+                <span class="index-value">[${rowIndex}][${colIndex}]</span>
+            </div>`
         ).join("")
     ).join("");
     document.getElementById('iteration-info').textContent = `Iteration i = ${Math.floor(currentIteration / 4)}, j = ${currentIteration % 4}`;

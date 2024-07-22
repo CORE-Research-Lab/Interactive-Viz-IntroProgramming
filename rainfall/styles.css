@@ -10,7 +10,8 @@ body {
 }
 
 .container {
-    display: grid;
+    display: flex;
+    flex-direction: row;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto auto;
     gap: 20px;
@@ -50,6 +51,8 @@ h1 {
 }
 
 .code-window, .visual-window, .memory-window {
+    flex: 1;
+    margin: 10px;
     background-color: white;
     border: 1px solid #ccc;
     padding: 20px;
@@ -58,6 +61,7 @@ h1 {
     position: relative;
 }
 
+
 .code-window h3, .visual-window h3, .memory-window h3 {
     margin-top: 0;
     margin-bottom: 10px;
@@ -65,14 +69,24 @@ h1 {
 }
 
 .code-window pre {
+    text-align: left;
     margin: 0;
-    white-space: pre-wrap;
 }
 
 .code-window span {
     display: inline;
     padding: 2px 0;
 }
+
+.highlight-arrow {
+    stroke: red !important;
+}
+
+.highlight-text {
+    fill: red !important;
+    color: red !important;
+}
+
 
 .highlight {
     background-color: rgb(255, 255, 115);
@@ -177,6 +191,7 @@ button {
     border: 1px solid #ccc;
     background-color: #ffe;
     border-radius: 5px;
+    position: relative;
 }
 
 .visual-box.light-blue {
@@ -199,4 +214,11 @@ button {
     padding: 5px;
     border-radius: 5px;
     margin-right: 5px;
+}
+.index-value {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    font-size: small;
+    color: gray;
 }
