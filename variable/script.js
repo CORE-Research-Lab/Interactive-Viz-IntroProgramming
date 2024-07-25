@@ -59,12 +59,13 @@ function hideInteractive() {
 }
 
 function updateVisual() {
-    const colors = { a: "lightcoral", b: "lightblue", c: "lightgreen", temp: "#f2c391" };
+    const colors = { a: "powderblue", b: "powderblue", c: "powderblue", temp: "powderblue" };
     const positions = { a: [50, 70], b: [150, 70], c: [250, 70], temp: [350, 70] };
     const svg = document.getElementById('visual');
     while (svg.firstChild) {
         svg.removeChild(svg.firstChild);
     }
+
     const arrowhead = document.createElementNS("http://www.w3.org/2000/svg", "marker");
     arrowhead.setAttribute("id", "arrowhead");
     arrowhead.setAttribute("markerWidth", 10);
@@ -73,19 +74,19 @@ function updateVisual() {
     arrowhead.setAttribute("refY", 3.5);
     arrowhead.setAttribute("orient", "auto");
     arrowhead.setAttribute("markerUnits", "strokeWidth");
-    
+
     const arrowheadPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
     arrowheadPath.setAttribute("d", "M0,0 L0,7 L10,3.5 Z");
     arrowheadPath.setAttribute("fill", "black");
-    
+
     arrowhead.appendChild(arrowheadPath);
     svg.appendChild(arrowhead);
-    
+
     for (let i = 0; i <= currentStep; i++) {
         const variable = steps[i].changes[0].variable;
         const value = variables[variable];
         const [x, y] = positions[variable];
-          
+
         const glasspath = `
             M ${x - 20},${y - 30} 
             L ${x - 15},${y + 40}
@@ -98,21 +99,36 @@ function updateVisual() {
         varNode.setAttribute("fill", colors[variable]);
         varNode.setAttribute("stroke", "black");
         varNode.setAttribute("stroke-width", 2);
-        if (i === currentStep) {
-            varNode.classList.add("highlight-changes");
-        }
+        // if (i === currentStep) {
+        //     varNode.classList.add("highlight-changes");
+        // }
         svg.appendChild(varNode);
 
         const varText = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        varText.setAttribute("x", x); // Might need slight adjustment
-        varText.setAttribute("y", y + 5);
+        varText.setAttribute("x", x);
+        varText.setAttribute("y", y - 10);
         varText.setAttribute("text-anchor", "middle");
         varText.setAttribute("fill", "black");
         varText.textContent = variable;
-        if (i === currentStep) {
-            varText.classList.add("highlight-changes");
-        }
         svg.appendChild(varText);
+
+        if (value !== null) {
+            const valueRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+            valueRect.setAttribute("x", x - 10);
+            valueRect.setAttribute("y", y + 10);
+            valueRect.setAttribute("width", 20);
+            valueRect.setAttribute("height", 20);
+            valueRect.setAttribute("fill", "yellow");
+            svg.appendChild(valueRect);
+
+            const valueText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            valueText.setAttribute("x", x);
+            valueText.setAttribute("y", y + 25);
+            valueText.setAttribute("text-anchor", "middle");
+            valueText.setAttribute("fill", "black");
+            valueText.textContent = value;
+            svg.appendChild(valueText);
+        }
     }
 
     if (currentStep >= 3) {
@@ -168,6 +184,81 @@ function updateVisual() {
             addInfoButton(svg, (x + nextX) / 2, (y + nextY) / 2, messages[i]);
         }
     }
+    console.log(currentStep);
+    console.log(steps[6]);
+
+    if (currentStep == 3){
+        const prevVariable = steps[3].changes[0].variable;
+        const curVariable = steps[0].changes[0].variable;
+        const prevPos = positions[prevVariable];
+        const curPos = positions[curVariable];
+
+        highlightBucket(svg, prevPos, prevVariable, variables[prevVariable]);
+        highlightBucket(svg, curPos, curVariable, variables[curVariable]);
+    }
+    if (currentStep >= 4 && currentStep !== steps.length - 1) {
+        const prevVariable = steps[currentStep].changes[0].variable;
+        const curVariable = steps[currentStep + 1].changes[0].variable;
+        const prevPos = positions[prevVariable];
+        const curPos = positions[curVariable];
+
+        highlightBucket(svg, prevPos, prevVariable, variables[prevVariable]);
+        highlightBucket(svg, curPos, curVariable, variables[curVariable]);
+    }
+
+    if (currentStep === steps.length - 1) {
+        const prevVariable = steps[currentStep].changes[0].variable;
+        const curVariable = steps[3].changes[0].variable;
+        
+        const prevPos = positions[prevVariable];
+        const curPos = positions[curVariable];
+
+        highlightBucket(svg, prevPos, prevVariable, variables[prevVariable]);
+        highlightBucket(svg, curPos, curVariable, variables[curVariable]);
+    }
+}
+
+function highlightBucket(svg, position, variable, value) {
+    const [x, y] = position;
+    const glasspath = `
+        M ${x - 20},${y - 30} 
+        L ${x - 15},${y + 40}
+        C ${x - 15},${y + 45} ${x + 15},${y + 45} ${x + 15},${y + 40}
+        L ${x + 20},${y - 30}
+        Z
+    `;
+    const varNode = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    varNode.setAttribute("d", glasspath);
+    varNode.setAttribute("fill", "yellow");
+    varNode.setAttribute("stroke", "black");
+    varNode.setAttribute("stroke-width", 2);
+    svg.appendChild(varNode);
+
+    const varText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    varText.setAttribute("x", x);
+    varText.setAttribute("y", y - 10);
+    varText.setAttribute("text-anchor", "middle");
+    varText.setAttribute("fill", "black");
+    varText.textContent = variable;
+    svg.appendChild(varText);
+
+    if (value !== null) {
+        const valueRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        valueRect.setAttribute("x", x - 10);
+        valueRect.setAttribute("y", y + 10);
+        valueRect.setAttribute("width", 20);
+        valueRect.setAttribute("height", 20);
+        valueRect.setAttribute("fill", "yellow");
+        svg.appendChild(valueRect);
+
+        const valueText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        valueText.setAttribute("x", x);
+        valueText.setAttribute("y", y + 25);
+        valueText.setAttribute("text-anchor", "middle");
+        valueText.setAttribute("fill", "black");
+        valueText.textContent = value;
+        svg.appendChild(valueText);
+    }
 }
 
 function addInfoButton(svg, x, y, message) {
@@ -176,12 +267,12 @@ function addInfoButton(svg, x, y, message) {
     button.setAttribute("y", y - 30);
     button.setAttribute("width", 20);
     button.setAttribute("height", 20);
-    
+
     const div = document.createElement("div");
     div.setAttribute("class", "info-button");
     div.setAttribute("onclick", `showInfo('${message}')`);
     div.innerHTML = "i";
-    
+
     button.appendChild(div);
     svg.appendChild(button);
 }

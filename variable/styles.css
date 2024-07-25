@@ -79,10 +79,11 @@ h1 {
 }
 
 .highlight-changes {
-    stroke: red !important;
+    stroke: black !important;
     fill: yellow !important;
-    stroke-width: 2 !important;
+    stroke-width: 1 !important;
 }
+
 
 .visual-window {
     display: flex;
