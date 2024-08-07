@@ -1,17 +1,34 @@
 let currentIteration = 0;
-let maxIterations = 4;
+let maxIterations = 5;
 let total = 0;
 let lst = [2, 4, 6, 8];
 let previousTotals = [];
 
+const stepExplanations = [
+    "Step 1: Initialize total to 0 and define the list lst",
+    "Step 2: Start loop - add lst[0] to total.",
+    "Step 3: Add lst[1] to total.",
+    "Step 4: Add lst[2] to total",
+    "Step 5: Add lst[3] to total",
+    "Looping complete!"
+];
+
+function updateStepExplanation() {
+    const stepExplanation = document.getElementById('step-explanation');
+    stepExplanation.textContent = stepExplanations[currentIteration];
+}
+
 function incrementLoop() {
     if (currentIteration < maxIterations) {
-        previousTotals.push(total);  // Save the current state
-        total += lst[currentIteration];  // Add the current value to total
+        if (currentIteration > 0) {
+            previousTotals.push(total);  // Save the current state
+            total += lst[currentIteration - 1];  // Add the current value to total
+        }
         currentIteration++;
-        updateCodeHighlight();
         updateMemory();
         updateVisual();
+        updateCodeHighlight();
+        updateStepExplanation();
     } else {
         alert("Loop has completed all iterations.");
     }
@@ -20,10 +37,15 @@ function incrementLoop() {
 function decrementLoop() {
     if (currentIteration > 0) {
         currentIteration--;
-        total = previousTotals.pop();  // Restore the previous state
-        updateCodeHighlight();
+        if (currentIteration > 0) {
+            total = previousTotals.pop();  // Restore the previous state
+        } else {
+            total = 0;
+        }
         updateMemory();
         updateVisual();
+        updateCodeHighlight();
+        updateStepExplanation();
     } else {
         alert("You are at the beginning of the loop.");
     }
@@ -33,18 +55,16 @@ function resetLoop() {
     currentIteration = 0;
     total = 0;
     previousTotals = [];  // Reset the state history
-    updateCodeHighlight();
     updateMemory();
     updateVisual();
+    updateCodeHighlight();
+    updateStepExplanation();
 }
 
 function runAllIterations() {
     while (currentIteration < maxIterations) {
         incrementLoop();
     }
-    updateCodeHighlight();
-    updateMemory();
-    updateVisual();
 }
 
 function updateCodeHighlight() {
@@ -56,14 +76,15 @@ function updateCodeHighlight() {
 
     if (currentIteration === 0) {
         document.getElementById("line1").classList.add("highlight");
-    } else if (currentIteration <= maxIterations) {
-        if (currentIteration % 2 === 0) {
-            document.getElementById("line4").classList.add("highlight");
-            document.getElementById("line4").insertAdjacentHTML('beforeend', `<span class="iteration-values" style="color: blue; font-size: small;"> i = ${currentIteration - 1}</span>`);
-        } else {
-            document.getElementById("line3").classList.add("highlight");
-            document.getElementById("line3").insertAdjacentHTML('beforeend', `<span class="iteration-values" style="color: blue; font-size: small;"> i = ${currentIteration - 1}</span>`);
-        }
+        document.getElementById("line2").classList.add("highlight");
+    } 
+    else if (currentIteration <= maxIterations) {        
+        document.getElementById("line4").classList.add("highlight");
+        document.getElementById("line4").insertAdjacentHTML('beforeend', `<span class="iteration-values" style="color: blue; font-size: small;"> i = ${currentIteration - 1}</span>`);
+    
+        document.getElementById("line3").classList.add("highlight");
+        document.getElementById("line3").insertAdjacentHTML('beforeend', `<span class="iteration-values" style="color: blue; font-size: small;"> i = ${currentIteration - 1}</span>`);
+    
     }
 }
 
@@ -72,12 +93,20 @@ function updateMemory() {
     const memoryTotalValue = document.getElementById('memory-total-value');
     const memoryLstValue = document.getElementById('memory-lst-value');
 
-    memoryIValue.textContent = currentIteration;
+    memoryIValue.textContent = currentIteration < maxIterations ? currentIteration - 1 : maxIterations - 1;
     memoryTotalValue.textContent = total;
 
     memoryLstValue.innerHTML = `
-        <div class="inner-list">
-            <div>[${lst.join(", ")}]</div>
+        <div class="nested-list">
+            <div class="list-container">
+                ${lst.map((value, index) => `
+                    <div class="index-container">
+                        <div class="list-index">[${index}]</div>
+                        <div class="arrow-down"></div>
+                        <div class="list-value">${value}</div>
+                    </div>
+                `).join('')}
+            </div>
         </div>
     `;
 }
@@ -85,12 +114,26 @@ function updateMemory() {
 function updateVisual() {
     const visualDiv = document.getElementById('visual');
     visualDiv.innerHTML = lst.map((value, index) => 
-        `<div class="visual-box ${index === currentIteration - 1 ? 'light-blue' : ''}">
+        `<div class="visual-box ${index === currentIteration - 1 ? 'highlight-box' : ''}">
             ${value}
             <span class="index-value">[${index}]</span>
+            ${index === currentIteration - 1 ? '<div class="arrow"></div>' : ''}
         </div>`
     ).join("");
-    document.getElementById('iteration-info').textContent = `Iteration i = ${currentIteration}`;
+
+    // Add the total basket
+    visualDiv.innerHTML += `
+        <div class="basket-box">
+            <div class="basket">
+                <div class="basket-top"></div>
+                <div class="basket-body">
+                    Total: <span class="basket-value">${total}</span>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.getElementById('iteration-info').textContent = `Iteration i = ${currentIteration < maxIterations ? currentIteration - 1 : maxIterations - 1}`;
 }
 
 function showQuestion(topic) {
@@ -150,4 +193,5 @@ window.onload = () => {
     updateCodeHighlight();
     updateMemory();
     updateVisual();
+    updateStepExplanation();
 };

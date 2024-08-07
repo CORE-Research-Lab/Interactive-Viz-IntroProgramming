@@ -222,3 +222,166 @@ button {
     font-size: small;
     color: gray;
 }
+
+.step-explanation {
+    background-color: #e0e0e0;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.visual-box {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ccc;
+    background-color: #ffe;
+    border-radius: 5px;
+    position: relative;
+    margin: 5px;
+}
+
+.highlight-box {
+    background-color: lightblue;
+}
+
+.index-value {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    font-size: small;
+    color: gray;
+}
+
+.visual-window {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.arrow {
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 20px solid black; /* Changed from border-top to border-bottom */
+    position: absolute;
+    bottom: -25px; /* Position the arrow outside the box */
+}
+
+.basket-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 70px;
+    margin-left: 10px;
+}
+
+.basket {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 50px;
+    height: 50px;
+    border: 2px solid black;
+    border-radius: 5px;
+    background-color: #ffe;
+}
+
+.basket-top {
+    width: 60px;
+    height: 20px;
+    border: 2px solid black;
+    border-bottom: none;
+    border-radius: 5px 5px 0 0;
+    background-color: rgb(234, 174, 101);
+    position: absolute;
+    top: -20px;
+}
+
+.basket-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 14px;
+}
+
+.basket-value {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.nested-list {
+    display: flex;
+    align-items: center;
+}
+
+.variable-name {
+    background-color: lightblue;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-right: 10px;
+    position: relative;
+}
+
+.arrow-right {
+    width: 0;
+    height: 0;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 10px solid black;
+    margin-right: 10px;
+    position: relative;
+}
+
+.list-container {
+    display: flex;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    border: 3px solid #cc0;
+    padding: 5px 10px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.index-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 5px;
+    position: relative;
+}
+
+.list-index {
+    background-color: lightblue;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.arrow-down {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 10px solid black;
+    margin: 5px 0;
+}
+
+.list-value {
+    background-color: #ffa;
+    padding: 5px 10px;
+    border: 1px solid #cc0;
+    border-radius: 5px;
+    position: relative;
+    margin-top: 5px;
+}
