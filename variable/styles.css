@@ -84,6 +84,16 @@ h1 {
     stroke-width: 1 !important;
 }
 
+.step-explanation {
+    background-color: #e0e0e0;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 16px;
+}
+
 
 .visual-window {
     display: flex;
