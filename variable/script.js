@@ -8,6 +8,17 @@ const steps = [
     { line: "line6", changes: [{ variable: 'b', value: 'c' }] },
     { line: "line7", changes: [{ variable: 'c', value: 'temp' }] }
 ];
+
+const stepExplanations = [
+    "Step 1: Assigning the value 5 to a",
+    "Step 2: Assigning the value 6 to b",
+    "Step 3: Assigning the value 7 to c",
+    "Step 4: Assigning the value of a to temp",
+    "Step 5: Assigning the value of b to a",
+    "Step 6: Assigning the value of c to b",
+    "Step 7: Assigning the value of temp to c"
+];
+
 const variables = { a: null, b: null, c: null, temp: null };
 
 function incrementStep() {
@@ -15,16 +26,19 @@ function incrementStep() {
         currentStep++;
         updateMemory();
         updateVisual();
+        updateStepExplanation();
     } else {
         alert("All lines have been executed.");
     }
 }
+
 
 function decrementStep() {
     if (currentStep > 0) {
         currentStep--;
         updateMemory();
         updateVisual();
+        updateStepExplanation();
     } else {
         alert("You are at the beginning.");
     }
@@ -38,10 +52,18 @@ function resetSteps() {
     variables.temp = null;
     updateMemory();
     updateVisual();
+    updateStepExplanation();
+}
+
+function updateStepExplanation() {
+    const stepExplanation = document.getElementById('step-explanation');
+    stepExplanation.textContent = stepExplanations[currentStep];
 }
 
 function runAllSteps() {
     currentStep = steps.length - 1;
+    const stepExplanation = document.getElementById('step-explanation');
+    stepExplanation.textContent = stepExplanations[currentStep];
     updateMemory();
     updateVisual();
 }
@@ -87,26 +109,35 @@ function updateVisual() {
         const value = variables[variable];
         const [x, y] = positions[variable];
 
-        const glasspath = `
-            M ${x - 20},${y - 30} 
-            L ${x - 15},${y + 40}
-            C ${x - 15},${y + 45} ${x + 15},${y + 45} ${x + 15},${y + 40}
-            L ${x + 20},${y - 30}
-            Z
-        `;
-        const varNode = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        varNode.setAttribute("d", glasspath);
-        varNode.setAttribute("fill", colors[variable]);
-        varNode.setAttribute("stroke", "black");
-        varNode.setAttribute("stroke-width", 2);
-        // if (i === currentStep) {
-        //     varNode.classList.add("highlight-changes");
-        // }
-        svg.appendChild(varNode);
+        // Draw open boxes instead of glasses
+        const boxWidth = 40;
+        const boxHeight = 40;
+        const lidHeight = 10;
+
+        // Main box
+        const varBox = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        varBox.setAttribute("x", x - boxWidth / 2);
+        varBox.setAttribute("y", y - boxHeight / 2);
+        varBox.setAttribute("width", boxWidth);
+        varBox.setAttribute("height", boxHeight);
+        varBox.setAttribute("fill", "powderblue");
+        varBox.setAttribute("stroke", "black");
+        varBox.setAttribute("stroke-width", 2);
+        svg.appendChild(varBox);
+
+        // Lid of the box
+        const lidLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        lidLine.setAttribute("x1", x - boxWidth / 2);
+        lidLine.setAttribute("y1", y - boxHeight / 2);
+        lidLine.setAttribute("x2", x + boxWidth / 2);
+        lidLine.setAttribute("y2", y - boxHeight / 2 - lidHeight);
+        lidLine.setAttribute("stroke", "black");
+        lidLine.setAttribute("stroke-width", 2);
+        svg.appendChild(lidLine);
 
         const varText = document.createElementNS("http://www.w3.org/2000/svg", "text");
         varText.setAttribute("x", x);
-        varText.setAttribute("y", y - 10);
+        varText.setAttribute("y", y - boxHeight / 2 - lidHeight - 10);
         varText.setAttribute("text-anchor", "middle");
         varText.setAttribute("fill", "black");
         varText.textContent = variable;
@@ -137,7 +168,7 @@ function updateVisual() {
         const nextVariable = steps[3].changes[0].variable;
         const [nextX, nextY] = positions[nextVariable];
         const arrow = document.createElementNS("http://www.w3.org/2000/svg", "path");
-      
+
         const pathDescription = `
             M ${x + 16},${y + 20}
             C ${x + 70},${y + 150} ${nextX - 70},${nextY + 150} ${nextX - 25},${nextY + 25}
@@ -157,17 +188,17 @@ function updateVisual() {
         for (let i = 0; i < currentStep - 4 + 1; i++) {
             const variable = steps[i + 1].changes[0].variable; // Start from the next variable
             const [x, y] = positions[variable];
-            
+
             const nextVariable = steps[i].changes[0].variable; // Go to the current variable
             const [nextX, nextY] = positions[nextVariable];
-    
+
             const arrow = document.createElementNS("http://www.w3.org/2000/svg", "path");
-            
+
             const pathDescription = `
                 M ${x - 20},${y - 20}
                 C ${x - 70},${y - 50} ${nextX + 70},${nextY - 50} ${nextX + 30},${nextY - 30}
             `;
-            
+
             arrow.setAttribute("d", pathDescription);
             arrow.setAttribute("stroke", "black");
             arrow.setAttribute("stroke-width", 2);
@@ -184,10 +215,8 @@ function updateVisual() {
             addInfoButton(svg, (x + nextX) / 2, (y + nextY) / 2, messages[i]);
         }
     }
-    console.log(currentStep);
-    console.log(steps[6]);
 
-    if (currentStep == 3){
+    if (currentStep == 3) {
         const prevVariable = steps[3].changes[0].variable;
         const curVariable = steps[0].changes[0].variable;
         const prevPos = positions[prevVariable];
@@ -209,7 +238,7 @@ function updateVisual() {
     if (currentStep === steps.length - 1) {
         const prevVariable = steps[currentStep].changes[0].variable;
         const curVariable = steps[3].changes[0].variable;
-        
+
         const prevPos = positions[prevVariable];
         const curPos = positions[curVariable];
 
@@ -218,25 +247,37 @@ function updateVisual() {
     }
 }
 
+
 function highlightBucket(svg, position, variable, value) {
     const [x, y] = position;
-    const glasspath = `
-        M ${x - 20},${y - 30} 
-        L ${x - 15},${y + 40}
-        C ${x - 15},${y + 45} ${x + 15},${y + 45} ${x + 15},${y + 40}
-        L ${x + 20},${y - 30}
-        Z
-    `;
-    const varNode = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    varNode.setAttribute("d", glasspath);
-    varNode.setAttribute("fill", "yellow");
-    varNode.setAttribute("stroke", "black");
-    varNode.setAttribute("stroke-width", 2);
-    svg.appendChild(varNode);
+    const boxWidth = 40;
+    const boxHeight = 40;
+    const lidHeight = 10;
+
+    // Draw main box
+    const varBox = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    varBox.setAttribute("x", x - boxWidth / 2);
+    varBox.setAttribute("y", y - boxHeight / 2);
+    varBox.setAttribute("width", boxWidth);
+    varBox.setAttribute("height", boxHeight);
+    varBox.setAttribute("fill", "yellow");
+    varBox.setAttribute("stroke", "black");
+    varBox.setAttribute("stroke-width", 2);
+    svg.appendChild(varBox);
+
+    // Draw lid line
+    const lidLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    lidLine.setAttribute("x1", x - boxWidth / 2);
+    lidLine.setAttribute("y1", y - boxHeight / 2);
+    lidLine.setAttribute("x2", x + boxWidth / 2);
+    lidLine.setAttribute("y2", y - boxHeight / 2 - lidHeight);
+    lidLine.setAttribute("stroke", "black");
+    lidLine.setAttribute("stroke-width", 2);
+    svg.appendChild(lidLine);
 
     const varText = document.createElementNS("http://www.w3.org/2000/svg", "text");
     varText.setAttribute("x", x);
-    varText.setAttribute("y", y - 10);
+    varText.setAttribute("y", y - boxHeight / 2 - lidHeight - 10);
     varText.setAttribute("text-anchor", "middle");
     varText.setAttribute("fill", "black");
     varText.textContent = variable;
@@ -379,6 +420,8 @@ function updateMemory() {
     svg.appendChild(marker);
 }
 
+
 window.onload = () => {
     resetSteps();
+    updateStepExplanation();
 };
