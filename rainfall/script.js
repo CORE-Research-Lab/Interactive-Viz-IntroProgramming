@@ -90,14 +90,17 @@ function updateMemory() {
 
     memoryLstValue.innerHTML = `
         <div class="nested-list">
-            <div>[</div>
-            ${lst.map((row, index) => `
-                <div class="inner-list">
-                    <div class="list-index">${index}:</div>
-                    <div>[${row.join(", ")}]</div>
-                </div>
-            `).join('')}
-            <div>]</div>
+            <div class="variable-name">lst</div>
+            <div class="arrow-pointer"></div>
+            <div class="list-container">
+                ${lst.map((value, index) => `
+                    <div class="index-container">
+                        <div class="list-index">${index}</div>
+                        <div class="arrow-pointer"></div>
+                        <div class="list-value">${value}</div>
+                    </div>
+                `).join('')}
+            </div>
         </div>
     `;
 }

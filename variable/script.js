@@ -421,6 +421,13 @@ function updateMemory() {
 }
 
 
+function showQuestion(questionText) {
+    const interactiveElement = document.getElementById('interactive-element');
+    const questionDiv = document.getElementById('question');
+    interactiveElement.classList.remove('hidden');
+    questionDiv.innerHTML = `<p>${questionText}</p>`;
+}
+
 window.onload = () => {
     resetSteps();
     updateStepExplanation();
