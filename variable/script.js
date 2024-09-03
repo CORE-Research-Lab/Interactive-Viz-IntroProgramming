@@ -1,3 +1,35 @@
+const firebaseConfig = {
+    apiKey: "AIzaSyAn_mT725rpxJdgdZ_HchR6FpAYs1sD6Zo",
+    authDomain: "visual-interactions-csc108.firebaseapp.com",
+    projectId: "visual-interactions-csc108",
+    storageBucket: "visual-interactions-csc108.appspot.com",
+    messagingSenderId: "703068795993",
+    appId: "1:703068795993:web:2c734051b205606affad48",
+    measurementId: "G-QWCWFNX1BR"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+console.log('Firebase app initialized:', firebase.apps.length > 0);
+console.log('Firebase app name:', firebase.app().name);
+console.log('Firestore initialized:', db !== undefined);
+
+function logInteraction(eventType, details) {
+    db.collection("interactions").add({
+        userId: userId,
+        eventType: eventType,
+        details: details,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+        console.log("Interaction logged successfully!");
+    }).catch((error) => {
+        console.error("Error logging interaction: ", error);
+    });
+}
+
+const userId = 'user-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
+
 let currentStep = 0;
 const steps = [
     { line: "line1", changes: [{ variable: 'a', value: 5 }] },
@@ -27,8 +59,10 @@ function incrementStep() {
         updateMemory();
         updateVisual();
         updateStepExplanation();
+        logInteraction('incrementStep', { currentStep: currentStep }); // Log interaction here
     } else {
         alert("All lines have been executed.");
+        logInteraction('alert', { message: "All lines have been executed." }); // Log alert
     }
 }
 
@@ -39,8 +73,10 @@ function decrementStep() {
         updateMemory();
         updateVisual();
         updateStepExplanation();
+        logInteraction('decrementStep', { currentStep: currentStep }); // Log interaction here
     } else {
         alert("You are at the beginning.");
+        logInteraction('alert', { message: "You are at the beginning." }); // Log alert
     }
 }
 
@@ -53,6 +89,7 @@ function resetSteps() {
     updateMemory();
     updateVisual();
     updateStepExplanation();
+    logInteraction('resetSteps', { currentStep: currentStep });
 }
 
 function updateStepExplanation() {
@@ -66,6 +103,7 @@ function runAllSteps() {
     stepExplanation.textContent = stepExplanations[currentStep];
     updateMemory();
     updateVisual();
+    logInteraction('runAllSteps', { currentStep: currentStep }); // Log run all steps action
 }
 
 function showInfo(message) {
@@ -73,11 +111,13 @@ function showInfo(message) {
     const questionDiv = document.getElementById('question');
     interactiveElement.classList.remove('hidden');
     questionDiv.innerHTML = `<p>${message}</p>`;
+    logInteraction('showInfo', { message: message }); // Log show info interaction
 }
 
 function hideInteractive() {
     const interactiveElement = document.getElementById('interactive-element');
     interactiveElement.classList.add('hidden');
+    logInteraction('hideInfo', {}); // Log hide info interaction
 }
 
 function updateVisual() {
@@ -426,9 +466,11 @@ function showQuestion(questionText) {
     const questionDiv = document.getElementById('question');
     interactiveElement.classList.remove('hidden');
     questionDiv.innerHTML = `<p>${questionText}</p>`;
+    logInteraction('showQuestion', { question: questionText }); // Log question click
 }
 
 window.onload = () => {
     resetSteps();
     updateStepExplanation();
+    logInteraction('pageLoad', { timestamp: Date.now() }); // Log page load
 };
