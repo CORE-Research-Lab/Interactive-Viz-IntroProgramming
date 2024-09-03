@@ -15,6 +15,16 @@ console.log('Firebase app initialized:', firebase.apps.length > 0);
 console.log('Firebase app name:', firebase.app().name);
 console.log('Firestore initialized:', db !== undefined);
 
+firebase.auth().signInAnonymously()
+  .then(() => {
+    console.log("User signed in anonymously");
+    // Now you can log interactions after authentication
+  })
+  .catch((error) => {
+    console.error("Error during anonymous authentication: ", error);
+  });
+
+
 function logInteraction(eventType, details) {
     db.collection("interactions").add({
         userId: userId,
