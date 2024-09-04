@@ -79,19 +79,31 @@ h1 {
 }
 
 .highlight-changes {
-    stroke: black !important;
-    fill: yellow !important;
-    stroke-width: 1 !important;
+    stroke: #ff6a00 !important; /* Only affects lines */
+    fill: #ffff00 !important; /* Affects fill for rect elements */
+    stroke-width: 3 !important;
+}
+
+.highlight-arrow {
+    stroke: #ff6a00 !important; /* Only affects lines */
+    stroke-width: 2 !important;
+}
+
+/* New specific styles */
+.highlight-text {
+    fill: black !important; /* Ensures text remains black */
 }
 
 .step-explanation {
-    background-color: #e0e0e0;
+    background-color: #d9e4e6; /* Light blue background */
+    color: #000000; /* Darker blue text */
     padding: 10px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
     text-align: center;
-    font-size: 16px;
+    font-size: 24px; /* Increase font size */
+    font-weight: bold;
 }
 
 
@@ -143,8 +155,8 @@ h1 {
 }
 
 .memory-value {
-    background-color: #ffa;
-    border: 1px solid #cc0;
+    background-color: #cdf8bf;
+    border: 1px solid #9ccd8b;
     border-radius: 5px;
     padding: 10px;
     min-width: 40px;

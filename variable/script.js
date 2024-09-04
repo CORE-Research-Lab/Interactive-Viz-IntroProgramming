@@ -45,10 +45,10 @@ const steps = [
     { line: "line1", changes: [{ variable: 'a', value: 5 }] },
     { line: "line2", changes: [{ variable: 'b', value: 6 }] },
     { line: "line3", changes: [{ variable: 'c', value: 7 }] },
-    { line: "line4", changes: [{ variable: 'temp', value: 'a' }] },
-    { line: "line5", changes: [{ variable: 'a', value: 'b' }] },
-    { line: "line6", changes: [{ variable: 'b', value: 'c' }] },
-    { line: "line7", changes: [{ variable: 'c', value: 'temp' }] }
+    { line: "line4", changes: [{ variable: 'temp', value: 5 }] }, // a's current value is 5
+    { line: "line5", changes: [{ variable: 'a', value: 6 }] },    // b's current value is 6
+    { line: "line6", changes: [{ variable: 'b', value: 7 }] },    // c's current value is 7
+    { line: "line7", changes: [{ variable: 'c', value: 5 }] }     // temp's current value is 5
 ];
 
 const stepExplanations = [
@@ -187,7 +187,7 @@ function updateVisual() {
 
         const varText = document.createElementNS("http://www.w3.org/2000/svg", "text");
         varText.setAttribute("x", x);
-        varText.setAttribute("y", y - boxHeight / 2 - lidHeight - 10);
+        varText.setAttribute("y", y + boxHeight);
         varText.setAttribute("text-anchor", "middle");
         varText.setAttribute("fill", "black");
         varText.textContent = variable;
@@ -196,15 +196,16 @@ function updateVisual() {
         if (value !== null) {
             const valueRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
             valueRect.setAttribute("x", x - 10);
-            valueRect.setAttribute("y", y + 10);
+            valueRect.setAttribute("y", y - 10);
             valueRect.setAttribute("width", 20);
             valueRect.setAttribute("height", 20);
-            valueRect.setAttribute("fill", "yellow");
+            valueRect.setAttribute("fill", "#cdf8bf");
+            valueRect.setAttribute("stroke", "black");  // Set the border color
             svg.appendChild(valueRect);
 
             const valueText = document.createElementNS("http://www.w3.org/2000/svg", "text");
             valueText.setAttribute("x", x);
-            valueText.setAttribute("y", y + 25);
+            valueText.setAttribute("y", y + 5);
             valueText.setAttribute("text-anchor", "middle");
             valueText.setAttribute("fill", "black");
             valueText.textContent = value;
@@ -228,6 +229,9 @@ function updateVisual() {
         arrow.setAttribute("stroke-width", 2);
         arrow.setAttribute("fill", "none");
         arrow.setAttribute("marker-end", "url(#arrowhead)"); // Attach the arrowhead marker
+        if (steps[currentStep].changes.some(change => change.variable === nextVariable)) {
+            arrow.classList.add("highlight-arrow");
+        }
         svg.appendChild(arrow);
 
         // Add info button for this arrow
@@ -253,6 +257,9 @@ function updateVisual() {
             arrow.setAttribute("stroke", "black");
             arrow.setAttribute("stroke-width", 2);
             arrow.setAttribute("fill", "none");
+            if (steps[currentStep].changes.some(change => change.variable === nextVariable)) {
+                arrow.classList.add("highlight-arrow");
+            }
             arrow.setAttribute("marker-end", "url(#arrowhead)"); // Attach the arrowhead marker
             svg.appendChild(arrow);
 
@@ -336,7 +343,7 @@ function highlightBucket(svg, position, variable, value) {
     if (value !== null) {
         const valueRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         valueRect.setAttribute("x", x - 10);
-        valueRect.setAttribute("y", y + 10);
+        valueRect.setAttribute("y", y - 10);
         valueRect.setAttribute("width", 20);
         valueRect.setAttribute("height", 20);
         valueRect.setAttribute("fill", "yellow");
@@ -344,7 +351,7 @@ function highlightBucket(svg, position, variable, value) {
 
         const valueText = document.createElementNS("http://www.w3.org/2000/svg", "text");
         valueText.setAttribute("x", x);
-        valueText.setAttribute("y", y + 25);
+        valueText.setAttribute("y", y + 5);
         valueText.setAttribute("text-anchor", "middle");
         valueText.setAttribute("fill", "black");
         valueText.textContent = value;
@@ -373,6 +380,8 @@ function updateMemory() {
     while (svg.firstChild) {
         svg.removeChild(svg.firstChild);
     }
+
+    // Update variable values based on current steps
     for (let i = 0; i <= currentStep; i++) {
         steps[i].changes.forEach(change => {
             variables[change.variable] = change.value === 'a' ? variables.a :
@@ -381,6 +390,7 @@ function updateMemory() {
                                          change.value === 'temp' ? variables.temp : change.value;
         });
     }
+
     document.getElementById('step-info').textContent = `Step ${currentStep}`;
     steps.forEach(step => document.getElementById(step.line).classList.remove('highlight'));
     document.getElementById(steps[currentStep].line).classList.add('highlight');
@@ -393,13 +403,14 @@ function updateMemory() {
             const [x, y] = positions[variable];
             const value = variables[variable];
             const [vx, vy] = values[value];
-            
+
             const varNode = document.createElementNS("http://www.w3.org/2000/svg", "rect");
             varNode.setAttribute("x", x - 35);
             varNode.setAttribute("y", y - 15);
             varNode.setAttribute("width", 70);
             varNode.setAttribute("height", 30);
             varNode.setAttribute("fill", "lightblue");
+
             if (steps[currentStep].changes.some(change => change.variable === variable)) {
                 varNode.classList.add("highlight-changes");
             }
@@ -411,8 +422,9 @@ function updateMemory() {
             varText.setAttribute("text-anchor", "middle");
             varText.setAttribute("fill", "black");
             varText.textContent = variable;
+
             if (steps[currentStep].changes.some(change => change.variable === variable)) {
-                varText.classList.add("highlight-changes");
+                varText.classList.add("highlight-text");
             }
             svg.appendChild(varText);
 
@@ -424,7 +436,8 @@ function updateMemory() {
             arrow.setAttribute("stroke", "black");
             arrow.setAttribute("stroke-width", 2);
             arrow.setAttribute("marker-end", "url(#arrow)");
-            if (steps[currentStep].changes.some(change => change.variable === variable)) {
+
+            if (steps[currentStep].changes.some(change => change.variable === variable || change.value == variables[variable])) {
                 arrow.classList.add("highlight-changes");
             }
             svg.appendChild(arrow);
@@ -434,14 +447,15 @@ function updateMemory() {
             valueNode.setAttribute("y", vy - 15);
             valueNode.setAttribute("width", 30);
             valueNode.setAttribute("height", 30);
-            valueNode.setAttribute("fill", "#ffa");
-            valueNode.setAttribute("stroke", "#cc0");  // Set the border color
-            valueNode.setAttribute("stroke-width", 2); // Set the border width (you can adjust the width as needed)
-            if (steps[currentStep].changes.some(change => change.variable === variable)) {
+            valueNode.setAttribute("fill", "#cdf8bf");
+            valueNode.setAttribute("stroke", "#9ccd8b");
+            valueNode.setAttribute("stroke-width", 2);
+
+            // Check for reassignment and highlight
+            if (steps[currentStep].changes.some(change => (change.variable === variable && variables[variable] === value) || change.value === value)) {
                 valueNode.classList.add("highlight-changes");
             }
             svg.appendChild(valueNode);
-            
 
             const valueText = document.createElementNS("http://www.w3.org/2000/svg", "text");
             valueText.setAttribute("x", vx);
@@ -449,13 +463,15 @@ function updateMemory() {
             valueText.setAttribute("text-anchor", "middle");
             valueText.setAttribute("fill", "black");
             valueText.textContent = value;
-            if (steps[currentStep].changes.some(change => change.variable === variable)) {
-                valueText.classList.add("highlight-changes");
+
+            if (steps[currentStep].changes.some(change => change.value === value)) {
+                valueText.classList.add("highlight-text");
             }
             svg.appendChild(valueText);
         }
     });
 
+    // Marker for arrowhead
     const marker = document.createElementNS("http://www.w3.org/2000/svg", "marker");
     marker.setAttribute("id", "arrow");
     marker.setAttribute("markerWidth", "10");
@@ -463,9 +479,11 @@ function updateMemory() {
     marker.setAttribute("refX", "5");
     marker.setAttribute("refY", "3");
     marker.setAttribute("orient", "auto");
+
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
     path.setAttribute("d", "M0,0 L0,6 L9,3 z");
     path.setAttribute("fill", "black");
+
     marker.appendChild(path);
     svg.appendChild(marker);
 }
