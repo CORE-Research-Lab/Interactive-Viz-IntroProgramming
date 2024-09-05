@@ -208,6 +208,7 @@ function updateVisual() {
         varText.setAttribute("text-anchor", "middle");
         varText.setAttribute("fill", "black");
         varText.textContent = variable;
+        addInfoButton(svg, x, y - boxHeight/2, `${variable} (blue box) stores ${value} (green square).`);
         svg.appendChild(varText);
 
         if (value !== null) {
@@ -439,6 +440,8 @@ function updateMemory() {
             varNode.setAttribute("width", 70);
             varNode.setAttribute("height", 30);
             varNode.setAttribute("fill", "lightblue");
+            varNode.setAttribute("stroke", "black");
+            varNode.setAttribute("stroke-width", 2);
 
             if (steps[currentStep].changes.some(change => change.variable === variable)) {
                 varNode.classList.add("highlight-changes");
@@ -477,7 +480,7 @@ function updateMemory() {
             valueNode.setAttribute("width", 30);
             valueNode.setAttribute("height", 30);
             valueNode.setAttribute("fill", "#cdf8bf");
-            valueNode.setAttribute("stroke", "#9ccd8b");
+            valueNode.setAttribute("stroke", "black");
             valueNode.setAttribute("stroke-width", 2);
 
             // Check for reassignment and highlight
