@@ -110,7 +110,7 @@ function updateStepExplanation() {
 function runAllSteps() {
     currentStep = steps.length - 1;
     const stepExplanation = document.getElementById('step-explanation');
-    stepExplanation.textContent = stepExplanations[currentStep];
+    stepExplanation.innerHTML = stepExplanations[currentStep]; // Use innerHTML to interpret HTML tags
     updateMemory();
     updateVisual();
     logInteraction('runAllSteps', { currentStep: currentStep }); // Log run all steps action
