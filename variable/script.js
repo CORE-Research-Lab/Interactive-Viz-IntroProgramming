@@ -52,13 +52,13 @@ const steps = [
 ];
 
 const stepExplanations = [
-    "Step 1: Assigning the value 5 to a",
-    "Step 2: Assigning the value 6 to b",
-    "Step 3: Assigning the value 7 to c",
-    "Step 4: Assigning the value of a to temp",
-    "Step 5: Assigning the value of b to a",
-    "Step 6: Assigning the value of c to b",
-    "Step 7: Assigning the value of temp to c"
+    'Step 1: Assigning the value <span class="variable">5</span> to <span class="variable">a</span>',
+    'Step 2: Assigning the value <span class="variable">6</span> to <span class="variable">b</span>',
+    'Step 3: Assigning the value <span class="variable">7</span> to <span class="variable">c</span>',
+    'Step 4: *Swap* Assigning the value of <span class="variable">a</span> to <span class="variable">temp</span>',
+    'Step 5: *Swap* Assigning the value of <span class="variable">b</span> to <span class="variable">a</span>',
+    'Step 6: *Swap* Assigning the value of <span class="variable">c</span> to <span class="variable">b</span>',
+    'Step 7: *Swap* Assigning the value of <span class="variable">temp</span> to <span class="variable">c</span>'
 ];
 
 const variables = { a: null, b: null, c: null, temp: null };
@@ -104,7 +104,7 @@ function resetSteps() {
 
 function updateStepExplanation() {
     const stepExplanation = document.getElementById('step-explanation');
-    stepExplanation.textContent = stepExplanations[currentStep];
+    stepExplanation.innerHTML = stepExplanations[currentStep]; // Use innerHTML to interpret HTML tags
 }
 
 function runAllSteps() {
@@ -212,6 +212,11 @@ function updateVisual() {
             svg.appendChild(valueText);
         }
     }
+    const curVariable = steps[currentStep].changes[0].variable;
+    if (steps[currentStep].changes.some(change => change.variable === curVariable)) {
+        const curPos = positions[curVariable];
+        highlightBucket(svg, curPos, curVariable, variables[curVariable]);
+    }
 
     if (currentStep >= 3) {
         const variable = steps[0].changes[0].variable;
@@ -231,6 +236,8 @@ function updateVisual() {
         arrow.setAttribute("marker-end", "url(#arrowhead)"); // Attach the arrowhead marker
         if (steps[currentStep].changes.some(change => change.variable === nextVariable)) {
             arrow.classList.add("highlight-arrow");
+        }else {
+            arrow.classList.add("dashed-arrow");
         }
         svg.appendChild(arrow);
 
@@ -259,6 +266,8 @@ function updateVisual() {
             arrow.setAttribute("fill", "none");
             if (steps[currentStep].changes.some(change => change.variable === nextVariable)) {
                 arrow.classList.add("highlight-arrow");
+            }else {
+                arrow.classList.add("dashed-arrow");
             }
             arrow.setAttribute("marker-end", "url(#arrowhead)"); // Attach the arrowhead marker
             svg.appendChild(arrow);
@@ -318,8 +327,8 @@ function highlightBucket(svg, position, variable, value) {
     varBox.setAttribute("width", boxWidth);
     varBox.setAttribute("height", boxHeight);
     varBox.setAttribute("fill", "yellow");
-    varBox.setAttribute("stroke", "black");
-    varBox.setAttribute("stroke-width", 2);
+    varBox.setAttribute("stroke", "#ff6a00");
+    varBox.setAttribute("stroke-width", 3);
     svg.appendChild(varBox);
 
     // Draw lid line
@@ -328,8 +337,8 @@ function highlightBucket(svg, position, variable, value) {
     lidLine.setAttribute("y1", y - boxHeight / 2);
     lidLine.setAttribute("x2", x + boxWidth / 2);
     lidLine.setAttribute("y2", y - boxHeight / 2 - lidHeight);
-    lidLine.setAttribute("stroke", "black");
-    lidLine.setAttribute("stroke-width", 2);
+    lidLine.setAttribute("stroke", "#ff6a00");
+    lidLine.setAttribute("stroke-width", 3);
     svg.appendChild(lidLine);
 
     const varText = document.createElementNS("http://www.w3.org/2000/svg", "text");
@@ -391,7 +400,7 @@ function updateMemory() {
         });
     }
 
-    document.getElementById('step-info').textContent = `Step ${currentStep}`;
+    document.getElementById('step-info').textContent = `Step ${currentStep + 1}`;
     steps.forEach(step => document.getElementById(step.line).classList.remove('highlight'));
     document.getElementById(steps[currentStep].line).classList.add('highlight');
 
@@ -437,7 +446,7 @@ function updateMemory() {
             arrow.setAttribute("stroke-width", 2);
             arrow.setAttribute("marker-end", "url(#arrow)");
 
-            if (steps[currentStep].changes.some(change => change.variable === variable || change.value == variables[variable])) {
+            if (steps[currentStep].changes.some(change => change.variable === variable)) {
                 arrow.classList.add("highlight-changes");
             }
             svg.appendChild(arrow);
