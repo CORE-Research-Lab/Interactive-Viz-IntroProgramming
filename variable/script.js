@@ -343,7 +343,7 @@ function highlightBucket(svg, position, variable, value) {
 
     const varText = document.createElementNS("http://www.w3.org/2000/svg", "text");
     varText.setAttribute("x", x);
-    varText.setAttribute("y", y - boxHeight / 2 - lidHeight - 10);
+    varText.setAttribute("y", y + boxHeight);
     varText.setAttribute("text-anchor", "middle");
     varText.setAttribute("fill", "black");
     varText.textContent = variable;
