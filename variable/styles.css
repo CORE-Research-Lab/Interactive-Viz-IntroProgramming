@@ -52,7 +52,7 @@ h1 {
     margin: 10px;
     background-color: white;
     border: 1px solid #ccc;
-    padding: 20px;
+    padding: 10px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     position: relative;
@@ -66,12 +66,20 @@ h1 {
 
 .code-window pre {
     margin: 0;
-    white-space: pre-wrap;
+    white-space: pre-wrap; /* Preserves formatting and wraps lines if necessary */
+    padding: 0 30px 0 10px; /* Adds 10px padding on the right side */
+    text-align: left; /* Align text to the left */
+    display: flex; /* Use flexbox to align child elements */
+    flex-direction: column; /* Arrange child elements in a column */
+    align-items: flex-start; /* Align child elements to the start (left) */
 }
 
 .code-window span {
-    display: inline;
-    padding: 2px 0;
+    display: inline-block; /* Ensure each line of code is on a new line */
+    padding: 0;
+    margin: 0;
+    text-align: left; /* Align span content to the left */
+    white-space: nowrap; /* Prevents individual spans from wrapping */
 }
 
 .highlight {
@@ -79,19 +87,36 @@ h1 {
 }
 
 .highlight-changes {
-    stroke: black !important;
-    fill: yellow !important;
-    stroke-width: 1 !important;
+    stroke: #ff6a00 !important; /* Only affects lines */
+    fill: #ffff00 !important; /* Affects fill for rect elements */
+    stroke-width: 3 !important;
+}
+
+.highlight-arrow {
+    stroke: #ff6a00 !important; /* Only affects lines */
+    stroke-width: 2 !important;
+}
+
+.dashed-arrow {
+    stroke-dasharray: 5, 5;
+    stroke: #757575 !important; /* Only affects lines */
+}
+
+/* New specific styles */
+.highlight-text {
+    fill: black !important; /* Ensures text remains black */
 }
 
 .step-explanation {
-    background-color: #e0e0e0;
+    background-color: #d9e4e6; /* Light blue background */
+    color: #000000; /* Darker blue text */
     padding: 10px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
     text-align: center;
-    font-size: 16px;
+    font-size: 24px; /* Increase font size */
+    font-weight: bold;
 }
 
 
@@ -143,8 +168,8 @@ h1 {
 }
 
 .memory-value {
-    background-color: #ffa;
-    border: 1px solid #cc0;
+    background-color: #cdf8bf;
+    border: 1px solid #9ccd8b;
     border-radius: 5px;
     padding: 10px;
     min-width: 40px;
@@ -188,4 +213,20 @@ button {
     font-size: 14px;
     font-weight: bold;
     position: absolute;
+}
+
+.variable {
+    font-family: 'Courier New', Courier, monospace; /* Example font */
+}
+
+pre, code {
+    font-size: 18px; /* Increase font size as needed */
+    line-height: 1.5; /* Optional: Improve readability with increased line height */
+    font-family: 'Courier New', Courier, monospace; /* Ensure it's a monospaced font */
+}
+
+pre {
+    text-align: left; /* Aligns text to the left */
+    margin: 0; /* Removes default margin */
+    padding: 0; /* Removes default padding */
 }
