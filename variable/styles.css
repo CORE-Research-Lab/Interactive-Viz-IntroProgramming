@@ -84,6 +84,8 @@ h1 {
 
 .highlight {
     background-color: yellow;
+    outline: 3px solid #ff6a00; /* Adds an orange outline */
+    outline-offset: 3px; /* Optional: Adds some space between the element and the outline */
 }
 
 .highlight-changes {
@@ -108,7 +110,7 @@ h1 {
 }
 
 .step-explanation {
-    background-color: #d9e4e6; /* Light blue background */
+    background-color: #e4edef; /* Light blue background */
     color: #000000; /* Darker blue text */
     padding: 10px;
     border-radius: 8px;
@@ -217,6 +219,7 @@ button {
 
 .variable {
     font-family: 'Courier New', Courier, monospace; /* Example font */
+    color:#ff6a00
 }
 
 pre, code {
