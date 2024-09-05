@@ -15,6 +15,16 @@ console.log('Firebase app initialized:', firebase.apps.length > 0);
 console.log('Firebase app name:', firebase.app().name);
 console.log('Firestore initialized:', db !== undefined);
 
+firebase.auth().signInAnonymously()
+  .then(() => {
+    console.log("User signed in anonymously");
+    // Now you can log interactions after authentication
+  })
+  .catch((error) => {
+    console.error("Error during anonymous authentication: ", error);
+  });
+
+
 function logInteraction(eventType, details) {
     db.collection("interactions").add({
         userId: userId,
@@ -35,20 +45,20 @@ const steps = [
     { line: "line1", changes: [{ variable: 'a', value: 5 }] },
     { line: "line2", changes: [{ variable: 'b', value: 6 }] },
     { line: "line3", changes: [{ variable: 'c', value: 7 }] },
-    { line: "line4", changes: [{ variable: 'temp', value: 'a' }] },
-    { line: "line5", changes: [{ variable: 'a', value: 'b' }] },
-    { line: "line6", changes: [{ variable: 'b', value: 'c' }] },
-    { line: "line7", changes: [{ variable: 'c', value: 'temp' }] }
+    { line: "line4", changes: [{ variable: 'temp', value: 5 }] }, // a's current value is 5
+    { line: "line5", changes: [{ variable: 'a', value: 6 }] },    // b's current value is 6
+    { line: "line6", changes: [{ variable: 'b', value: 7 }] },    // c's current value is 7
+    { line: "line7", changes: [{ variable: 'c', value: 5 }] }     // temp's current value is 5
 ];
 
 const stepExplanations = [
-    "Step 1: Assigning the value 5 to a",
-    "Step 2: Assigning the value 6 to b",
-    "Step 3: Assigning the value 7 to c",
-    "Step 4: Assigning the value of a to temp",
-    "Step 5: Assigning the value of b to a",
-    "Step 6: Assigning the value of c to b",
-    "Step 7: Assigning the value of temp to c"
+    'Step 1: Assigning the value <span class="variable">5</span> to <span class="variable">a</span>',
+    'Step 2: Assigning the value <span class="variable">6</span> to <span class="variable">b</span>',
+    'Step 3: Assigning the value <span class="variable">7</span> to <span class="variable">c</span>',
+    'Step 4: *Swap* Assigning the value of <span class="variable">a</span> to <span class="variable">temp</span>',
+    'Step 5: *Swap* Assigning the value of <span class="variable">b</span> to <span class="variable">a</span>',
+    'Step 6: *Swap* Assigning the value of <span class="variable">c</span> to <span class="variable">b</span>',
+    'Step 7: *Swap* Assigning the value of <span class="variable">temp</span> to <span class="variable">c</span>'
 ];
 
 const variables = { a: null, b: null, c: null, temp: null };
@@ -94,7 +104,7 @@ function resetSteps() {
 
 function updateStepExplanation() {
     const stepExplanation = document.getElementById('step-explanation');
-    stepExplanation.textContent = stepExplanations[currentStep];
+    stepExplanation.innerHTML = stepExplanations[currentStep]; // Use innerHTML to interpret HTML tags
 }
 
 function runAllSteps() {
@@ -177,7 +187,7 @@ function updateVisual() {
 
         const varText = document.createElementNS("http://www.w3.org/2000/svg", "text");
         varText.setAttribute("x", x);
-        varText.setAttribute("y", y - boxHeight / 2 - lidHeight - 10);
+        varText.setAttribute("y", y + boxHeight);
         varText.setAttribute("text-anchor", "middle");
         varText.setAttribute("fill", "black");
         varText.textContent = variable;
@@ -186,20 +196,26 @@ function updateVisual() {
         if (value !== null) {
             const valueRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
             valueRect.setAttribute("x", x - 10);
-            valueRect.setAttribute("y", y + 10);
+            valueRect.setAttribute("y", y - 10);
             valueRect.setAttribute("width", 20);
             valueRect.setAttribute("height", 20);
-            valueRect.setAttribute("fill", "yellow");
+            valueRect.setAttribute("fill", "#cdf8bf");
+            valueRect.setAttribute("stroke", "black");  // Set the border color
             svg.appendChild(valueRect);
 
             const valueText = document.createElementNS("http://www.w3.org/2000/svg", "text");
             valueText.setAttribute("x", x);
-            valueText.setAttribute("y", y + 25);
+            valueText.setAttribute("y", y + 5);
             valueText.setAttribute("text-anchor", "middle");
             valueText.setAttribute("fill", "black");
             valueText.textContent = value;
             svg.appendChild(valueText);
         }
+    }
+    const curVariable = steps[currentStep].changes[0].variable;
+    if (steps[currentStep].changes.some(change => change.variable === curVariable)) {
+        const curPos = positions[curVariable];
+        highlightBucket(svg, curPos, curVariable, variables[curVariable]);
     }
 
     if (currentStep >= 3) {
@@ -218,6 +234,11 @@ function updateVisual() {
         arrow.setAttribute("stroke-width", 2);
         arrow.setAttribute("fill", "none");
         arrow.setAttribute("marker-end", "url(#arrowhead)"); // Attach the arrowhead marker
+        if (steps[currentStep].changes.some(change => change.variable === nextVariable)) {
+            arrow.classList.add("highlight-arrow");
+        }else {
+            arrow.classList.add("dashed-arrow");
+        }
         svg.appendChild(arrow);
 
         // Add info button for this arrow
@@ -243,6 +264,11 @@ function updateVisual() {
             arrow.setAttribute("stroke", "black");
             arrow.setAttribute("stroke-width", 2);
             arrow.setAttribute("fill", "none");
+            if (steps[currentStep].changes.some(change => change.variable === nextVariable)) {
+                arrow.classList.add("highlight-arrow");
+            }else {
+                arrow.classList.add("dashed-arrow");
+            }
             arrow.setAttribute("marker-end", "url(#arrowhead)"); // Attach the arrowhead marker
             svg.appendChild(arrow);
 
@@ -301,8 +327,8 @@ function highlightBucket(svg, position, variable, value) {
     varBox.setAttribute("width", boxWidth);
     varBox.setAttribute("height", boxHeight);
     varBox.setAttribute("fill", "yellow");
-    varBox.setAttribute("stroke", "black");
-    varBox.setAttribute("stroke-width", 2);
+    varBox.setAttribute("stroke", "#ff6a00");
+    varBox.setAttribute("stroke-width", 3);
     svg.appendChild(varBox);
 
     // Draw lid line
@@ -311,8 +337,8 @@ function highlightBucket(svg, position, variable, value) {
     lidLine.setAttribute("y1", y - boxHeight / 2);
     lidLine.setAttribute("x2", x + boxWidth / 2);
     lidLine.setAttribute("y2", y - boxHeight / 2 - lidHeight);
-    lidLine.setAttribute("stroke", "black");
-    lidLine.setAttribute("stroke-width", 2);
+    lidLine.setAttribute("stroke", "#ff6a00");
+    lidLine.setAttribute("stroke-width", 3);
     svg.appendChild(lidLine);
 
     const varText = document.createElementNS("http://www.w3.org/2000/svg", "text");
@@ -326,7 +352,7 @@ function highlightBucket(svg, position, variable, value) {
     if (value !== null) {
         const valueRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         valueRect.setAttribute("x", x - 10);
-        valueRect.setAttribute("y", y + 10);
+        valueRect.setAttribute("y", y - 10);
         valueRect.setAttribute("width", 20);
         valueRect.setAttribute("height", 20);
         valueRect.setAttribute("fill", "yellow");
@@ -334,7 +360,7 @@ function highlightBucket(svg, position, variable, value) {
 
         const valueText = document.createElementNS("http://www.w3.org/2000/svg", "text");
         valueText.setAttribute("x", x);
-        valueText.setAttribute("y", y + 25);
+        valueText.setAttribute("y", y + 5);
         valueText.setAttribute("text-anchor", "middle");
         valueText.setAttribute("fill", "black");
         valueText.textContent = value;
@@ -363,6 +389,8 @@ function updateMemory() {
     while (svg.firstChild) {
         svg.removeChild(svg.firstChild);
     }
+
+    // Update variable values based on current steps
     for (let i = 0; i <= currentStep; i++) {
         steps[i].changes.forEach(change => {
             variables[change.variable] = change.value === 'a' ? variables.a :
@@ -371,7 +399,8 @@ function updateMemory() {
                                          change.value === 'temp' ? variables.temp : change.value;
         });
     }
-    document.getElementById('step-info').textContent = `Step ${currentStep}`;
+
+    document.getElementById('step-info').textContent = `Step ${currentStep + 1}`;
     steps.forEach(step => document.getElementById(step.line).classList.remove('highlight'));
     document.getElementById(steps[currentStep].line).classList.add('highlight');
 
@@ -383,13 +412,14 @@ function updateMemory() {
             const [x, y] = positions[variable];
             const value = variables[variable];
             const [vx, vy] = values[value];
-            
+
             const varNode = document.createElementNS("http://www.w3.org/2000/svg", "rect");
             varNode.setAttribute("x", x - 35);
             varNode.setAttribute("y", y - 15);
             varNode.setAttribute("width", 70);
             varNode.setAttribute("height", 30);
             varNode.setAttribute("fill", "lightblue");
+
             if (steps[currentStep].changes.some(change => change.variable === variable)) {
                 varNode.classList.add("highlight-changes");
             }
@@ -401,8 +431,9 @@ function updateMemory() {
             varText.setAttribute("text-anchor", "middle");
             varText.setAttribute("fill", "black");
             varText.textContent = variable;
+
             if (steps[currentStep].changes.some(change => change.variable === variable)) {
-                varText.classList.add("highlight-changes");
+                varText.classList.add("highlight-text");
             }
             svg.appendChild(varText);
 
@@ -414,6 +445,7 @@ function updateMemory() {
             arrow.setAttribute("stroke", "black");
             arrow.setAttribute("stroke-width", 2);
             arrow.setAttribute("marker-end", "url(#arrow)");
+
             if (steps[currentStep].changes.some(change => change.variable === variable)) {
                 arrow.classList.add("highlight-changes");
             }
@@ -424,14 +456,15 @@ function updateMemory() {
             valueNode.setAttribute("y", vy - 15);
             valueNode.setAttribute("width", 30);
             valueNode.setAttribute("height", 30);
-            valueNode.setAttribute("fill", "#ffa");
-            valueNode.setAttribute("stroke", "#cc0");  // Set the border color
-            valueNode.setAttribute("stroke-width", 2); // Set the border width (you can adjust the width as needed)
-            if (steps[currentStep].changes.some(change => change.variable === variable)) {
+            valueNode.setAttribute("fill", "#cdf8bf");
+            valueNode.setAttribute("stroke", "#9ccd8b");
+            valueNode.setAttribute("stroke-width", 2);
+
+            // Check for reassignment and highlight
+            if (steps[currentStep].changes.some(change => (change.variable === variable && variables[variable] === value) || change.value === value)) {
                 valueNode.classList.add("highlight-changes");
             }
             svg.appendChild(valueNode);
-            
 
             const valueText = document.createElementNS("http://www.w3.org/2000/svg", "text");
             valueText.setAttribute("x", vx);
@@ -439,13 +472,15 @@ function updateMemory() {
             valueText.setAttribute("text-anchor", "middle");
             valueText.setAttribute("fill", "black");
             valueText.textContent = value;
-            if (steps[currentStep].changes.some(change => change.variable === variable)) {
-                valueText.classList.add("highlight-changes");
+
+            if (steps[currentStep].changes.some(change => change.value === value)) {
+                valueText.classList.add("highlight-text");
             }
             svg.appendChild(valueText);
         }
     });
 
+    // Marker for arrowhead
     const marker = document.createElementNS("http://www.w3.org/2000/svg", "marker");
     marker.setAttribute("id", "arrow");
     marker.setAttribute("markerWidth", "10");
@@ -453,9 +488,11 @@ function updateMemory() {
     marker.setAttribute("refX", "5");
     marker.setAttribute("refY", "3");
     marker.setAttribute("orient", "auto");
+
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
     path.setAttribute("d", "M0,0 L0,6 L9,3 z");
     path.setAttribute("fill", "black");
+
     marker.appendChild(path);
     svg.appendChild(marker);
 }
