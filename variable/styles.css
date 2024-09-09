@@ -84,6 +84,8 @@ h1 {
 
 .highlight {
     background-color: yellow;
+    outline: 3px solid #ff6a00; /* Adds an orange outline */
+    outline-offset: 3px; /* Optional: Adds some space between the element and the outline */
 }
 
 .highlight-changes {
@@ -108,7 +110,11 @@ h1 {
 }
 
 .step-explanation {
+<<<<<<< HEAD
     background-color: #d9e4e6; /* Light blue background */
+=======
+    background-color: #e4edef; /* Light blue background */
+>>>>>>> 561673c9136df94beb0b11824aafe5a2ec281449
     color: #000000; /* Darker blue text */
     padding: 10px;
     border-radius: 8px;
@@ -217,6 +223,10 @@ button {
 
 .variable {
     font-family: 'Courier New', Courier, monospace; /* Example font */
+<<<<<<< HEAD
+=======
+    color:#ff6a00
+>>>>>>> 561673c9136df94beb0b11824aafe5a2ec281449
 }
 
 pre, code {
@@ -229,4 +239,8 @@ pre {
     text-align: left; /* Aligns text to the left */
     margin: 0; /* Removes default margin */
     padding: 0; /* Removes default padding */
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 561673c9136df94beb0b11824aafe5a2ec281449

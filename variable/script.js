@@ -110,7 +110,7 @@ function updateStepExplanation() {
 function runAllSteps() {
     currentStep = steps.length - 1;
     const stepExplanation = document.getElementById('step-explanation');
-    stepExplanation.textContent = stepExplanations[currentStep];
+    stepExplanation.innerHTML = stepExplanations[currentStep]; // Use innerHTML to interpret HTML tags
     updateMemory();
     updateVisual();
     logInteraction('runAllSteps', { currentStep: currentStep }); // Log run all steps action
@@ -149,10 +149,27 @@ function updateVisual() {
 
     const arrowheadPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
     arrowheadPath.setAttribute("d", "M0,0 L0,7 L10,3.5 Z");
-    arrowheadPath.setAttribute("fill", "black");
+    arrowheadPath.setAttribute("fill", "#757575");
 
     arrowhead.appendChild(arrowheadPath);
     svg.appendChild(arrowhead);
+
+
+    const arrowhead_hl = document.createElementNS("http://www.w3.org/2000/svg", "marker");
+    arrowhead_hl.setAttribute("id", "arrowhead_hl");
+    arrowhead_hl.setAttribute("markerWidth", 10);
+    arrowhead_hl.setAttribute("markerHeight", 7);
+    arrowhead_hl.setAttribute("refX", 0);
+    arrowhead_hl.setAttribute("refY", 3.5);
+    arrowhead_hl.setAttribute("orient", "auto");
+    arrowhead_hl.setAttribute("markerUnits", "strokeWidth");
+
+    const arrowhead_hlPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    arrowhead_hlPath.setAttribute("d", "M0,0 L0,7 L10,3.5 Z");
+    arrowhead_hlPath.setAttribute("fill", "#ff6a00");
+
+    arrowhead_hl.appendChild(arrowhead_hlPath);
+    svg.appendChild(arrowhead_hl);
 
     for (let i = 0; i <= currentStep; i++) {
         const variable = steps[i].changes[0].variable;
@@ -191,6 +208,7 @@ function updateVisual() {
         varText.setAttribute("text-anchor", "middle");
         varText.setAttribute("fill", "black");
         varText.textContent = variable;
+        addInfoButton(svg, x, y - boxHeight/2, `${variable} (blue box) stores ${value} (green square).`);
         svg.appendChild(varText);
 
         if (value !== null) {
@@ -233,11 +251,12 @@ function updateVisual() {
         arrow.setAttribute("stroke", "black");
         arrow.setAttribute("stroke-width", 2);
         arrow.setAttribute("fill", "none");
-        arrow.setAttribute("marker-end", "url(#arrowhead)"); // Attach the arrowhead marker
         if (steps[currentStep].changes.some(change => change.variable === nextVariable)) {
             arrow.classList.add("highlight-arrow");
+            arrow.setAttribute("marker-end", "url(#arrowhead_hl)");
         }else {
             arrow.classList.add("dashed-arrow");
+            arrow.setAttribute("marker-end", "url(#arrowhead)"); // Attach the arrowhead marker
         }
         svg.appendChild(arrow);
 
@@ -266,10 +285,12 @@ function updateVisual() {
             arrow.setAttribute("fill", "none");
             if (steps[currentStep].changes.some(change => change.variable === nextVariable)) {
                 arrow.classList.add("highlight-arrow");
+                arrow.setAttribute("marker-end", "url(#arrowhead_hl)");
             }else {
                 arrow.classList.add("dashed-arrow");
+                arrow.setAttribute("marker-end", "url(#arrowhead)");
             }
-            arrow.setAttribute("marker-end", "url(#arrowhead)"); // Attach the arrowhead marker
+            
             svg.appendChild(arrow);
 
             // Add info button for this arrow
@@ -343,7 +364,7 @@ function highlightBucket(svg, position, variable, value) {
 
     const varText = document.createElementNS("http://www.w3.org/2000/svg", "text");
     varText.setAttribute("x", x);
-    varText.setAttribute("y", y - boxHeight / 2 - lidHeight - 10);
+    varText.setAttribute("y", y + boxHeight);
     varText.setAttribute("text-anchor", "middle");
     varText.setAttribute("fill", "black");
     varText.textContent = variable;
@@ -419,6 +440,8 @@ function updateMemory() {
             varNode.setAttribute("width", 70);
             varNode.setAttribute("height", 30);
             varNode.setAttribute("fill", "lightblue");
+            varNode.setAttribute("stroke", "black");
+            varNode.setAttribute("stroke-width", 2);
 
             if (steps[currentStep].changes.some(change => change.variable === variable)) {
                 varNode.classList.add("highlight-changes");
@@ -457,7 +480,7 @@ function updateMemory() {
             valueNode.setAttribute("width", 30);
             valueNode.setAttribute("height", 30);
             valueNode.setAttribute("fill", "#cdf8bf");
-            valueNode.setAttribute("stroke", "#9ccd8b");
+            valueNode.setAttribute("stroke", "black");
             valueNode.setAttribute("stroke-width", 2);
 
             // Check for reassignment and highlight
