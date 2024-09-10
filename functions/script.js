@@ -114,7 +114,9 @@ function toggleStepInto() {
     } else {
         stepIntoButton.innerHTML = "Reveal Function";
     }
-    updateStepExplanation();  // Update explanation after toggling step into
+    updateMemory();
+    updateVisual();
+    updateStepExplanation();
 }
 
 function updateStepExplanation() {
@@ -143,10 +145,10 @@ function updateMemory() {
     if (currentStep >= 0){ // inside the function
         // Draw the memory frame (global frame)
         const memoryFrame1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-        memoryFrame1.setAttribute("x", 20);
-        memoryFrame1.setAttribute("y", 10);
-        memoryFrame1.setAttribute("width", 370);
-        memoryFrame1.setAttribute("height", 305);
+        memoryFrame1.setAttribute("x", 40);
+        memoryFrame1.setAttribute("y", 170);
+        memoryFrame1.setAttribute("width", 180);
+        memoryFrame1.setAttribute("height", 140);
         memoryFrame1.setAttribute("fill", "#e4ecf0");
         memoryFrame1.setAttribute("stroke", "black");
         memoryFrame1.setAttribute("stroke-width", 2);
@@ -164,7 +166,7 @@ function updateMemory() {
         memoryFrame.setAttribute("x", 40);
         memoryFrame.setAttribute("y", 20);
         memoryFrame.setAttribute("width", 180);
-        memoryFrame.setAttribute("height", 150);
+        memoryFrame.setAttribute("height", 140);
         memoryFrame.setAttribute("fill", "#e4ecf0");
         memoryFrame.setAttribute("stroke", "black");
         memoryFrame.setAttribute("stroke-width", 2);
@@ -177,7 +179,7 @@ function updateMemory() {
         // Label for the memory frame
         const frameLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
         frameLabel.setAttribute("x", 170);
-        frameLabel.setAttribute("y", 165);
+        frameLabel.setAttribute("y", 150);
         frameLabel.setAttribute("text-anchor", "middle");
         frameLabel.setAttribute("fill", "black");
         frameLabel.textContent = "my_add(5, 2)";
@@ -209,22 +211,22 @@ function updateMemory() {
     }
 
     // Global scope variables
-    drawVariableBox(svg, "a", 40, 180, variables.a, currentStep == 0);
+    drawVariableBox(svg, "a", 50, 180, variables.a, currentStep == 0);
     drawValueBox(svg, 5, 280, 180, currentStep == 0);
-    drawMemoryArrow(svg, 100, 195, 280, 195, currentStep == 0);
+    drawMemoryArrow(svg, 110, 195, 280, 195, currentStep == 0);
     if (currentStep >= 1) {
-        drawVariableBox(svg, "b", 40, 220, variables.b, currentStep == 1);
+        drawVariableBox(svg, "b", 50, 220, variables.b, currentStep == 1);
         drawValueBox(svg, 2, 280, 220, currentStep == 1);
-        drawMemoryArrow(svg, 100, 235, 280, 235, currentStep == 1);
+        drawMemoryArrow(svg, 110, 235, 280, 235, currentStep == 1);
     }
     if (currentStep >= 6) {
-        drawVariableBox(svg, "c", 40, 260, variables.b, currentStep == 6);
+        drawVariableBox(svg, "c", 50, 260, variables.b, currentStep == 6);
         drawValueBox(svg, 7, 280, 260, currentStep == 6);
-        drawMemoryArrow(svg, 100, 275, 280, 275, currentStep == 6);
+        drawMemoryArrow(svg, 110, 275, 280, 275, currentStep == 6);
     }
     const frameLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
     frameLabel.setAttribute("x", 340);
-    frameLabel.setAttribute("y", 310);
+    frameLabel.setAttribute("y", 315);
     frameLabel.setAttribute("text-anchor", "middle");
     frameLabel.setAttribute("fill", "black");
     frameLabel.textContent = "Global Scope";
@@ -352,14 +354,29 @@ function drawHouseWithRoof1(svg, label, x, y, highlight) {
     house.setAttribute("fill", "#e4ecf0");
     house.setAttribute("stroke", "black");
     house.setAttribute("stroke-width", 2);
+    if (currentStep < 3 || currentStep >= 5) {
+        house.setAttribute("fill", "#fff3d4");
+        house.setAttribute("stroke", "#ff6a00");
+        house.setAttribute("stroke-width", 3);
+    }
     svg.appendChild(house);
 
-    const roof = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-    roof.setAttribute("points", `${x},${y} ${x + 50},${y - 40} ${x + 100},${y}`);
-    roof.setAttribute("fill", "#ffcc80");  // Light orange color for roof
-    roof.setAttribute("stroke", "black");
-    roof.setAttribute("stroke-width", 2);
-    svg.appendChild(roof);
+
+    const roofURL = (currentStep < 3 || currentStep >= 5) ? "./images/home-hl.png" : "./images/home.png";
+    const roofImage = document.createElementNS("http://www.w3.org/2000/svg", "image");
+    roofImage.setAttributeNS("http://www.w3.org/1999/xlink", "href", roofURL);
+    roofImage.setAttribute("width", "130");
+    roofImage.setAttribute("height", "110");
+    roofImage.setAttribute("x", x - 15);
+    roofImage.setAttribute("y", y - 65);
+    svg.appendChild(roofImage);
+
+    // const roof = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+    // roof.setAttribute("points", `${x},${y} ${x + 50},${y - 40} ${x + 100},${y}`);
+    // roof.setAttribute("fill", "#ffcc80");  // Light orange color for roof
+    // roof.setAttribute("stroke", "black");
+    // roof.setAttribute("stroke-width", 2);
+    // svg.appendChild(roof);
 
     const houseLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
     houseLabel.setAttribute("x", x + 50);
@@ -382,6 +399,11 @@ function drawHouseWithRoof2(svg, label, x, y, highlight) {
     house.setAttribute("fill", "#e4ecf0");
     house.setAttribute("stroke", "black");
     house.setAttribute("stroke-width", 2);
+    if (currentStep >= 3 && currentStep < 5) {
+        house.setAttribute("fill", "#fff3d4");
+        house.setAttribute("stroke", "#ff6a00");
+        house.setAttribute("stroke-width", 3);
+    }
     svg.appendChild(house);
 
     if (!isSteppingIntoFunction){
@@ -394,12 +416,14 @@ function drawHouseWithRoof2(svg, label, x, y, highlight) {
         svg.appendChild(houseLabel2);
     }
 
-    const roof = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-    roof.setAttribute("points", `${x},${y} ${x + 50},${y - 40} ${x + 100},${y}`);
-    roof.setAttribute("fill", "#ffcc80");  // Light orange color for roof
-    roof.setAttribute("stroke", "black");
-    roof.setAttribute("stroke-width", 2);
-    svg.appendChild(roof);
+    const roofURL = (currentStep >= 3 && currentStep < 5) ? "./images/home-hl.png" : "./images/home.png";
+    const roofImage = document.createElementNS("http://www.w3.org/2000/svg", "image");
+    roofImage.setAttributeNS("http://www.w3.org/1999/xlink", "href", roofURL);
+    roofImage.setAttribute("width", "130");
+    roofImage.setAttribute("height", "110");
+    roofImage.setAttribute("x", x - 15);
+    roofImage.setAttribute("y", y - 65);
+    svg.appendChild(roofImage);
 
     const houseLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
     houseLabel.setAttribute("x", x + 50);
@@ -607,6 +631,30 @@ function drawInteractionArrow(svg, x1, y1, x2, y2, label, curveDirection = 'up',
     }
     svg.appendChild(curve);
 
+    // Add phone icon on top for "up" direction and below for "down"
+    const phoneIconUrl = highlight ? "./images/highlighted-phone.png" : "./images/phone.png";
+    const phoneImage = document.createElementNS("http://www.w3.org/2000/svg", "image");
+    phoneImage.setAttributeNS("http://www.w3.org/1999/xlink", "href", phoneIconUrl);
+    phoneImage.setAttribute("width", "35");
+    phoneImage.setAttribute("height", "35");
+
+    const responseURL = highlight ? "./images/response-hl.png" : "./images/response.png";
+    const responseImage = document.createElementNS("http://www.w3.org/2000/svg", "image");
+    responseImage.setAttributeNS("http://www.w3.org/1999/xlink", "href", responseURL);
+    responseImage.setAttribute("width", "50");
+    responseImage.setAttribute("height", "50");
+
+    if (curveDirection === 'up') {
+        phoneImage.setAttribute("x", (x1 + x2) / 2 - 15);
+        phoneImage.setAttribute("y", controlPointY1 - 60);
+        svg.appendChild(phoneImage);
+    } else {
+        responseImage.setAttribute("x", (x1 + x2) / 2 - 17);
+        responseImage.setAttribute("y", controlPointY2 + 20);
+        svg.appendChild(responseImage);
+    }
+
+    // Label the arrow
     const labelText = document.createElementNS("http://www.w3.org/2000/svg", "text");
     labelText.setAttribute("x", (x1 + x2) / 2);
     labelText.setAttribute("y", (curveDirection === 'up' ? controlPointY1 : controlPointY2 + 10));
