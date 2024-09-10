@@ -262,7 +262,7 @@ function drawValueBox(svg, value, x, y, highlight) {
     valueBox.setAttribute("y", y);
     valueBox.setAttribute("width", 30);
     valueBox.setAttribute("height", 30);
-    valueBox.setAttribute("fill", "#a5d6a7"); // Light green for values
+    valueBox.setAttribute("fill", "#cdf8bf"); // Light green for values
     valueBox.setAttribute("stroke", "black");
     valueBox.setAttribute("stroke-width", 2);
     if (highlight) {
@@ -313,7 +313,8 @@ function updateVisual() {
         drawHouseWithRoof2(svg, "my_add(5, 2)", 295, 50);  // Function scope house
         drawStickFigure(svg, 275, 170, "", currentStep >= 3 && currentStep < 5);  // Function stick figure
         if (isSteppingIntoFunction) {
-            assignValueToWindow(svg, 315, 90, 5, currentStep == 3);  // Assign values to function house windows
+            if (currentStep < 4) assignValueToWindow(svg, 315, 90, 5, currentStep == 3);  // Assign values to function house windows
+            else assignValueToWindow(svg, 315, 90, 7, currentStep == 4);
             assignValueToWindow(svg, 375, 90, 2, currentStep == 3);  
         }
     } else if (currentStep >= 3 && !isSteppingIntoFunction) {
