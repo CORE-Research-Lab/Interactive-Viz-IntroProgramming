@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Function Scope Visualization</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="script.js"></script>
+</head>
+<body>
+    <div class="step-explanation" id="step-explanation"></div>
+    <div class="container">
+        <div class="code-window">
+            <h3>Code</h3>
+            <pre id="code">
+    <code>
+<span id="line1">a = 5;</span>
+<span id="line2">b = 2;</span>
+<span id="line3">def my_add(a, b):</span>
+<span id="line4">   a = a + b</span>
+<span id="line5">   return a</span>
+<span id="line6">c = my_add(a, b)</span>
+    </code>
+            </pre>
+        </div>
+        <div class="memory-window">
+            <h3>Memory Analogy</h3>
+            <svg id="memory" width="400" height="320"></svg>
+        </div>
+        <div class="visual-window">
+            <h3>Visual Analogy</h3>
+            <svg id="visual" width="400" height="320"></svg>
+        </div>
+    </div>
+    <div class="iteration-control">
+        <span id="step-info">Step 0</span>
+        <button onclick="decrementStep()">Previous Line</button>
+        <button onclick="incrementStep()">Next Line</button>
+        <button onclick="runAllSteps()">Run All Lines</button>
+        <button onclick="resetSteps()">Reset</button>
+        <button id="step-into-btn" onclick="toggleStepInto()">Reveal Function</button>
+    </div>
+    <div id="interactive-element" class="hidden">
+        <div id="question"></div>
+        <button onclick="hideInteractive()">Close</button>
+    </div>
+</body>
+</html>
