@@ -1,36 +1,36 @@
-const firebaseConfig = {
-    apiKey: "AIzaSyAn_mT725rpxJdgdZ_HchR6FpAYs1sD6Zo",
-    authDomain: "visual-interactions-csc108.firebaseapp.com",
-    projectId: "visual-interactions-csc108",
-    storageBucket: "visual-interactions-csc108.appspot.com",
-    messagingSenderId: "703068795993",
-    appId: "1:703068795993:web:2c734051b205606affad48",
-    measurementId: "G-QWCWFNX1BR"
-};
+// const firebaseConfig = {
+//     apiKey: "AIzaSyAn_mT725rpxJdgdZ_HchR6FpAYs1sD6Zo",
+//     authDomain: "visual-interactions-csc108.firebaseapp.com",
+//     projectId: "visual-interactions-csc108",
+//     storageBucket: "visual-interactions-csc108.appspot.com",
+//     messagingSenderId: "703068795993",
+//     appId: "1:703068795993:web:2c734051b205606affad48",
+//     measurementId: "G-QWCWFNX1BR"
+// };
 
-firebase.initializeApp(firebaseConfig);
-const dbNew = firebase.firestore().collection('functionsExample');  // Using new collection
+// firebase.initializeApp(firebaseConfig);
+// const dbNew = firebase.firestore().collection('functionsExample');  // Using new collection
 
-firebase.auth().signInAnonymously()
-  .then(() => {
-    console.log("User signed in anonymously");
-  })
-  .catch((error) => {
-    console.error("Error during anonymous authentication: ", error);
-  });
+// firebase.auth().signInAnonymously()
+//   .then(() => {
+//     console.log("User signed in anonymously");
+//   })
+//   .catch((error) => {
+//     console.error("Error during anonymous authentication: ", error);
+//   });
 
-function //logInteraction(eventType, details) {
-    dbNew.add({
-        userId: userId,
-        eventType: eventType,
-        details: details,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(() => {
-        console.log("Interaction logged successfully!");
-    }).catch((error) => {
-        console.error("Error logging interaction: ", error);
-    });
-}
+// function //logInteraction(eventType, details) {
+//     dbNew.add({
+//         userId: userId,
+//         eventType: eventType,
+//         details: details,
+//         timestamp: firebase.firestore.FieldValue.serverTimestamp()
+//     }).then(() => {
+//         console.log("Interaction logged successfully!");
+//     }).catch((error) => {
+//         console.error("Error logging interaction: ", error);
+//     });
+// }
 
 const userId = 'user-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
 
