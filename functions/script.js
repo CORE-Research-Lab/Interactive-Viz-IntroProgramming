@@ -140,6 +140,7 @@ function updateMemory() {
     while (svg.firstChild) {
         svg.removeChild(svg.firstChild);
     }
+    document.getElementById('step-info').textContent = `Step ${currentStep + 1}`;
     steps.forEach(step => document.getElementById(step.line).classList.remove('highlight'));
     document.getElementById(steps[currentStep].line).classList.add('highlight');
     if (currentStep >= 0){ // inside the function
