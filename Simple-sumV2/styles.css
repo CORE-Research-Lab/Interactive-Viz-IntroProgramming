@@ -385,3 +385,52 @@ button {
     position: relative;
     margin-top: 5px;
 }
+
+.lined-paper {
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.lined-paper:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: repeating-linear-gradient(to bottom, transparent 0%, transparent 80%, #ccc 80%, #ccc 100%);
+  background-size: 100% 10px;
+  pointer-events: none;
+}
+
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 8px;
+  line-height: 1;
+}
+
+.index, .value {
+  width: 10px;
+  height: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #000;
+  padding: 2px;
+  box-sizing: border-box;
+}
+
+.index {
+  background-color: #ffe4e1;
+}
+
+.value {
+  background-color: #e6f7ff;
+}
