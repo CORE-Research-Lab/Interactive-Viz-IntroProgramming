@@ -159,10 +159,17 @@ function updateMemory() {
             memoryFrame1.setAttribute("stroke-width", 3);
         }
         svg.appendChild(memoryFrame1);
+        const frameLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        frameLabel.setAttribute("x", 170);
+        frameLabel.setAttribute("y", 305);
+        frameLabel.setAttribute("text-anchor", "middle");
+        frameLabel.setAttribute("fill", "black");
+        frameLabel.textContent = "Global Scope";
+        svg.appendChild(frameLabel);
     }
 
     if (currentStep >= 3){ // inside the function
-        // Draw the memory frame (global frame)
+        // Draw the memory frame (function frame)
         const memoryFrame = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         memoryFrame.setAttribute("x", 40);
         memoryFrame.setAttribute("y", 20);
@@ -189,12 +196,12 @@ function updateMemory() {
 
     if (currentStep >= 3 && isSteppingIntoFunction) {
         // Show the function's memory details
-        drawVariableBox(svg, "a", 50, 30, variables.a, currentStep == 3 || currentStep == 4);
+        drawVariableBox(svg, "x", 50, 30, variables.a, currentStep == 3);
         drawValueBox(svg, 5, 280, 30, currentStep == 3);
         drawMemoryArrow(svg, 110, 45, 280, 45, currentStep == 3);
-        drawVariableBox(svg, "b", 50, 90, variables.b, currentStep == 3);
-        drawValueBox(svg, 2, 280, 90, currentStep == 3);
-        drawMemoryArrow(svg, 110, 105, 280, 105, currentStep == 3);
+        drawVariableBox(svg, "y", 50, 70, variables.b, currentStep == 3);
+        drawValueBox(svg, 2, 280, 70, currentStep == 3);
+        drawMemoryArrow(svg, 110, 85, 280, 85, currentStep == 3);
     } else if (currentStep >= 3 && !isSteppingIntoFunction) {
         // Show placeholder "hidden" if not stepping into the function
         const hiddenText = document.createElementNS("http://www.w3.org/2000/svg", "text");
@@ -207,8 +214,9 @@ function updateMemory() {
     }
 
     if (currentStep >= 4 && isSteppingIntoFunction) {
-        drawValueBox(svg, 7, 280, 30, currentStep == 4);
-        drawMemoryArrow(svg, 110, 45, 280, 45, currentStep == 4);
+        drawVariableBox(svg, "a", 50, 110, variables.a, currentStep == 4);
+        drawValueBox(svg, 7, 280, 110, currentStep == 4);
+        drawMemoryArrow(svg, 110, 125, 280, 125, currentStep == 4);
     }
 
     // Global scope variables
@@ -225,13 +233,6 @@ function updateMemory() {
         drawValueBox(svg, 7, 280, 260, currentStep == 6);
         drawMemoryArrow(svg, 110, 275, 280, 275, currentStep == 6);
     }
-    const frameLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    frameLabel.setAttribute("x", 340);
-    frameLabel.setAttribute("y", 315);
-    frameLabel.setAttribute("text-anchor", "middle");
-    frameLabel.setAttribute("fill", "black");
-    frameLabel.textContent = "Global Scope";
-    svg.appendChild(frameLabel);
 }
 
 function drawVariableBox(svg, name, x, y, value, highlight) {
@@ -316,8 +317,12 @@ function updateVisual() {
         drawHouseWithRoof2(svg, "my_add(5, 2)", 295, 50);  // Function scope house
         drawStickFigure(svg, 275, 170, "", currentStep >= 3 && currentStep < 5);  // Function stick figure
         if (isSteppingIntoFunction) {
-            if (currentStep < 4) assignValueToWindow(svg, 315, 90, 5, currentStep == 3);  // Assign values to function house windows
-            else assignValueToWindow(svg, 315, 90, 7, currentStep == 4);
+            if (currentStep >= 4) {
+                drawWindow(svg, 'a', 295 + 50, 150, currentStep == 4 || currentStep == 5);  // Right window
+                assignValueToWindow(svg, 295 + 50, 150, 7, currentStep == 4 || currentStep == 5);
+
+            } 
+            assignValueToWindow(svg, 315, 90, 5, currentStep == 3);  // Assign values to function house windows
             assignValueToWindow(svg, 375, 90, 2, currentStep == 3);  
         }
     } else if (currentStep >= 3 && !isSteppingIntoFunction) {
@@ -332,7 +337,7 @@ function updateVisual() {
     }
 
     if (currentStep >= 5) {
-        drawInteractionArrow(svg, 150, 175, 255, 180, "the result is 7", "down", currentStep == 5);  // Returning result arrow
+        drawInteractionArrow(svg, 150, 175, 255, 180, "returning 7", "down", currentStep == 5);  // Returning result arrow
     }
 
     assignValueToWindow(svg, 25, 90, 5, currentStep == 0);  // Assign value to Global house window 1
@@ -434,8 +439,8 @@ function drawHouseWithRoof2(svg, label, x, y, highlight) {
     houseLabel.textContent = label;
     svg.appendChild(houseLabel);
     if (isSteppingIntoFunction){
-        drawWindow(svg, 'a', x + 20, y + 40, currentStep == 3 || currentStep == 4);  // Left window
-        drawWindow(svg, 'b', x + 80, y + 40, currentStep == 3);  // Right window
+        drawWindow(svg, 'x', x + 20, y + 40, currentStep == 3 || currentStep == 4);  // Left window
+        drawWindow(svg, 'y', x + 80, y + 40, currentStep == 3);  // Right window
     }
 }
 
@@ -639,7 +644,7 @@ function drawInteractionArrow(svg, x1, y1, x2, y2, label, curveDirection = 'up',
     phoneImage.setAttribute("width", "35");
     phoneImage.setAttribute("height", "35");
 
-    const responseURL = highlight ? "./images/response-hl.png" : "./images/response.png";
+    const responseURL = highlight ? "./images/call-response-hl.png" : "./images/call-response.png";
     const responseImage = document.createElementNS("http://www.w3.org/2000/svg", "image");
     responseImage.setAttributeNS("http://www.w3.org/1999/xlink", "href", responseURL);
     responseImage.setAttribute("width", "50");
@@ -661,6 +666,9 @@ function drawInteractionArrow(svg, x1, y1, x2, y2, label, curveDirection = 'up',
     labelText.setAttribute("y", (curveDirection === 'up' ? controlPointY1 : controlPointY2 + 10));
     labelText.setAttribute("text-anchor", "middle");
     labelText.setAttribute("fill", "black");
+    if (highlight){
+        labelText.setAttribute("fill", "#ff6a00");
+    }
     labelText.textContent = label;
     svg.appendChild(labelText);
 }
