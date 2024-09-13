@@ -1,36 +1,36 @@
-// const firebaseConfig = {
-//     apiKey: "AIzaSyAn_mT725rpxJdgdZ_HchR6FpAYs1sD6Zo",
-//     authDomain: "visual-interactions-csc108.firebaseapp.com",
-//     projectId: "visual-interactions-csc108",
-//     storageBucket: "visual-interactions-csc108.appspot.com",
-//     messagingSenderId: "703068795993",
-//     appId: "1:703068795993:web:2c734051b205606affad48",
-//     measurementId: "G-QWCWFNX1BR"
-// };
+const firebaseConfig = {
+    apiKey: "AIzaSyAn_mT725rpxJdgdZ_HchR6FpAYs1sD6Zo",
+    authDomain: "visual-interactions-csc108.firebaseapp.com",
+    projectId: "visual-interactions-csc108",
+    storageBucket: "visual-interactions-csc108.appspot.com",
+    messagingSenderId: "703068795993",
+    appId: "1:703068795993:web:2c734051b205606affad48",
+    measurementId: "G-QWCWFNX1BR"
+};
 
-// firebase.initializeApp(firebaseConfig);
-// const dbNew = firebase.firestore().collection('functionsExample');  // Using new collection
+firebase.initializeApp(firebaseConfig);
+const dbNew = firebase.firestore().collection('functionsExample');  // Using new collection
 
-// firebase.auth().signInAnonymously()
-//   .then(() => {
-//     console.log("User signed in anonymously");
-//   })
-//   .catch((error) => {
-//     console.error("Error during anonymous authentication: ", error);
-//   });
+firebase.auth().signInAnonymously()
+  .then(() => {
+    console.log("User signed in anonymously");
+  })
+  .catch((error) => {
+    console.error("Error during anonymous authentication: ", error);
+  });
 
-// function //logInteraction(eventType, details) {
-//     dbNew.add({
-//         userId: userId,
-//         eventType: eventType,
-//         details: details,
-//         timestamp: firebase.firestore.FieldValue.serverTimestamp()
-//     }).then(() => {
-//         console.log("Interaction logged successfully!");
-//     }).catch((error) => {
-//         console.error("Error logging interaction: ", error);
-//     });
-// }
+function logInteraction(eventType, details) {
+    dbNew.add({
+        userId: userId,
+        eventType: eventType,
+        details: details,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+        console.log("Interaction logged successfully!");
+    }).catch((error) => {
+        console.error("Error logging interaction: ", error);
+    });
+}
 
 const userId = 'user-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
 
@@ -72,10 +72,10 @@ function incrementStep() {
         updateMemory();
         updateVisual();
         updateStepExplanation();
-        //logInteraction('incrementStep', { currentStep: currentStep });
+        logInteraction('incrementStep', { currentStep: currentStep });
     } else {
         alert("All lines have been executed.");
-        //logInteraction('alert', { message: "All lines have been executed." });
+        logInteraction('alert', { message: "All lines have been executed." });
     }
 }
 
@@ -88,10 +88,10 @@ function decrementStep() {
         updateMemory();
         updateVisual();
         updateStepExplanation();
-        //logInteraction('decrementStep', { currentStep: currentStep });
+        logInteraction('decrementStep', { currentStep: currentStep });
     } else {
         alert("You are at the beginning.");
-        //logInteraction('alert', { message: "You are at the beginning." });
+        logInteraction('alert', { message: "You are at the beginning." });
     }
 }
 
@@ -103,7 +103,7 @@ function resetSteps() {
     updateMemory();
     updateVisual();
     updateStepExplanation();
-    //logInteraction('resetSteps', { currentStep: currentStep });
+    logInteraction('resetSteps', { currentStep: currentStep });
 }
 
 function toggleStepInto() {
@@ -132,7 +132,7 @@ function runAllSteps() {
     updateMemory();
     updateVisual();
     updateStepExplanation();
-    //logInteraction('runAllSteps', { currentStep: currentStep });
+    logInteraction('runAllSteps', { currentStep: currentStep });
 }
 
 function updateMemory() {
