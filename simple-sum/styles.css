@@ -385,3 +385,79 @@ button {
     position: relative;
     margin-top: 5px;
 }
+
+.lined-paper {
+    width: 250px;
+    height: 400px;
+    background-color: #ffffff;
+    border: 2px solid #000000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.list-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 5px;
+    border-bottom: 1px solid #ccc; /* Optional for better visibility */
+}
+
+.index {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.value {
+    background-color: #e6f7ff;
+}
+
+.highlight-item {
+    background-color: #ffff99; /* Light yellow highlight */
+    border: 2px solid #ffcc00; /* Yellow border */
+}
+
+#pencil-image {
+    position: absolute;
+    top: 0; /* Adjust as needed */
+    left: -10; /* Adjust as needed */
+    width: 140px; /* Adjust size as needed */
+    height: auto;
+    z-index: 10; /* Make sure it's above the paper */
+    margin-right: 30px;
+    margin-left: 80px;
+    margin-top: -30px;
+
+}
+
+.total-box {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 50px;
+    height: 60px;
+    border: 2px solid black;
+    background-color: #e6f7ff;
+    text-align: center;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.total-box-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.total-value {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
+
+
+  
+  
+  
