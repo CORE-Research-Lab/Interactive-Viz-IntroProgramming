@@ -142,7 +142,7 @@ function updateVisual() {
 
     visualDiv.innerHTML = ''; // Clear previous content
     if (currentIteration > 0 && currentIteration <= maxIterations) {
-        const pencil = `<img src="pointer.png" alt="Pencil" id="pencil-image" class="pencil-image" style="top: ${currentIteration * 40}px" />`;
+        const pencil = `<img src="pointer.PNG" alt="Pencil" id="pencil-image" class="pencil-image" style="top: ${currentIteration * 40}px" />`;
         visualDiv.innerHTML = pencil;
     }
 
