@@ -89,7 +89,7 @@ pre {
     border: 1px solid #ddd;
     border-radius: 5px;
     max-width: 300px;
-    max-height: 250px;
+    max-height: 450px;
     
     font-size: 14px;
     line-height: 1.6;
@@ -99,5 +99,5 @@ pre {
     position: relative;
     /* top: 50%;
     left: 50%; */
-    transform: translate(0%, 20%);
+    transform: translate(0%, 10%);
 }
