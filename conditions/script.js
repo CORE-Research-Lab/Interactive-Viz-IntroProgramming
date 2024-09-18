@@ -73,15 +73,17 @@ function updateMemory() {
     document.getElementById(steps[currentStep].line).classList.add('highlight');
 
     if (currentStep >= 0) {
-        drawVariableBox(svg, "weather", 30, 10, "sunny", currentStep === 0);
-        drawValueBox(svg, "\"sunny\"", 280, 10, currentStep === 0);
-        drawMemoryArrow(svg, 130, 25, 280, 25, currentStep === 0);
+        highlighting = currentStep === 0 || currentStep == 2
+        drawVariableBox(svg, "weather", 30, 10, "sunny", highlighting);
+        drawValueBox(svg, "\"sunny\"", 280, 10, highlighting);
+        drawMemoryArrow(svg, 130, 25, 280, 25, highlighting);
     }
 
     if (currentStep >= 1) {
-        drawVariableBox(svg, "time_of_day", 30, 80, "morning", currentStep === 1);
-        drawValueBox(svg, "\"morning\"", 280, 80, currentStep === 1);
-        drawMemoryArrow(svg, 130, 95, 280, 95, currentStep === 1);
+        highlighting = currentStep === 1 || currentStep == 3
+        drawVariableBox(svg, "time_of_day", 30, 80, "morning", highlighting);
+        drawValueBox(svg, "\"afternoon\"", 280, 80, highlighting);
+        drawMemoryArrow(svg, 130, 95, 280, 95, highlighting);
     }
 
     if (currentStep >= 5) {
@@ -167,31 +169,31 @@ function updateVisual() {
     }
 
     // Draw all roads first
-    drawRoad(svg, 200, 50, 200, 120, currentStep == 2, currentStep >= 3);  // Main road
-    drawRoad(svg, 200, 120, 100, 180, currentStep == 3, currentStep >= 4);  // Branch to sunny path
-    drawRoad(svg, 100, 180, 60, 240, false, currentStep >= 4);  // Path to morning result
-    drawRoad(svg, 100, 180, 140, 240, currentStep == 4, currentStep >= 5);  // Path to afternoon result
-    drawRoad(svg, 140, 240, 80, 300, currentStep == 5);  // Path to picnic
-    drawRoad(svg, 140, 240, 200, 300, false, currentStep >= 5);  // Path to sunset
+    drawRoad(svg, 200, 50, 200, 120, currentStep == 2, false,currentStep >= 3);  // Main road
+    drawRoad(svg, 200, 120, 100, 180, (currentStep == 2) || (currentStep == 3), false, currentStep >= 4);  // Branch to sunny path
+    drawRoad(svg, 100, 180, 60, 240, currentStep == 3, currentStep >= 4);  // Path to morning result
+    drawRoad(svg, 100, 180, 140, 240, (currentStep == 4 || currentStep == 3), false, currentStep >= 5);  // Path to afternoon result
+    drawRoad(svg, 140, 240, 80, 300, (currentStep == 5 || currentStep == 4), false, currentStep >= 5);  // Path to picnic
+    drawRoad(svg, 140, 240, 200, 300, currentStep == 4, currentStep >= 5);  // Path to sunset
 
     //drawRoad(svg, 100, 180, 100, 240);  // Path to else/sunset result
 
-    drawRoad(svg, 200, 120, 300, 180, false, currentStep >= 3);  // Branch to rainy path
+    drawRoad(svg, 200, 120, 300, 180, (currentStep == 2) , currentStep >= 3);  // Branch to rainy path
     drawRoad(svg, 300, 180, 280, 240, false, currentStep >= 3);  // Path to rainy result
     drawRoad(svg, 300, 180, 350, 240, false, currentStep >= 3);  // Path to else/default result
 
     // Draw the signposts and decisions
-    drawSignpost(svg, "sunny?", 150, 110, currentStep == 2, currentStep >= 3);  // First decision: weather == "sunny"
-    drawYesNoLabels(svg, 110, 150, 290, 150, currentStep >= 3); // Yes and No signs for weather == sunny
+    drawSignpost(svg, "sunny?", 150, 110, currentStep == 2, false,currentStep >= 3);  // First decision: weather == "sunny"
+    drawYesNoLabels(svg, 110, 150, 290, 150, currentStep == 2, currentStep >= 3); // Yes and No signs for weather == sunny
 
-    drawSignpost(svg, "morning?", 45, 170, currentStep == 3, currentStep >= 4);  // Nested decision: time_of_day == "morning"
-    drawYesNoLabels(svg, 45, 220, 150, 220, currentStep >= 4); // Yes and No signs for time_of_day == morning
+    drawSignpost(svg, "morning?", 45, 170, currentStep == 3, false, currentStep >= 4);  // Nested decision: time_of_day == "morning"
+    drawYesNoLabels(svg, 40, 220, 160, 220, currentStep == 3, currentStep >= 4); // Yes and No signs for time_of_day == morning
 
-    drawSignpost(svg, "afternoon?", 100, 230, currentStep == 4, currentStep >= 5);  // First decision: weather == "sunny"
-    drawYesNoLabels(svg, 75, 280, 200, 280, currentStep >= 5);
+    drawSignpost(svg, "afternoon?", 100, 230, currentStep == 4, false, currentStep >= 5);  // First decision: weather == "sunny"
+    drawYesNoLabels(svg, 60, 285, 220, 285, currentStep == 4, currentStep >= 5);
 
     drawSignpost(svg, "rainy?", 250, 170, false, currentStep >= 3);  // Second decision: weather == "rainy"
-    drawYesNoLabels(svg, 260, 220, 360, 220, currentStep >= 3);  // Yes and No signs for weather == rainy
+    drawYesNoLabels(svg, 250, 220, 370, 220, false, currentStep >= 3);  // Yes and No signs for weather == rainy
 
     // Draw the destination results last
     drawDestination(svg, "images/running.png", 50, 255);  // Morning result
@@ -201,8 +203,8 @@ function updateVisual() {
     drawDestination(svg, "images/picnic.png", 80, 320);  // Afternoon result
     if (currentStep >= 5) {
         drawDestination(svg, "images/picnic-hl.png", 80, 320);  // Afternoon result
-        drawWindow(svg, "activity", 80, 380, true);
-        assignValueToWindow(svg, 80, 380, "\"picnic\"", true);
+        // drawWindow(svg, "activity", 80, 380, true);
+        // assignValueToWindow(svg, 80, 380, "\"picnic\"", true);
     }
     drawDestination(svg, "images/sunrise.png", 200, 320);  // Else result for sunny
     if (currentStep >= 5) {
@@ -216,7 +218,7 @@ function updateVisual() {
     }
 }
 
-function drawRoad(svg, x1, y1, x2, y2, highlight, greyed) {
+function drawRoad(svg, x1, y1, x2, y2, highlight, greyed, passed) {
     const road = document.createElementNS("http://www.w3.org/2000/svg", "line");
     road.setAttribute("x1", x1);
     road.setAttribute("y1", y1);
@@ -231,10 +233,13 @@ function drawRoad(svg, x1, y1, x2, y2, highlight, greyed) {
     if (greyed) {
         road.setAttribute("stroke", "#c2c2c2");
     }
+    if (passed) {
+        road.setAttribute("stroke", "#e8ada0");
+    }
     svg.appendChild(road);
 }
 
-function drawSignpost(svg, label, x, y, highlight, greyed) {
+function drawSignpost(svg, label, x, y, highlight, greyed, passed) {
     const signpost = document.createElementNS("http://www.w3.org/2000/svg", "rect");
     signpost.setAttribute("x", x);
     signpost.setAttribute("y", y);
@@ -248,6 +253,10 @@ function drawSignpost(svg, label, x, y, highlight, greyed) {
     }
     if (greyed) {
         signpost.setAttribute("fill", "#c2c2c2");
+    }
+
+    if (passed) {
+        signpost.setAttribute("fill", "#e8ada0");
     }
     svg.appendChild(signpost);
 
@@ -286,17 +295,23 @@ function drawDestination(svg, imageUrl, x, y) {
 }
 
 
-function drawYesNoLabels(svg, yesX, yesY, noX, noY, greyed) {
+function drawYesNoLabels(svg, yesX, yesY, noX, noY, highlight, greyed, passed) {
     const yesText = document.createElementNS("http://www.w3.org/2000/svg", "text");
     yesText.setAttribute("x", yesX);
     yesText.setAttribute("y", yesY);
     yesText.setAttribute("text-anchor", "middle");
-    yesText.setAttribute("fill", "green");
+    yesText.setAttribute("fill", "black");
     yesText.setAttribute("font-size", "18px");
     yesText.setAttribute("font-weight", "bold");
-    yesText.textContent = "Yes";
+    yesText.textContent = "True";
+    if (highlight) {
+        yesText.setAttribute("fill", "#ff6a00");
+    }
     if (greyed){
         yesText.setAttribute("fill", "#c2c2c2");
+    }
+    if (passed) {
+        yesText.setAttribute("fill", "#e8ada0");
     }
     svg.appendChild(yesText);
 
@@ -304,12 +319,18 @@ function drawYesNoLabels(svg, yesX, yesY, noX, noY, greyed) {
     noText.setAttribute("x", noX);
     noText.setAttribute("y", noY);
     noText.setAttribute("text-anchor", "middle");
-    noText.setAttribute("fill", "red");
+    noText.setAttribute("fill", "black");
     noText.setAttribute("font-size", "18px");
     noText.setAttribute("font-weight", "bold");
-    noText.textContent = "No";
+    noText.textContent = "False";
+    if (highlight) {
+        noText.setAttribute("fill", "#ff6a00");
+    }
     if (greyed){
         noText.setAttribute("fill", "#c2c2c2");
+    }
+    if (passed) {
+        noText.setAttribute("fill", "#e8ada0");
     }
     svg.appendChild(noText);
 
