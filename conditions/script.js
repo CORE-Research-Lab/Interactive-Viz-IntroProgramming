@@ -16,7 +16,7 @@ const stepExplanations = [
     "Step 3: Checking if <span class='variable'>weather == 'sunny'</span>",
     "Step 4: Checking if <span class='variable'>time_of_day == 'morning'</span>",
     "Step 5: Checking if <span class='variable'>time_of_day == 'afternoon'</span>",
-    "Step 5: Assigning <span class='variable'>activity</span> to <span class='variable'>\"picnic\"</span> because <span class='variable'>weather == 'sunny'</span> and <span class='variable'>time_of_day == 'afternoon'</span>",
+    "Step 6: Assigning <span class='variable'>activity</span> to <span class='variable'>\"picnic\"</span> because <span class='variable'>weather == 'sunny'</span> and <span class='variable'>time_of_day == 'afternoon'</span>",
     "All conditions are complete."
 ];
 
@@ -65,6 +65,7 @@ function updateStepExplanation() {
 }
 
 function updateMemory() {
+    document.getElementById('step-info').textContent = `Step ${currentStep + 1}`;
     const svg = document.getElementById('memory');
     while (svg.firstChild) {
         svg.removeChild(svg.firstChild);
