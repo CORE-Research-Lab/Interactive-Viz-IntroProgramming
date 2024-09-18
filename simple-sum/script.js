@@ -4,6 +4,7 @@ let total = 0;
 let lst = [2, 4, 6, 8];
 let previousTotals = [];
 
+// Step explanations
 const stepExplanations = [
     "Step 1: Initialize total to 0 and define the list lst",
     "Step 2: Start loop - add lst[0] to total.",
@@ -13,11 +14,13 @@ const stepExplanations = [
     "Looping complete!"
 ];
 
+// Update step explanation
 function updateStepExplanation() {
     const stepExplanation = document.getElementById('step-explanation');
     stepExplanation.textContent = stepExplanations[currentIteration];
 }
 
+// Increment loop
 function incrementLoop() {
     if (currentIteration < maxIterations) {
         if (currentIteration > 0) {
@@ -34,6 +37,7 @@ function incrementLoop() {
     }
 }
 
+// Decrement loop
 function decrementLoop() {
     if (currentIteration > 0) {
         currentIteration--;
@@ -51,6 +55,9 @@ function decrementLoop() {
     }
 }
 
+
+
+// Reset loop
 function resetLoop() {
     currentIteration = 0;
     total = 0;
@@ -59,14 +66,18 @@ function resetLoop() {
     updateVisual();
     updateCodeHighlight();
     updateStepExplanation();
+    
 }
 
+// Run all iterations
 function runAllIterations() {
     while (currentIteration < maxIterations) {
         incrementLoop();
     }
+    
 }
 
+// Update code highlight
 function updateCodeHighlight() {
     const lines = ["line1", "line2", "line3", "line4"];
     lines.forEach(line => {
@@ -88,6 +99,7 @@ function updateCodeHighlight() {
     }
 }
 
+// Update memory
 function updateMemory() {
     const memoryIValue = document.getElementById('memory-i-value');
     const memoryTotalValue = document.getElementById('memory-total-value');
@@ -101,9 +113,12 @@ function updateMemory() {
             <div class="list-container">
                 ${lst.map((value, index) => `
                     <div class="index-container">
-                        <div class="list-index">[${index}]</div>
+                        <div class="list-index ${index === currentIteration - 1 ? 'highlight-item' : ''}">[${index}]
+                        
+                        
+                        </div>
                         <div class="arrow-down"></div>
-                        <div class="list-value">${value}</div>
+                        <div class="list-value ${index === currentIteration - 1 ? 'highlight-item' : ''}">${value}</div>
                     </div>
                 `).join('')}
             </div>
@@ -111,31 +126,56 @@ function updateMemory() {
     `;
 }
 
+
+// Update visual
 function updateVisual() {
     const visualDiv = document.getElementById('visual');
-    visualDiv.innerHTML = lst.map((value, index) => 
-        `<div class="visual-box ${index === currentIteration - 1 ? 'highlight-box' : ''}">
-            ${value}
-            <span class="index-value">[${index}]</span>
-            ${index === currentIteration - 1 ? '<div class="arrow"></div>' : ''}
+    const paperDiv = document.querySelector('.lined-paper');
+    const listItems = lst.map((value, index) => 
+        `<div class="list-item ${index === currentIteration - 1 ? 'highlight-item' : ''}">
+            <div class="index">${index}.</div>
+            <div class="value">${value}</div>
         </div>`
     ).join("");
 
-    // Add the total basket
-    visualDiv.innerHTML += `
-        <div class="basket-box">
-            <div class="basket">
-                <div class="basket-top"></div>
-                <div class="basket-body">
-                    Total: <span class="basket-value">${total}</span>
-                </div>
-            </div>
-        </div>
-    `;
+    paperDiv.innerHTML = listItems;
+
+    visualDiv.innerHTML = ''; // Clear previous content
+    if (currentIteration > 0 && currentIteration <= maxIterations) {
+        const pencil = `<img src="pointer.PNG" alt="Pencil" id="pencil-image" class="pencil-image" style="top: ${currentIteration * 40}px" />`;
+        visualDiv.innerHTML = pencil;
+    }
+
+    const totalBox = `
+        <div class="total-box">
+            <div class="total-box-title">Total</div>
+            <div class="total-value">${total}</div>
+        </div>`;
+
+    paperDiv.insertAdjacentHTML('beforeend', totalBox);
 
     document.getElementById('iteration-info').textContent = `Iteration i = ${currentIteration < maxIterations ? currentIteration - 1 : maxIterations - 1}`;
+ 
+
 }
 
+// Function to update pencil position
+function updatePencilPosition() {
+    const pencilImage = document.getElementById('pencil-image');
+    const listItems = document.querySelectorAll('.list-item');
+    
+    if (currentIteration > 0 && currentIteration <= listItems.length) {
+        const targetItem = listItems[currentIteration - 1];
+        const paperRect = document.querySelector('.lined-paper').getBoundingClientRect();
+        const itemRect = targetItem.getBoundingClientRect();
+        
+        // Position the pencil to point to the current item
+        pencilImage.style.top = (itemRect.top - paperRect.top + window.scrollY - pencilImage.clientHeight) + 'px';
+        pencilImage.style.left = (itemRect.left - paperRect.left + window.scrollX - pencilImage.clientWidth / 2) + 'px';
+    }
+}
+
+// Show question
 function showQuestion(topic) {
     const interactiveElement = document.getElementById('interactive-element');
     const questionDiv = document.getElementById('question');
@@ -162,6 +202,7 @@ function showQuestion(topic) {
     }
 }
 
+// Show info
 function showInfo(variable) {
     const interactiveElement = document.getElementById('interactive-element');
     const questionDiv = document.getElementById('question');
@@ -176,6 +217,7 @@ function showInfo(variable) {
     }
 }
 
+// Check answer
 function checkAnswer(answer) {
     if (answer === 'B') {
         alert('Correct!');
@@ -184,6 +226,7 @@ function checkAnswer(answer) {
     }
 }
 
+// Hide interactive
 function hideInteractive() {
     const interactiveElement = document.getElementById('interactive-element');
     interactiveElement.classList.add('hidden');
@@ -195,3 +238,4 @@ window.onload = () => {
     updateVisual();
     updateStepExplanation();
 };
+
