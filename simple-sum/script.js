@@ -149,7 +149,7 @@ function updateVisual() {
     const visualDiv = document.getElementById('visual');
     
     // List of images for the boxes
-    const images = ['.\fruit1.png', '.\fruit2.PNG', '.\fruit3.PNG', '.\fruit4.PNG'];
+    const images = ['.\fruit1.png', '.\fruit2.png', '.\fruit3.png', '.\fruit4.png'];
 
     const listItems = lst.map((_, index) => {
         let boxClass = '';
@@ -176,7 +176,7 @@ function updateVisual() {
     const conveyorBelt = `
     <div class="conveyor-belt-wrapper">
         <div class="total-box">
-            <img src=".\scanner.PNG" alt="Price Screen" class="total-box-image">
+            <img src=".\scanner.png" alt="Price Screen" class="total-box-image">
             <div class="total-value"> $ ${total}</div>
         </div>
         <div class="conveyor-belt">
