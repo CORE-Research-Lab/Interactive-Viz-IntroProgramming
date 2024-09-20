@@ -149,7 +149,7 @@ function updateVisual() {
     const visualDiv = document.getElementById('visual');
     
     // List of images for the boxes
-    const images = ['./fruit1.png', './fruit2.png', './pointer.PNG', './fruit4.png'];
+    const images = ['./fruit1.png', './fruit2.png', './fruit3.png', './fruit4.png'];
 
     const listItems = lst.map((_, index) => {
         let boxClass = '';
