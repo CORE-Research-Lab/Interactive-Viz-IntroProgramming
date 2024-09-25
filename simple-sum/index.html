@@ -23,8 +23,8 @@
             <pre id="code">  <!-- Preformatted text block to show code -->
                 <code><span id="line1">total = 0</span> <!-- Line 1: total variable initialization -->
                 <span id="line2">lst = [2, 4, 6, 8]</span> <!-- Line 2: List definition -->
-                <span id="line3">for i in range(len(lst)): <button onclick="showQuestion('range')">?</button></span> <!-- Line 3: Loop starts, ? button shows info about range -->
-                <span id="line4">    total += lst[i] <button onclick="showQuestion('increment')">?</button></span></code> <!-- Line 4: Adding list elements to total, ? button shows info about increment -->
+                <span id="line3">for i in range(len(lst)): </span> <!-- Line 3: Loop starts, ? button shows info about range -->
+                <span id="line4">    total += lst[i]</span></code> <!-- Line 4: Adding list elements to total, ? button shows info about increment -->
             </pre>
         </div>
 
@@ -35,21 +35,21 @@
                 
                 <!-- Displaying the 'total' variable and its current value -->
                 <div class="memory-block" id="memory-total">
-                    <div class="variable-name">total <button onclick="showInfo('total')">i</button></div> <!-- Button to show more info about 'total' -->
+                    <div class="variable-name" id="variable-total">total <button onclick="showInfo('total')">i</button></div> <!-- Button to show more info about 'total' -->
                     <div class="pointer"></div> <!-- Arrow pointer -->
                     <div class="memory-value" id="memory-total-value">0</div> <!-- Current value of 'total' displayed here -->
                 </div>
                 
                 <!-- Displaying the 'i' variable (loop counter) and its current value -->
                 <div class="memory-block" id="memory-i">
-                    <div class="variable-name">i <button onclick="showInfo('i')">i</button></div> <!-- Button to show more info about 'i' -->
+                    <div class="variable-name" id="variable-i">i <button onclick="showInfo('i')">i</button></div> <!-- Button to show more info about 'i' -->
                     <div class="pointer"></div> <!-- Arrow pointer -->
                     <div class="memory-value" id="memory-i-value">0</div> <!-- Current value of 'i' displayed here -->
                 </div>
                 
                 <!-- Displaying the 'lst' variable and its elements -->
                 <div class="memory-block" id="memory-lst">
-                    <div class="variable-name">lst <button onclick="showInfo('lst')">i</button></div> <!-- Button to show more info about 'lst' -->
+                    <div class="variable-name" id="variable-lst">lst <button onclick="showInfo('lst')">i</button></div> <!-- Button to show more info about 'lst' -->
                     <div class="pointer"></div> <!-- Arrow pointer -->
                     <div class="nested-list" id="memory-lst-value">
                         <div class="inner-list">

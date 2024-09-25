@@ -111,6 +111,8 @@ function updateMemory() {
     memoryIValue.textContent = currentIteration < maxIterations ? currentIteration - 1 : maxIterations - 1;
     memoryTotalValue.textContent = total;
 
+
+
     // Update the list with index highlighting logic
     memoryLstValue.innerHTML = `
         <div class="nested-list">
@@ -140,6 +142,35 @@ function updateMemory() {
             </div>
         </div>
     `;
+    console.log(currentIteration);
+    if (currentIteration === 0){
+        document.getElementById('memory-i').classList.remove('hidden');
+        document.getElementById('variable-total').classList.add('variable-name-hl');
+        document.getElementById('variable-total').classList.remove('variable-name');
+        document.getElementById('memory-total-value').classList.add('variable-name-hl');
+        document.getElementById('memory-total-value').classList.remove('memory-value');
+    }
+    else{
+        document.getElementById('memory-total-value').classList.add('memory-value');
+        document.getElementById('memory-total-value').classList.remove('variable-name-hl');
+        document.getElementById('variable-total').classList.add('variable-name');
+        document.getElementById('variable-total').classList.remove('variable-name-hl');
+    }
+
+    if (currentIteration > 0) {
+        memoryIValue.textContent = currentIteration - 1;
+        document.getElementById('memory-i').classList.remove('hidden');
+        document.getElementById('variable-i').classList.add('variable-name-hl');
+        document.getElementById('variable-i').classList.remove('variable-name');
+        document.getElementById('memory-i-value').classList.add('variable-name-hl');
+        document.getElementById('memory-i-value').classList.remove('memory-value');
+        document.getElementById('variable-lst').classList.add('variable-name-hl');
+        document.getElementById('variable-lst').classList.remove('variable-name');
+    } 
+    else {
+        // Hide 'i' during step 0
+        document.getElementById('memory-i').classList.add('hidden');
+    }
 }
 
 

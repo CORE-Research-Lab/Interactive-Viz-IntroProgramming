@@ -75,7 +75,7 @@ h1 {
 
 .code-window span {
     display: inline;
-    padding: 2px 0;
+    padding: 0 0;
 }
 
 .highlight-arrow {
@@ -89,7 +89,21 @@ h1 {
 
 
 .highlight {
-    background-color: rgb(255, 255, 115);
+    background-color: yellow;
+    outline: 2px solid #ff6a00;
+    outline-offset: 1.5px;
+}
+
+pre, code {
+    font-size: 16px; /* Increase font size as needed */
+    line-height: 1.7; /* Optional: Improve readability with increased line height */
+    font-family: 'Courier New', Courier, monospace; /* Ensure it's a monospaced font */
+}
+
+pre {
+    text-align: left; /* Aligns text to the left */
+    margin: 0; /* Removes default margin */
+    padding: 0; /* Removes default padding */
 }
 
 .visual-window {
@@ -115,6 +129,13 @@ h1 {
     border-radius: 5px;
 }
 
+.variable-name-hl {
+    background-color: yellow;
+    outline: 3px solid #ff6a00;
+    padding: 10px;
+    border-radius: 5px;
+}
+
 .pointer {
     width: 30px;
     height: 2px;
@@ -134,8 +155,8 @@ h1 {
 }
 
 .memory-value {
-    background-color: #ffa;
-    border: 1px solid #cc0;
+    background-color: #cdf8bf;
+    border: 1px solid rgb(0, 0, 0);
     border-radius: 5px;
     padding: 10px;
     min-width: 40px;
