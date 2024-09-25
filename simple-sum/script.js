@@ -179,26 +179,32 @@ function updateMemory() {
 function updateVisual() {
     const visualDiv = document.getElementById('visual');
     
-    // List of images for the boxes
+    // List of images for the boxes, without the '-hl' part
     const images = ['./fruit1.png', './fruit2.png', './fruit3.png', './fruit4.png'];
+    const highlightedImages = ['./fruit1-hl.png', './fruit2-hl.png', './fruit3-hl.png', './fruit4-hl.png'];
+
+    // Use scanner-hl.png for all steps except step 0
+    const scannerImage = currentIteration === -1 ? './scanner.png' : './scanner-hl.png';
+    // Set text color based on the scanner image
+    const textColor = currentIteration === -1 ? '#ffffff' : '#ff6a00';  // Default color or orange when scanner is highlighted
 
     const listItems = lst.map((_, index) => {
         let boxClass = '';
         let indexClass = '';
+        let imageSrc = images[index];  // Default to the non-highlighted image
 
         if (index === currentIteration - 1) {
             // Current index is highlighted
-            
             indexClass = 'highlight-item-index';
+            imageSrc = highlightedImages[index];  // Use the highlighted version of the image
         } else if (index < currentIteration - 1) {
             // Indices that have been visited
-           
             indexClass = 'highlight-visited-index';
         }
 
         return `
             <div class="box ${boxClass}">
-                <img src="${images[index]}" alt="Item ${index}" class="box-image">
+                <img src="${imageSrc}" alt="Item ${index}" class="box-image">
                 <div class="list-index ${indexClass}">${index}</div>
             </div>`;
     }).slice(0, 4).join(""); // Only show the first 4 items for the conveyor
@@ -207,8 +213,8 @@ function updateVisual() {
     const conveyorBelt = `
     <div class="conveyor-belt-wrapper">
         <div class="total-box">
-            <img src="scanner.png" alt="Price Screen" class="total-box-image">
-            <div class="total-value"> $ ${total}</div>
+            <img src="${scannerImage}" alt="Price Screen" class="total-box-image">
+            <div class="total-value" style="color: ${textColor};"> $ ${total}</div> <!-- Set the text color dynamically -->
         </div>
         <div class="conveyor-belt">
             ${listItems}
@@ -221,6 +227,9 @@ function updateVisual() {
     // Update iteration info
     document.getElementById('iteration-info').textContent = `Iteration i = ${currentIteration < maxIterations ? currentIteration - 1 : maxIterations - 1}`;
 }
+
+
+
 
 
 

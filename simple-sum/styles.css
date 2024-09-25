@@ -95,15 +95,15 @@ h1 {
 }
 
 pre, code {
-    font-size: 16px; /* Increase font size as needed */
-    line-height: 1.7; /* Optional: Improve readability with increased line height */
+    font-size: 18px; /* Increase font size as needed */
+    line-height: 2; /* Optional: Improve readability with increased line height */
     font-family: 'Courier New', Courier, monospace; /* Ensure it's a monospaced font */
 }
 
 pre {
     text-align: left; /* Aligns text to the left */
     margin: 0; /* Removes default margin */
-    padding: 0; /* Removes default padding */
+    padding: 10px 0; /* Removes default padding */
 }
 
 .visual-window {
@@ -415,9 +415,9 @@ button {
 }
 
 .list-value {
-    background-color: #ffa;
+    background-color: #cdf8bf;
     padding: 5px 10px;
-    border: 1px solid #cc0;
+    border: 1px solid rgb(0, 0, 0);
     border-radius: 5px;
     position: relative;
     margin-top: 5px;
@@ -512,7 +512,7 @@ button {
     font-size: 24px;
     color: #fff;
     font-weight: bold;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Makes text stand out on the image */
+    /* text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Makes text stand out on the image */
     top: 2px;
     right: 30px;
 }
