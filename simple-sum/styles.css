@@ -521,9 +521,9 @@ button {
     display: flex;
     justify-content: space-around;
     /* Align items to the top */
-    background-image: url('belt.PNG'); /* Background image for the conveyor belt */
+    background-image: url('belt.png'); /* Background image for the conveyor belt */
     background-size: cover;
-    height: 250px;
+    height: 150px;
     width: 570px;
     
     
@@ -546,8 +546,8 @@ button {
 }
 
 .box-image {
-    width: 100px;
-    height: 130px;
+    width: 130px;
+    height: 160px;
     /* margin-bottom: 10px; */
    
 }
