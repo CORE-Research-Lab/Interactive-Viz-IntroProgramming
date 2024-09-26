@@ -6,18 +6,19 @@ let previousTotals = [];
 
 // Step explanations
 const stepExplanations = [
-    "Step 1: Initialize total to 0 and define the list lst",
-    "Step 2: Start loop - add lst[0] to total.",
-    "Step 3: Add lst[1] to total.",
-    "Step 4: Add lst[2] to total",
-    "Step 5: Add lst[3] to total",
-    "Looping complete!"
+    'Initialize <span class="variable">total</span> to <span class="variable">0</span>',
+    'Define the list <span class="variable">lst</span>',
+    'Iteration 1: Start loop - add <span class="variable">lst[0]</span> to <span class="variable">total</span>',
+    'Iteration 2: Add <span class="variable">lst[1]</span> to <span class="variable">total</span>',
+    'Iteration 3: Add <span class="variable">lst[2]</span> to <span class="variable">total</span>',
+    'Iteration 4: Add <span class="variable">lst[3]</span> to <span class="variable">total</span>',
+    'Looping complete!'
 ];
 
 // Update step explanation
 function updateStepExplanation() {
     const stepExplanation = document.getElementById('step-explanation');
-    stepExplanation.textContent = stepExplanations[currentIteration];
+    stepExplanation.innerHTML = stepExplanations[currentIteration];
 }
 
 // Increment loop
@@ -89,14 +90,13 @@ function updateCodeHighlight() {
 
     if (currentIteration === 0) {
         document.getElementById("line1").classList.add("highlight");
+    }
+    else if (currentIteration === 1){
         document.getElementById("line2").classList.add("highlight");
     } 
     else if (currentIteration <= maxIterations) {        
         document.getElementById("line4").classList.add("highlight");
-        document.getElementById("line4").insertAdjacentHTML('beforeend', `<span class="iteration-values" style="color: blue; font-size: small;"> i = ${currentIteration - 1}</span>`);
-    
         document.getElementById("line3").classList.add("highlight");
-        document.getElementById("line3").insertAdjacentHTML('beforeend', `<span class="iteration-values" style="color: blue; font-size: small;"> i = ${currentIteration - 1}</span>`);
     
     }
 }
@@ -112,20 +112,20 @@ function updateMemory() {
     memoryTotalValue.textContent = total;
 
 
-
-    // Update the list with index highlighting logic
-    memoryLstValue.innerHTML = `
+    if (currentIteration > 1) {
+            // Update the list with index highlighting logic
+        memoryLstValue.innerHTML = `
         <div class="nested-list">
             <div class="list-container">
                 ${lst.map((value, index) => {
                     let indexClass = '';
                     let valueClass = '';
 
-                    if (index === currentIteration - 1) {
+                    if (index === currentIteration - 2) {
                         // Current iteration index
                         indexClass = 'highlight-item-index';
                         valueClass = 'highlight-item';
-                    } else if (index < currentIteration - 1) {
+                    } else if (index < currentIteration - 2) {
                         // Visited indices
                         indexClass = 'highlight-visited-index';
                         valueClass = 'highlight-visited';
@@ -141,10 +141,34 @@ function updateMemory() {
                 }).join('')}
             </div>
         </div>
+`;
+    }
+
+    else {
+            // Update the list with index highlighting logic
+            memoryLstValue.innerHTML = `
+            <div class="nested-list">
+                <div class="list-container">
+                    ${lst.map((value, index) => {
+                        indexClass = 'highlight-visited-index';
+                        valueClass = 'highlight-visited';
+    
+                        return `
+                            <div class="index-container">
+                                <div class="list-index ${indexClass}">[${index}]</div>
+                                <div class="arrow-down"></div>
+                                <div class="list-value ${valueClass}">${value}</div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
     `;
+    }
+
     console.log(currentIteration);
     if (currentIteration === 0){
-        document.getElementById('memory-i').classList.remove('hidden');
+        document.getElementById('memory-lst').classList.add('hidden')
         document.getElementById('variable-total').classList.add('variable-name-hl');
         document.getElementById('variable-total').classList.remove('variable-name');
         document.getElementById('memory-total-value').classList.add('variable-name-hl');
@@ -157,7 +181,7 @@ function updateMemory() {
         document.getElementById('variable-total').classList.remove('variable-name-hl');
     }
 
-    if (currentIteration > 0) {
+    if (currentIteration > 1) {
         memoryIValue.textContent = currentIteration - 1;
         document.getElementById('memory-i').classList.remove('hidden');
         document.getElementById('variable-i').classList.add('variable-name-hl');
@@ -167,6 +191,11 @@ function updateMemory() {
         document.getElementById('variable-lst').classList.add('variable-name-hl');
         document.getElementById('variable-lst').classList.remove('variable-name');
     } 
+    else if (currentIteration === 1){
+        document.getElementById('memory-lst').classList.remove('hidden')
+        document.getElementById('variable-lst').classList.remove('variable-name');
+        document.getElementById('variable-lst').classList.add('variable-name-hl');
+    }
     else {
         // Hide 'i' during step 0
         document.getElementById('memory-i').classList.add('hidden');
@@ -180,7 +209,7 @@ function updateVisual() {
     const visualDiv = document.getElementById('visual');
     
     // List of images for the boxes, without the '-hl' part
-    const images = ['./fruit1.png', './fruit2.png', './fruit3.png', './fruit4.png'];
+    const images = ['./fruit1-bw.png', './fruit2-bw.png', './fruit3-bw.png', './fruit4-bw.png'];
     const highlightedImages = ['./fruit1-hl.png', './fruit2-hl.png', './fruit3-hl.png', './fruit4-hl.png'];
 
     // Use scanner-hl.png for all steps except step 0
@@ -188,7 +217,8 @@ function updateVisual() {
     // Set text color based on the scanner image
     const textColor = currentIteration === -1 ? '#ffffff' : '#ff6a00';  // Default color or orange when scanner is highlighted
 
-    const listItems = lst.map((_, index) => {
+    // List of items on the conveyor belt
+    const conveyorItems = lst.map((_, index) => {
         let boxClass = '';
         let indexClass = '';
         let imageSrc = images[index];  // Default to the non-highlighted image
@@ -198,8 +228,8 @@ function updateVisual() {
             indexClass = 'highlight-item-index';
             imageSrc = highlightedImages[index];  // Use the highlighted version of the image
         } else if (index < currentIteration - 1) {
-            // Indices that have been visited
-            indexClass = 'highlight-visited-index';
+            // Indices that have been visited disappear
+            return '';  // Skip adding to the conveyor belt
         }
 
         return `
@@ -217,52 +247,15 @@ function updateVisual() {
             <div class="total-value" style="color: ${textColor};"> $ ${total}</div> <!-- Set the text color dynamically -->
         </div>
         <div class="conveyor-belt">
-            ${listItems}
+            ${conveyorItems}
         </div>
     </div>`;
 
     // Clear previous content and insert the new layout
     visualDiv.innerHTML = conveyorBelt;
-
-    // Update iteration info
-    document.getElementById('iteration-info').textContent = `Iteration i = ${currentIteration < maxIterations ? currentIteration - 1 : maxIterations - 1}`;
 }
 
 
-
-
-
-
-// function updateVisual() {
-//     const visualDiv = document.getElementById('visual');
-//     const paperDiv = document.querySelector('.lined-paper');
-//     const listItems = lst.map((value, index) => 
-//         `<div class="list-item ${index === currentIteration - 1 ? 'highlight-item' : ''}">
-//             <div class="index">${index}.</div>
-//             <div class="value">${value}</div>
-//         </div>`
-//     ).join("");
-
-//     paperDiv.innerHTML = listItems;
-
-//     visualDiv.innerHTML = ''; // Clear previous content
-//     if (currentIteration > 0 && currentIteration <= maxIterations) {
-//         const pencil = `<img src="pointer.png" alt="Pencil" id="pencil-image" class="pencil-image" style="top: ${currentIteration * 40}px" />`;
-//         visualDiv.innerHTML = pencil;
-//     }
-
-//     const totalBox = `
-//         <div class="total-box">
-//             <div class="total-box-title">Total</div>
-//             <div class="total-value">${total}</div>
-//         </div>`;
-
-//     paperDiv.insertAdjacentHTML('beforeend', totalBox);
-
-//     document.getElementById('iteration-info').textContent = `Iteration i = ${currentIteration < maxIterations ? currentIteration - 1 : maxIterations - 1}`;
- 
-
-// }
 
 // Function to update pencil position
 function updatePencilPosition() {

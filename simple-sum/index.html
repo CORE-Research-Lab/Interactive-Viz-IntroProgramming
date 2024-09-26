@@ -35,27 +35,25 @@
                 
                 <!-- Displaying the 'total' variable and its current value -->
                 <div class="memory-block" id="memory-total">
-                    <div class="variable-name" id="variable-total">total <button onclick="showInfo('total')">i</button></div> <!-- Button to show more info about 'total' -->
+                    <div class="variable-name" id="variable-total">total</div> <!-- Button to show more info about 'total' -->
                     <div class="pointer"></div> <!-- Arrow pointer -->
                     <div class="memory-value" id="memory-total-value">0</div> <!-- Current value of 'total' displayed here -->
                 </div>
-                
-                <!-- Displaying the 'i' variable (loop counter) and its current value -->
-                <div class="memory-block" id="memory-i">
-                    <div class="variable-name" id="variable-i">i <button onclick="showInfo('i')">i</button></div> <!-- Button to show more info about 'i' -->
-                    <div class="pointer"></div> <!-- Arrow pointer -->
-                    <div class="memory-value" id="memory-i-value">0</div> <!-- Current value of 'i' displayed here -->
-                </div>
-                
                 <!-- Displaying the 'lst' variable and its elements -->
                 <div class="memory-block" id="memory-lst">
-                    <div class="variable-name" id="variable-lst">lst <button onclick="showInfo('lst')">i</button></div> <!-- Button to show more info about 'lst' -->
+                    <div class="variable-name" id="variable-lst">lst </div> <!-- Button to show more info about 'lst' -->
                     <div class="pointer"></div> <!-- Arrow pointer -->
                     <div class="nested-list" id="memory-lst-value">
                         <div class="inner-list">
                                 <div>[2, 4, 6, 8]</div> <!-- List elements displayed here -->
                         </div>
                     </div>
+                </div>
+                <!-- Displaying the 'i' variable (loop counter) and its current value -->
+                <div class="memory-block" id="memory-i">
+                    <div class="variable-name" id="variable-i">i</div> <!-- Button to show more info about 'i' -->
+                    <div class="pointer"></div> <!-- Arrow pointer -->
+                    <div class="memory-value" id="memory-i-value">0</div> <!-- Current value of 'i' displayed here -->
                 </div>
             </div>
         </div>
@@ -80,11 +78,10 @@
 
     <!-- Control section for navigating through the loop iterations -->
     <div class="iteration-control">
-        <button onclick="decrementLoop()">Previous Iteration</button> <!-- Button to go to the previous iteration -->
-        <span id="iteration-info">Iteration i = 0</span> <!-- Displays the current iteration number -->
-        <button onclick="incrementLoop()">Next Iteration</button> <!-- Button to go to the next iteration -->
-        <button onclick="runAllIterations()">Run All Iterations</button> <!-- Button to run all iterations at once -->
-        <button onclick="resetLoop()">Reset</button> <!-- Button to reset the loop to the initial state -->
+        <button class="custom-button" onclick="decrementLoop()">Previous Iteration</button> <!-- Button to go to the previous iteration -->
+        <button class="custom-button" onclick="incrementLoop()">Next Iteration</button> <!-- Button to go to the next iteration -->
+        <button class="custom-button" onclick="runAllIterations()">Run All Iterations</button> <!-- Button to run all iterations at once -->
+        <button class="custom-button" onclick="resetLoop()">Reset</button> <!-- Button to reset the loop to the initial state -->
     </div>
 
     <!-- External JavaScript file to handle logic and interactions -->

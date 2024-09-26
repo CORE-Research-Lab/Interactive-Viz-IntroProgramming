@@ -155,7 +155,7 @@ pre {
 }
 
 .memory-value {
-    background-color: #cdf8bf;
+    background-color: #e8e8e8;
     border: 1px solid rgb(0, 0, 0);
     border-radius: 5px;
     padding: 10px;
@@ -242,16 +242,6 @@ button {
     right: 2px;
     font-size: small;
     color: gray;
-}
-
-.step-explanation {
-    background-color: #e0e0e0;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-    text-align: center;
-    font-size: 16px;
 }
 
 .visual-box {
@@ -361,7 +351,7 @@ button {
 }
 
 .variable-name {
-    background-color: lightblue;
+    background-color: #e8e8e8;
     padding: 5px 10px;
     border-radius: 5px;
     margin-right: 10px;
@@ -415,7 +405,7 @@ button {
 }
 
 .list-value {
-    background-color: #cdf8bf;
+    background-color: #e8e8e8;
     padding: 5px 10px;
     border: 1px solid rgb(0, 0, 0);
     border-radius: 5px;
@@ -568,8 +558,8 @@ button {
 
 /* Highlight visited item index */
 .highlight-visited {
-    background-color: #c8e6c9;
-    border: 1px solid #9ccd8b;
+    background-color: #e8e8e8;
+    border: 1px solid #000000;
     color: #000000; /* Highlight visited items in green */
     
 }
@@ -584,16 +574,93 @@ button {
 
 /* Highlight visited item index */
 .highlight-visited-index {
-    background-color: lightblue;
-    border: 1px solid #000000; /* Yellow border */
+    background-color: #e8e8e8;
+    border: 1px solid #000000;
     color: #000000; /* Highlight visited items in green */
     
 }
 
+.variable {
+    font-family: 'Courier New', Courier, monospace; /* Example font */
+    color:#ff6a00
+}
+
+.step-explanation {
+    background-color: #e4edef;
+    color: #000000;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+button {
+    background-color: #ffffff; /* Green background */
+    border: none; /* Remove borders */
+    color: rgb(0, 0, 0); /* White text */
+    padding: 10px 20px; /* Add some padding */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Get the buttons to align properly */
+    font-size: 16px; /* Increase font size */
+    font-weight: bold;
+    margin: 4px 2px; /* Add some margin */
+    cursor: pointer; /* Pointer/hand icon */
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: 0.3s; /* Smooth transitions */
+    outline: 2px solid rgba(0, 0, 0, 0.2); /* Add outline */
+}
+
+button:hover {
+    background-color: #bdd5d7; /* Darker green on hover */
+}
+
+button:active {
+    background-color: #e4edef; /* Even darker when clicked */
+    box-shadow: 0 2px #666; /* Reduce shadow when clicked */
+    transform: translateY(2px); /* Move button down on click */
+}
 
 
+.conveyor-belt-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
 
+.conveyor-belt {
+    display: flex;
+    gap: 10px;
+}
 
+.basket {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.basket-image {
+    width: 100px; /* Size of the basket */
+}
+
+.basket-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px; /* Smaller gap for better spacing in the basket */
+}
+
+.basket-item {
+    width: 40px; /* Smaller box size for basket items */
+}
+
+.basket-item .box-image {
+    width: 100%; /* Image size matches the basket item size */
+    height: auto;
+}
   
   
   
