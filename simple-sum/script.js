@@ -2,6 +2,7 @@ let currentIteration = 0;
 let maxIterations = 5;
 let total = 0;
 let lst = [2, 4, 6, 8];
+let lst2 = [0, 2, 4, 6, 8];
 let previousTotals = [];
 
 // Step explanations
@@ -27,7 +28,7 @@ function incrementLoop() {
         if (currentIteration >= 0) {
             previousTotals.push(total);  // Save the current state
             if (currentIteration < 4){
-            total += lst[currentIteration];  // Add the current value to total
+            total += lst2[currentIteration];  // Add the current value to total
             }
         }
         currentIteration++;
