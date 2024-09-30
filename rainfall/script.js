@@ -1,20 +1,64 @@
 let currentIteration = 0;
-let maxIterations = 12;
+let maxIterations = 9;
 let total = 0;
 let lst = [
-    [20, 12, -1, 5],
-    [25, 10, 7, 17],
-    [12, 30, 19, 0]
+    [20, 12, 1, 5],
+    [25, 10, 7],
+    [9, 30]
 ];
 let previousTotals = [];
+
+let lst1 = [20, 12, 1, 5];
+let lst2 = [25, 10, 7];
+let lst3 = [9, 30];
+
+let lsta1 = ["Lego &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $20", "Trucks &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $12", "Video Game &nbsp;&nbsp;&nbsp; $1", "Puzzle &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $5"];
+let lsta2 = ["Hot Wheels &nbsp;&nbsp;&nbsp; $25", "Sketch Book &nbsp; $10", "Trade Cards&nbsp;&nbsp;&nbsp; $7"];
+let lsta3 = ["Basket Ball &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $9", "Markers &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$30"];
+
+let visitedIndices = {
+    0: new Set(), // For lst1
+    1: new Set(), // For lst2
+    2: new Set()  // For lst3
+};
+
+
 
 function incrementLoop() {
     if (currentIteration < maxIterations) {
         previousTotals.push(total);  // Save the current state
-        const row = Math.floor(currentIteration / 4);
-        const col = currentIteration % 4;
-        total += lst[row][col];  // Add the current value to total
+        let row = 0;
+        let col = 0;
+        if (0 <= currentIteration && currentIteration <= 3){
+            //First list
+            row = 0;
+            col = currentIteration % 4;
+            total += lst[row][col];
+            
+            
+            
+        }
+        else if (4 <= currentIteration && currentIteration <= 6){
+            //First list
+            row = 1;
+            col = currentIteration - 4;
+            total += lst[row][col];
+            
+            
+        }
+        else if (7 <= currentIteration && currentIteration <= 8){
+            //First list
+            row = 2;
+            col = currentIteration - 7;
+            total += lst[row][col];
+            
+        }
+
+        // Add the current value to total
+        
         currentIteration++;
+        
+        // Call your update functions
         updateCodeHighlight();
         updateMemory();
         updateVisual();
@@ -23,13 +67,39 @@ function incrementLoop() {
     }
 }
 
+
 function decrementLoop() {
     if (currentIteration > 0) {
+        let row = 0;
+        let col = 0;
+        if (0 <= currentIteration -1 && currentIteration - 1 <= 3) {
+            // First list
+            row = 0;
+            col = currentIteration -1;
+            visitedIndices[row].delete(col);
+        } else if (4 <= currentIteration -1 && currentIteration -1 <= 6) {
+            // Second list
+            row = 1;
+            col = currentIteration - 5;
+            visitedIndices[row].delete(col);
+        } else if (7 <= currentIteration -1  && currentIteration -1 <= 8) {
+            // Third list
+            row = 2;
+            col = currentIteration - 8;
+            visitedIndices[row].delete(col);
+        }
+        
+       
+
+        // Remove the last visited index
+        
         currentIteration--;
         total = previousTotals.pop();  // Restore the previous state
         updateCodeHighlight();
         updateMemory();
         updateVisual();
+        
+        
     } else {
         alert("You are at the beginning of the loop.");
     }
@@ -40,6 +110,16 @@ function resetLoop() {
     currentIteration = 0;
     total = 0;
     previousTotals = [];  // Reset the state history
+    visitedIndices = {
+        0: new Set(),
+        1: new Set(),
+        2: new Set()
+    };
+
+
+    
+
+
     updateCodeHighlight();
     updateMemory();
     updateVisual();
@@ -67,13 +147,13 @@ function updateCodeHighlight() {
         const step = currentIteration % 2;
         if (step === 0) {
             document.getElementById("line5").classList.add("highlight");
-            document.getElementById("line5").insertAdjacentHTML('beforeend', `<span class="iteration-values" style="color: blue; font-size: small;"> i = ${Math.floor(currentIteration / 4)}, j = ${(currentIteration - 1) % 4}</span>`);
         } else {
             document.getElementById("line5").classList.add("highlight");
-            document.getElementById("line5").insertAdjacentHTML('beforeend', `<span class="iteration-values" style="color: blue; font-size: small;"> i = ${Math.floor((currentIteration - 1) / 4)}, j = ${(currentIteration - 1) % 4}</span>`);
         }
     }
 }
+
+
 
 function updateMemory() {
     const memoryIValue = document.getElementById('memory-i-value');
@@ -81,43 +161,269 @@ function updateMemory() {
     const memoryJValue = document.getElementById('memory-j-value');
     const memoryLstValue = document.getElementById('memory-lst-value');
 
-    const row = Math.floor(currentIteration / 4);
-    const col = currentIteration % 4;
+    const var1 = document.getElementById('var1');
+    const var2 = document.getElementById('var2');
+    const var3 = document.getElementById('var3');
+    const var4 = document.getElementById('var4');
+
+    
+
+    if (currentIteration !== 0) {
+        memoryTotalValue.style.backgroundColor = 'yellow';
+        memoryTotalValue.style.border = '3px solid #ff6a00';
+        memoryIValue.style.backgroundColor = 'yellow';
+        memoryIValue.style.border = '3px solid #ff6a00';
+        memoryLstValue.style.backgroundColor = 'yellow';
+        memoryLstValue.style.border = '3px solid #ff6a00';
+        memoryJValue.style.backgroundColor = 'yellow';
+        memoryJValue.style.border = '3px solid #ff6a00';
+        var1.style.backgroundColor = 'yellow';
+        var2.style.backgroundColor = 'yellow';
+        var3.style.backgroundColor = 'yellow';
+        var4.style.backgroundColor = 'yellow';
+        var1.style.border = '3px solid #ff6a00';
+        var2.style.border = '3px solid #ff6a00';
+        var3.style.border = '3px solid #ff6a00';
+        var4.style.border = '3px solid #ff6a00';
+        
+         
+    } 
+
+   
+
+    let row = Math.floor((currentIteration - 1) / 4);
+    let col = (currentIteration - 1) % 4;
 
     memoryIValue.textContent = row;
     memoryJValue.textContent = col;
     memoryTotalValue.textContent = total;
+    
+    const flatIndex = currentIteration - 1;
+    if (0 <= flatIndex && flatIndex <= 3) {
+        // First list
+        row = 0;
+        col = currentIteration - 1;
+    } else if (4 <= flatIndex && flatIndex <= 6) {
+        row = 1;
+        col = currentIteration - 5;
+    } else if (7 <= flatIndex && flatIndex <= 8) {
+        row = 2;
+        col = currentIteration - 8;
+    }
+
+    // Update visited indices
+    if (row === 0) {
+        visitedIndices[0].add(col);
+    } else if (row === 1) {
+        visitedIndices[1].add(col);
+    } else if (row === 2) {
+        visitedIndices[2].add(col);
+    }
 
     memoryLstValue.innerHTML = `
+    <div class="nested-lists-container">
         <div class="nested-list">
-            <div class="variable-name">lst</div>
+            <div class="variable-name ${row === 0 ? 'variable-name-highlight' : ''}">lst0</div>
             <div class="arrow-pointer"></div>
             <div class="list-container">
-                ${lst.map((value, index) => `
-                    <div class="index-container">
-                        <div class="list-index">${index}</div>
-                        <div class="arrow-pointer"></div>
-                        <div class="list-value">${value}</div>
-                    </div>
-                `).join('')}
+                ${lst1.map((value, index) => {
+                    let indexClass = '';
+                    let valueClass = '';
+
+                    if (row === 0 && index === col) {
+                        indexClass = 'highlight-item-index';
+                        valueClass = 'highlight-item';
+                    } else if (visitedIndices[0].has(index)) {
+                        indexClass = 'highlight-visited-index';
+                        valueClass = 'highlight-visited';
+                    }
+
+                    return `
+                        <div class="index-container">
+                            <div class="list-index ${indexClass}">${index}</div>
+                            <div class="list-value ${valueClass}">${value}</div>
+                        </div>`;
+                }).join('')}
             </div>
         </div>
+        <div class="nested-list">
+            <div class="variable-name ${row === 1 ? 'variable-name-highlight' : ''}">lst1</div>
+            <div class="arrow-pointer"></div>
+            <div class="list-container">
+                ${lst2.map((value, index) => {
+                    let indexClass = '';
+                    let valueClass = '';
+
+                    if (row === 1 && index === col) {
+                        indexClass = 'highlight-index';
+                        valueClass = 'highlight-item';
+                    } else if (visitedIndices[1].has(index)) {
+                        indexClass = 'highlight-visited-index';
+                        valueClass = 'highlight-visited';
+                    }
+
+                    return `
+                        <div class="index-container">
+                            <div class="list-index ${indexClass}">${index}</div>
+                            <div class="list-value ${valueClass}">${value}</div>
+                        </div>`;
+                }).join('')}
+            </div>
+        </div>
+        <div class="nested-list">
+            <div class="variable-name ${row === 2 ? 'variable-name-highlight' : ''}">lst2</div>
+            <div class="arrow-pointer"></div>
+            <div class="list-container">
+                ${lst3.map((value, index) => {
+                    let indexClass = '';
+                    let valueClass = '';
+
+                    if (row === 2 && index === col) {
+                        indexClass = 'highlight-index';
+                        valueClass = 'highlight-item';
+                    } else if (visitedIndices[2].has(index)) {
+                        indexClass = 'highlight-visited-index';
+                        valueClass = 'highlight-visited';
+                    }
+
+                    return `
+                        <div class="index-container">
+                            <div class="list-index ${indexClass}">${index}</div>
+                            <div class="list-value ${valueClass}">${value}</div>
+                        </div>`;
+                }).join('')}
+            </div>
+        </div>
+    </div>
     `;
 }
 
 
+
+
 function updateVisual() {
     const visualDiv = document.getElementById('visual');
-    visualDiv.innerHTML = lst.flatMap((row, rowIndex) =>
-        row.map((value, colIndex) => 
-            `<div class="visual-box ${(rowIndex === Math.floor(currentIteration / 4) && colIndex === currentIteration % 4) ? 'light-blue' : ''}">
-                ${value}
-                <span class="index-value">[${rowIndex}][${colIndex}]</span>
+    const paperDivs = [
+        document.getElementById('paper1'),
+        document.getElementById('paper2'),
+        document.getElementById('paper3')
+    ];
+
+    
+    const lists = [lsta1, lsta2, lsta3];
+    const titles = ["[0]'s Wishlist", "[1]'s Wishlist", "[2]'s Wishlist"]
+    const maxListLength = Math.max(lst1.length, lst2.length, lst3.length);
+    const totalImage = currentIteration === 0 ? "total-box1" : "total-box2";
+    const totalValue = currentIteration === 0 ? "total-value" : "total-value2";
+
+    
+    
+    
+   
+    let flatIndex = currentIteration - 1; // The global index across all papers
+    let currentListIndex = Math.floor(flatIndex / maxListLength); // Determine which list the current iteration is in
+    let currentIndexInList = flatIndex  % maxListLength; // Determine the index in that list
+    if (0 <= flatIndex && flatIndex <= 3){
+        //First list
+        currentListIndex  = 0;
+        currentIndexInList = currentIteration -1;
+        document.getElementById('paper-image1').src = "Man0.PNG";
+        document.getElementById('paper-image2').src = "Man1b.jpg";
+        document.getElementById('paper-image3').src = "Man2b.jpg";
+        document.getElementById('paper1').style.backgroundImage = "url('c.png')"
+      
+        document.getElementById('paper2').style.backgroundImage = "url('cb.png')"
+        document.getElementById('paper3').style.backgroundImage = "url('cb.png')"
+    }
+    else if (4 <= flatIndex && flatIndex <= 6){
+        currentListIndex  = 1;
+        currentIndexInList = currentIteration - 5;
+        document.getElementById('paper-image1').src = "Man0b.jpg";
+        document.getElementById('paper-image2').src = "Man1.PNG";
+        document.getElementById('paper-image3').src = "Man2b.jpg";
+        document.getElementById('paper1').style.backgroundImage = "url('cb.png')"
+        document.getElementById('paper2').style.backgroundImage = "url('c.png')"
+        document.getElementById('paper3').style.backgroundImage = "url('cb.png')"
+        
+    }
+    else if (7 <= flatIndex && flatIndex <= 8){
+        currentListIndex  = 2;
+        currentIndexInList = currentIteration - 8;
+        document.getElementById('paper-image1').src = "Man0b.jpg";
+        document.getElementById('paper-image2').src = "Man1b.jpg";
+        document.getElementById('paper-image3').src = "Man2.PNG";
+        document.getElementById('paper1').style.backgroundImage = "url('cb.png')"
+        document.getElementById('paper2').style.backgroundImage = "url('cb.png')"
+        document.getElementById('paper3').style.backgroundImage = "url('c.png')"
+        
+        
+    }
+
+    
+
+    // For each paper, display the items
+    lists.forEach((list, paperIndex) => {
+        const listItems = list.map((value, index) =>{
+            
+            let indexClass = '';
+            let valueClass = '';
+            if (paperIndex === currentListIndex && index === currentIndexInList) {
+                        // Current index is highlighted
+                        
+                indexClass = 'highlight-item-index';
+                valueClass = 'highlight-item';
+            }else if (paperIndex === currentListIndex && index < currentIndexInList) {
+                // Previous indices in the current list are highlighted
+                indexClass = 'highlight-visited-index';
+                valueClass = 'highlight-visited';
+            } else if (paperIndex < currentListIndex) {
+                // Indices in previous lists are highlighted
+                indexClass = 'highlight-visited-index';
+                valueClass = 'highlight-visited';
+            }
+
+
+            return `
+            <div class="list-item ">
+                <div class="index ${indexClass}">${index}.</div>
+                <div class="value ${valueClass}">${value}</div>
             </div>`
-        ).join("")
-    ).join("");
-    document.getElementById('iteration-info').textContent = `Iteration i = ${Math.floor(currentIteration / 4)}, j = ${currentIteration % 4}`;
+    }).join("");
+
+        paperDivs[paperIndex].innerHTML = `<h3>${titles[paperIndex]}</h3>${listItems}`;
+    });
+
+    // Clear previous pencil position
+    visualDiv.innerHTML = '';
+
+   
+    const totalBox = `
+    <div class="total-container">
+       
+        <div class="${totalImage}">
+            
+            <div class="${totalValue}">$ ${total}</div>
+        </div>
+         <div class="total-image">
+            <img src="Man3.png" alt="Image" style="width: 180px; height: 250px;">
+        </div>
+    </div>`;
+    
+    visualDiv.insertAdjacentHTML('beforeend', totalBox);
+
+    const topRightImage = `<img src="store.png" alt="Top Right Image" class="banner" />`;
+    visualDiv.insertAdjacentHTML('beforeend', topRightImage); // Add the image to the visual window
+
+
+    document.getElementById('iteration-info').textContent = `Iteration i = ${currentListIndex}, j = ${currentIndexInList}`;
+
+    
+
 }
+
+
+
+
 
 
 function showQuestion(topic) {
