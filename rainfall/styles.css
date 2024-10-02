@@ -115,7 +115,8 @@ h1 {
 }
 
 .variable-name {
-    background-color: #d6d6d6;
+    background-color: #e8e8e8;
+    border: 1px solid #000000;
     padding: 10px;
     border-radius: 5px;
 }
@@ -323,8 +324,10 @@ button {
 
 .total-box1 {
     position: relative;
-    width: 100px;
-    height: 120px;
+    width: 150px;
+    height: 180px;
+    top: 30px;
+ 
    
    
     text-align: center;
@@ -336,8 +339,9 @@ button {
 
 .total-box2 {
     position: relative;
-    width: 100px;
-    height: 120px;
+    width: 150px;
+    height: 180px;
+    top: 30px;
    
    
     text-align: center;
@@ -353,17 +357,17 @@ button {
 }
 
 .total-value {
-    font-size: 23px;
+    font-size: 30px;
     font-weight: bold;
     color:#000000;
-    margin-top: 9px; 
+    margin-top: 17px; 
 }
 
 .total-value2 {
-    font-size: 23px;
+    font-size: 30px;
     font-weight: bold;
     color:#ff6a00;
-    margin-top: 9px; 
+    margin-top: 17px; 
 }
 
 
@@ -432,10 +436,10 @@ button {
 
 .banner {
     position: absolute;
-    top: 60px;
+    top: 10px;
     right: 50px;
     margin: 10px; /* Optional margin to add space from the edges */
-    width: 260px; /* Adjust the width as needed */
+    width: 330px; /* Adjust the width as needed */
     height: auto; /* Keep the aspect ratio of the image */
 }
 

@@ -12,9 +12,9 @@ let lst1 = [20, 12, 1, 5];
 let lst2 = [25, 10, 7];
 let lst3 = [9, 30];
 
-let lsta1 = ["Lego &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $20", "Trucks &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $12", "Video Game &nbsp;&nbsp;&nbsp; $1", "Puzzle &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $5"];
-let lsta2 = ["Hot Wheels &nbsp;&nbsp;&nbsp; $25", "Sketch Book &nbsp; $10", "Trade Cards&nbsp;&nbsp;&nbsp; $7"];
-let lsta3 = ["Basket Ball &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $9", "Markers &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$30"];
+let lsta1 = ["Lego &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $20", "Trucks &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $12", "Video Game &nbsp;&nbsp; $1", "Puzzle &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $5"];
+let lsta2 = ["Hot Wheels &nbsp;&nbsp;&nbsp;$25", "Sketch Book &nbsp;  $10", "Trade Cards&nbsp;&nbsp;&nbsp; $7"];
+let lsta3 = ["Basket Ball &nbsp;&nbsp;&nbsp;&nbsp; $9", "Markers &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$30"];
 
 let visitedIndices = {
     0: new Set(), // For lst1
@@ -115,6 +115,11 @@ function resetLoop() {
         1: new Set(),
         2: new Set()
     };
+    document.getElementById('paper1').style.backgroundImage = "url('cb.png')";
+    document.getElementById('paper2').style.backgroundImage = "url('cb.png')";
+    document.getElementById('paper3').style.backgroundImage = "url('cb.png')";
+
+
 
 
     
@@ -122,6 +127,8 @@ function resetLoop() {
 
     updateCodeHighlight();
     updateMemory();
+    document.getElementById('memory-total-value').style.backgroundColor = '#e8e8e8';
+    document.getElementById('memory-total-value').style.border = '1px solid #000000';
     updateVisual();
 }
 
@@ -161,30 +168,30 @@ function updateMemory() {
     const memoryJValue = document.getElementById('memory-j-value');
     const memoryLstValue = document.getElementById('memory-lst-value');
 
-    const var1 = document.getElementById('var1');
-    const var2 = document.getElementById('var2');
-    const var3 = document.getElementById('var3');
-    const var4 = document.getElementById('var4');
+    // const var1 = document.getElementById('var1');
+    // const var2 = document.getElementById('var2');
+    // const var3 = document.getElementById('var3');
+    // const var4 = document.getElementById('var4');
 
     
 
     if (currentIteration !== 0) {
         memoryTotalValue.style.backgroundColor = 'yellow';
         memoryTotalValue.style.border = '3px solid #ff6a00';
-        memoryIValue.style.backgroundColor = 'yellow';
-        memoryIValue.style.border = '3px solid #ff6a00';
-        memoryLstValue.style.backgroundColor = 'yellow';
-        memoryLstValue.style.border = '3px solid #ff6a00';
-        memoryJValue.style.backgroundColor = 'yellow';
-        memoryJValue.style.border = '3px solid #ff6a00';
-        var1.style.backgroundColor = 'yellow';
-        var2.style.backgroundColor = 'yellow';
-        var3.style.backgroundColor = 'yellow';
-        var4.style.backgroundColor = 'yellow';
-        var1.style.border = '3px solid #ff6a00';
-        var2.style.border = '3px solid #ff6a00';
-        var3.style.border = '3px solid #ff6a00';
-        var4.style.border = '3px solid #ff6a00';
+        // memoryIValue.style.backgroundColor = 'yellow';
+        // memoryIValue.style.border = '3px solid #ff6a00';
+        // memoryLstValue.style.backgroundColor = 'yellow';
+        // memoryLstValue.style.border = '3px solid #ff6a00';
+        // memoryJValue.style.backgroundColor = 'yellow';
+        // memoryJValue.style.border = '3px solid #ff6a00';
+        // var1.style.backgroundColor = 'yellow';
+        // var2.style.backgroundColor = 'yellow';
+        // var3.style.backgroundColor = 'yellow';
+        // var4.style.backgroundColor = 'yellow';
+        // var1.style.border = '3px solid #ff6a00';
+        // var2.style.border = '3px solid #ff6a00';
+        // var3.style.border = '3px solid #ff6a00';
+        // var4.style.border = '3px solid #ff6a00';
         
          
     } 
@@ -330,10 +337,10 @@ function updateVisual() {
         document.getElementById('paper-image1').src = "Man0.PNG";
         document.getElementById('paper-image2').src = "Man1b.jpg";
         document.getElementById('paper-image3').src = "Man2b.jpg";
-        document.getElementById('paper1').style.backgroundImage = "url('c.png')"
+        document.getElementById('paper1').style.backgroundImage = "url('c.png')";
       
-        document.getElementById('paper2').style.backgroundImage = "url('cb.png')"
-        document.getElementById('paper3').style.backgroundImage = "url('cb.png')"
+        document.getElementById('paper2').style.backgroundImage = "url('cb.png')";
+        document.getElementById('paper3').style.backgroundImage = "url('cb.png')";
     }
     else if (4 <= flatIndex && flatIndex <= 6){
         currentListIndex  = 1;
@@ -341,9 +348,9 @@ function updateVisual() {
         document.getElementById('paper-image1').src = "Man0b.jpg";
         document.getElementById('paper-image2').src = "Man1.PNG";
         document.getElementById('paper-image3').src = "Man2b.jpg";
-        document.getElementById('paper1').style.backgroundImage = "url('cb.png')"
-        document.getElementById('paper2').style.backgroundImage = "url('c.png')"
-        document.getElementById('paper3').style.backgroundImage = "url('cb.png')"
+        document.getElementById('paper1').style.backgroundImage = "url('cb.png')";
+        document.getElementById('paper2').style.backgroundImage = "url('c.png')";
+        document.getElementById('paper3').style.backgroundImage = "url('cb.png')";
         
     }
     else if (7 <= flatIndex && flatIndex <= 8){
@@ -352,9 +359,9 @@ function updateVisual() {
         document.getElementById('paper-image1').src = "Man0b.jpg";
         document.getElementById('paper-image2').src = "Man1b.jpg";
         document.getElementById('paper-image3').src = "Man2.PNG";
-        document.getElementById('paper1').style.backgroundImage = "url('cb.png')"
-        document.getElementById('paper2').style.backgroundImage = "url('cb.png')"
-        document.getElementById('paper3').style.backgroundImage = "url('c.png')"
+        document.getElementById('paper1').style.backgroundImage = "url('cb.png')";
+        document.getElementById('paper2').style.backgroundImage = "url('cb.png')";
+        document.getElementById('paper3').style.backgroundImage = "url('c.png')";
         
         
     }
@@ -404,9 +411,7 @@ function updateVisual() {
             
             <div class="${totalValue}">$ ${total}</div>
         </div>
-         <div class="total-image">
-            <img src="Man3.png" alt="Image" style="width: 180px; height: 250px;">
-        </div>
+         
     </div>`;
     
     visualDiv.insertAdjacentHTML('beforeend', totalBox);
