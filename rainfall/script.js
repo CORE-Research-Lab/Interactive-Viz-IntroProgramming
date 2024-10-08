@@ -201,8 +201,7 @@ function updateMemory() {
     let row = Math.floor((currentIteration - 1) / 4);
     let col = (currentIteration - 1) % 4;
 
-    memoryIValue.textContent = row;
-    memoryJValue.textContent = col;
+    
     memoryTotalValue.textContent = total;
     
     const flatIndex = currentIteration - 1;
@@ -217,6 +216,9 @@ function updateMemory() {
         row = 2;
         col = currentIteration - 8;
     }
+
+    memoryIValue.textContent = row;
+    memoryJValue.textContent = col;
 
     // Update visited indices
     if (row === 0) {
