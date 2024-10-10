@@ -1,3 +1,33 @@
+const firebaseConfig = {
+    apiKey: "AIzaSyAn_mT725rpxJdgdZ_HchR6FpAYs1sD6Zo",
+    authDomain: "visual-interactions-csc108.firebaseapp.com",
+    projectId: "visual-interactions-csc108",
+    storageBucket: "visual-interactions-csc108.appspot.com",
+    messagingSenderId: "703068795993",
+    appId: "1:703068795993:web:2c734051b205606affad48",
+    measurementId: "G-QWCWFNX1BR"
+};
+
+
+firebase.initializeApp(firebaseConfig);
+const dbNew = firebase.firestore().collection('simple-sum');  // Using new collection
+
+
+function logInteractionToSimpleSum(eventType, details) {
+    dbNew.add({
+        userId: userId,
+        eventType: eventType,
+        details: details,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+        console.log("Interaction logged successfully!");
+    }).catch((error) => {
+        console.error("Error logging interaction: ", error);
+    });
+}
+
+const userId = 'user-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
+
 let currentIteration = 0;
 let maxIterations = 5;
 let total = 0;
@@ -16,6 +46,7 @@ const stepExplanations = [
     'Looping complete!'
 ];
 
+
 // Update step explanation
 function updateStepExplanation() {
     const stepExplanation = document.getElementById('step-explanation');
@@ -27,8 +58,8 @@ function incrementLoop() {
     if (currentIteration < maxIterations) {
         if (currentIteration >= 0) {
             previousTotals.push(total);  // Save the current state
-            if (currentIteration < 4){
-            total += lst2[currentIteration];  // Add the current value to total
+            if (currentIteration < 4) {
+                total += lst2[currentIteration];  // Add the current value to total
             }
         }
         currentIteration++;
@@ -36,8 +67,12 @@ function incrementLoop() {
         updateVisual();
         updateCodeHighlight();
         updateStepExplanation();
+
+        // Log the interaction
+        logInteractionToSimpleSum('incrementLoop', { currentIteration: currentIteration, total: total });
     } else {
         alert("Loop has completed all iterations.");
+        logInteractionToSimpleSum('alert', { message: "Loop has completed all iterations." });
     }
 }
 
@@ -54,12 +89,14 @@ function decrementLoop() {
         updateVisual();
         updateCodeHighlight();
         updateStepExplanation();
+
+        // Log the interaction
+        logInteractionToSimpleSum('decrementLoop', { currentIteration: currentIteration, total: total });
     } else {
         alert("You are at the beginning of the loop.");
+        logInteractionToSimpleSum('alert', { message: "You are at the beginning of the loop." });
     }
 }
-
-
 
 // Reset loop
 function resetLoop() {
@@ -70,7 +107,9 @@ function resetLoop() {
     updateVisual();
     updateCodeHighlight();
     updateStepExplanation();
-    
+
+    // Log the interaction
+    logInteractionToSimpleSum('resetLoop', { currentIteration: currentIteration, total: total });
 }
 
 // Run all iterations
@@ -78,8 +117,11 @@ function runAllIterations() {
     while (currentIteration < maxIterations) {
         incrementLoop();
     }
-    
+
+    // Log the interaction
+    logInteractionToSimpleSum('runAllIterations', { finalIteration: currentIteration, finalTotal: total });
 }
+
 
 // Update code highlight
 function updateCodeHighlight() {

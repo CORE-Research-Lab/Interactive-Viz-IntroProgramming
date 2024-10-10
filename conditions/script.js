@@ -8,7 +8,6 @@ const firebaseConfig = {
     measurementId: "G-QWCWFNX1BR"
 };
 
-
 firebase.initializeApp(firebaseConfig);
 const dbNew = firebase.firestore().collection('conditions');  // Using new collection
 
