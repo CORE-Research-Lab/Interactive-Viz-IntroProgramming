@@ -1,3 +1,34 @@
+const firebaseConfig = {
+    apiKey: "AIzaSyAn_mT725rpxJdgdZ_HchR6FpAYs1sD6Zo",
+    authDomain: "visual-interactions-csc108.firebaseapp.com",
+    projectId: "visual-interactions-csc108",
+    storageBucket: "visual-interactions-csc108.appspot.com",
+    messagingSenderId: "703068795993",
+    appId: "1:703068795993:web:2c734051b205606affad48",
+    measurementId: "G-QWCWFNX1BR"
+};
+
+firebase.initializeApp(firebaseConfig);
+const dbNew = firebase.firestore().collection('rainfall');  // Using new collection
+
+// Reuse logInteraction to log interactions to the "conditions" collection
+function logInteractionToRainfall(eventType, details) {
+    dbNew.add({
+        userId: userId,
+        eventType: eventType,
+        details: details,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+        console.log("Interaction logged successfully!");
+    }).catch((error) => {
+        console.error("Error logging interaction: ", error);
+    });
+}
+
+const userId = 'user-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
+
+
+
 let currentIteration = 0;
 let maxIterations = 9;
 let total = 0;
@@ -29,83 +60,76 @@ function incrementLoop() {
         previousTotals.push(total);  // Save the current state
         let row = 0;
         let col = 0;
-        if (0 <= currentIteration && currentIteration <= 3){
-            //First list
+        if (0 <= currentIteration && currentIteration <= 3) {
+            // First list
             row = 0;
             col = currentIteration % 4;
             total += lst[row][col];
-            
-            
-            
-        }
-        else if (4 <= currentIteration && currentIteration <= 6){
-            //First list
+        } else if (4 <= currentIteration && currentIteration <= 6) {
+            // Second list
             row = 1;
             col = currentIteration - 4;
             total += lst[row][col];
-            
-            
-        }
-        else if (7 <= currentIteration && currentIteration <= 8){
-            //First list
+        } else if (7 <= currentIteration && currentIteration <= 8) {
+            // Third list
             row = 2;
             col = currentIteration - 7;
             total += lst[row][col];
-            
         }
 
-        // Add the current value to total
-        
         currentIteration++;
-        
+
+        // Log interaction
+        logInteractionToRainfall('incrementLoop', { currentIteration: currentIteration, total: total, row: row, col: col });
+
         // Call your update functions
         updateCodeHighlight();
         updateMemory();
         updateVisual();
     } else {
         alert("Loop has completed all iterations.");
+        logInteractionToRainfall('alert', { message: "Loop has completed all iterations." });
     }
 }
 
-
+// Decrement loop
 function decrementLoop() {
     if (currentIteration > 0) {
         let row = 0;
         let col = 0;
-        if (0 <= currentIteration -1 && currentIteration - 1 <= 3) {
+        if (0 <= currentIteration - 1 && currentIteration - 1 <= 3) {
             // First list
             row = 0;
-            col = currentIteration -1;
+            col = currentIteration - 1;
             visitedIndices[row].delete(col);
-        } else if (4 <= currentIteration -1 && currentIteration -1 <= 6) {
+        } else if (4 <= currentIteration - 1 && currentIteration - 1 <= 6) {
             // Second list
             row = 1;
             col = currentIteration - 5;
             visitedIndices[row].delete(col);
-        } else if (7 <= currentIteration -1  && currentIteration -1 <= 8) {
+        } else if (7 <= currentIteration - 1 && currentIteration - 1 <= 8) {
             // Third list
             row = 2;
             col = currentIteration - 8;
             visitedIndices[row].delete(col);
         }
-        
-       
 
-        // Remove the last visited index
-        
         currentIteration--;
         total = previousTotals.pop();  // Restore the previous state
+
+        // Log interaction
+        logInteractionToRainfall('decrementLoop', { currentIteration: currentIteration, total: total, row: row, col: col });
+
         updateCodeHighlight();
         updateMemory();
         updateVisual();
-        
-        
     } else {
         alert("You are at the beginning of the loop.");
+        logInteractionToRainfall('alert', { message: "You are at the beginning of the loop." });
     }
 }
 
-
+// Reset loop
 function resetLoop() {
     currentIteration = 0;
     total = 0;
@@ -115,15 +139,13 @@ function resetLoop() {
         1: new Set(),
         2: new Set()
     };
+
     document.getElementById('paper1').style.backgroundImage = "url('cb.png')";
     document.getElementById('paper2').style.backgroundImage = "url('cb.png')";
     document.getElementById('paper3').style.backgroundImage = "url('cb.png')";
 
-
-
-
-    
-
+    // Log interaction
+    logInteractionToRainfall('resetLoop', { currentIteration: currentIteration, total: total });
 
     updateCodeHighlight();
     updateMemory();
@@ -132,10 +154,15 @@ function resetLoop() {
     updateVisual();
 }
 
+// Run all iterations
 function runAllIterations() {
     while (currentIteration < maxIterations) {
         incrementLoop();
     }
+
+    // Log interaction
+    logInteractionToRainfall('runAllIterations', { finalIteration: currentIteration, finalTotal: total });
+
     updateCodeHighlight();
     updateMemory();
     updateVisual();
