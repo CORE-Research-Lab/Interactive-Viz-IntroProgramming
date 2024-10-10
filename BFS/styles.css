@@ -1,0 +1,112 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+    flex-direction: column;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.code-window code {
+    font-size: 20px; /* Increase font size */
+}
+
+.iteration-control {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.iteration-control button {
+    margin: 5px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.code-window, .visual-window, .memory-window {
+    flex: 1;
+    margin: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.highlight {
+    background-color: yellow;
+    outline: 3px solid #ff6a00;
+    outline-offset: 3px;
+}
+
+.step-explanation {
+    background-color: #e4edef;
+    color: #000000;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+th, td {
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+svg {
+    border: 1px solid #ccc;
+}
+
+#legend {
+    margin-top: 10px;
+}
+
+.legend-box {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    border: 1px solid #000;
+}
+
+.queue-color {
+    background-color: #f0ad4e;
+}
+
+.visited-color {
+    background-color: #b3e5fc;
+}
+
+.highlight-table {
+    background-color: #ffff00;
+}
+
+.highlight {
+    background-color: yellow;
+    outline: 3px solid #ff6a00;
+    outline-offset: 3px;
+}
