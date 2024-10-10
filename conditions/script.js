@@ -1,4 +1,19 @@
-let currentStep = 0; // Initialize step counter
+const firebaseConfig = {
+    apiKey: "AIzaSyAn_mT725rpxJdgdZ_HchR6FpAYs1sD6Zo",
+    authDomain: "visual-interactions-csc108.firebaseapp.com",
+    projectId: "visual-interactions-csc108",
+    storageBucket: "visual-interactions-csc108.appspot.com",
+    messagingSenderId: "703068795993",
+    appId: "1:703068795993:web:2c734051b205606affad48",
+    measurementId: "G-QWCWFNX1BR"
+};
+
+
+firebase.initializeApp(firebaseConfig);
+const dbNew = firebase.firestore().collection('conditions');  // Using new collection
+
+// Initialize step counter
+let currentStep = 0;
 
 // Define the steps corresponding to each line of the code for condition checking
 const steps = [
@@ -20,14 +35,32 @@ const stepExplanations = [
     "All conditions are complete."
 ];
 
+// Reuse logInteraction to log interactions to the "conditions" collection
+function logInteraction(eventType, details) {
+    dbNew.add({
+        userId: userId,
+        eventType: eventType,
+        details: details,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+        console.log("Interaction logged successfully!");
+    }).catch((error) => {
+        console.error("Error logging interaction: ", error);
+    });
+}
+
+const userId = 'user-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
+
 function incrementStep() {
     if (currentStep < steps.length - 1) {
         currentStep++;
         updateMemory();
         updateVisual();
         updateStepExplanation();
+        logInteraction('incrementStep', { currentStep: currentStep });
     } else {
         alert("All steps have been executed.");
+        logInteraction('alert', { message: "All steps have been executed." });
     }
 }
 
@@ -37,8 +70,10 @@ function decrementStep() {
         updateMemory();
         updateVisual();
         updateStepExplanation();
+        logInteraction('decrementStep', { currentStep: currentStep });
     } else {
         alert("You are at the start.");
+        logInteraction('alert', { message: "You are at the start." });
     }
 }
 
@@ -47,8 +82,8 @@ function resetSteps() {
     updateMemory();
     updateVisual();
     updateStepExplanation();
+    logInteraction('resetSteps', { currentStep: currentStep });
 }
-
 
 function runAllSteps() {
     currentStep = steps.length - 1;
