@@ -1,95 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Basic metadata for character encoding and responsive layout -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Summing 1D List</title>  <!-- Title of the page -->
-    <link rel="stylesheet" href="styles.css">  <!-- Link to the external CSS file -->
+    <title>While Loop Searching</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Main heading of the page -->
     <h1>Using a While Loop</h1>
     
-    <!-- Displays the explanation of the current step in the loop -->
+    <!-- Explanation of each step -->
     <div class="step-explanation" id="step-explanation"></div>
     
-    <!-- Main container for code, memory, and visual sections -->
     <div class="container">
-        
-        <!-- Code window to display the Python-like code being executed -->
+        <!-- Code Window -->
         <div class="code-window">
             <h3>Code</h3>
-            <pre id="code">  <!-- Preformatted text block to show code -->
-<code><span id="line1">condition = True</span> <!-- Line 1: total variable initialization -->
+            <pre id="code">
+<code><span id="line1">searching = true</span> 
 <span id="counter">counter = 0</span>
-<span id="line2">lst = [True, True, False, False]</span> 
-<span id="line3">while condition: </span> 
-<span id="line4">   notFound = lst[counter] </span> 
-<span id="line5">    count++</span></code> 
-
-<span id="line6">print("Outside While Loop")</span></code> 
+<span id="item">wanted_item = 'Wanted Item Name'</span>
+<span id="line2">lst = ['item1', 'item2', 'Wanted Item Name', 'item4']</span> 
+<span id="line3">while searching: </span> 
+<span id="line4">   if (lst[counter] == wanted_item):</span>
+<span id="line5">       searching = false</span>
+<span id="line6">   else: </span>
+<span id="line7">       counter += 1</span> 
+<span id="line8">print("Item was found at index", counter)</span></code>
             </pre>
         </div>
 
-        <!-- Memory window to display variables and their values during execution -->
         <div class="memory-window">
             <h3>Memory</h3>
             <div id="memory">
-                
-                <!-- Displaying the 'total' variable and its current value -->
-                <div class="memory-block" id="memory-total">
-                    <div class="variable-name" id="variable-total">conditon</div> <!-- Button to show more info about 'total' -->
+                <div class="memory-block" id="memory-searching">
+                    <div class="variable-name">searching</div>
                     <div class="pointer"></div> <!-- Arrow pointer -->
-                    <div class="memory-value" id="memory-total-value">true</div> <!-- Current value of 'total' displayed here -->
+                    <div class="memory-value" id="memory-searching-value"></div>
                 </div>
-                <!-- Displaying the 'lst' variable and its elements -->
-                <div class="memory-block" id="memory-lst">
-                    <div class="variable-name" id="variable-lst">lst </div> <!-- Button to show more info about 'lst' -->
+                <div class="memory-block" id="memory-counter">
+                    <div class="variable-name">counter</div>
                     <div class="pointer"></div> <!-- Arrow pointer -->
-                    <div class="nested-list" id="memory-lst-value">
-                        <div class="inner-list">
-                                <div>[2, 4, 6, 8]</div> <!-- List elements displayed here -->
+                    <div class="memory-value" id="memory-counter-value"></div>
+                </div>
+                <div class="memory-block" id="memory-item">
+                    <div class="variable-name">wanted_item</div>
+                    <div class="pointer"></div> <!-- Arrow pointer -->
+                    <div class="memory-value" id="memory-item-value"></div>
+                </div>
+                <div class="memory-block" id="memory-lst">
+                    <div class="variable-name">lst</div>
+                    <div class="pointer"></div> <!-- Arrow pointer -->
+                    <div class="memory-value" id="memory-lst-value">
+                        <div class="nested-list">
+                            <div class="inner-list">
+                                <div class="index-container" id="cont0">
+                                    <div class="variable-name" id="var0">0</div>
+                                    <div class="arrow-down"></div> <!-- Arrow pointer -->
+                                    <div class="list-value" id="val0">item1</div>
+                                </div>
+                                <div class="index-container" id="cont1">
+                                    <div class="variable-name" id="var1">1</div>
+                                    <div class="arrow-down"></div> <!-- Arrow pointer -->
+                                    <div class="list-value" id="val1">item2</div>
+                                </div>
+                                <div class="index-container" id="cont2">
+                                    <div class="variable-name" id="var2">2</div>
+                                    <div class="arrow-down"></div> <!-- Arrow pointer -->
+                                    <div class="list-value" id="val2">Wanted Item Name</div>
+                                </div>
+                                <div class="index-container">
+                                    <div class="variable-name">3</div>
+                                    <div class="arrow-down"></div> <!-- Arrow pointer -->
+                                    <div class="list-value">item4</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!-- Displaying the 'i' variable (loop counter) and its current value -->
-                <div class="memory-block" id="memory-i">
-                    <div class="variable-name" id="variable-i">counter</div> <!-- Button to show more info about 'i' -->
-                    <div class="pointer"></div> <!-- Arrow pointer -->
-                    <div class="memory-value" id="memory-i-value">0</div> <!-- Current value of 'i' displayed here -->
-                </div>
-                
             </div>
         </div>
+        
+        
 
-        <!-- Visual window to show a graphical representation of the list and operations -->
+        
+
+        <!-- Visual Window -->
         <div class="visual-window">
             <h3 class="visual-title">Visual</h3>
-            <div id="visual"></div> <!-- Visual elements will be dynamically generated here -->
-            
-            
+            <div id="visual"></div>
+            <div id="person-table-container"> 
+
+                <div id="person-container">
+                    <img id="person-image" src="person.PNG" alt="Person" />
+                </div>
+
+
+        
+                <div id="table-container">
                 
+                    <div id="hats-container">
+                        <div class="hat-item">
+                            <img id="hat1-image" src="hat.PNG" alt="Hat 1" />
+                            <div class="variable-name" id="hat-var1">Hat 1</div>
+                        </div>
+                        <div class="hat-item">
+                            <img id="hat2-image" src="hat.PNG" alt="Hat 2" />
+                            <div class="variable-name" id="hat-var2">Hat 2</div>
+                        </div>
+                        <div class="hat-item">
+                            <img id="hat3-image" src="hat.PNG" alt="Hat 3" />
+                            <div class="variable-name" id="hat-var3">Hat 3</div>
+                        </div>
+                        <div class="hat-item">
+                            <img id="hat4-image" src="hat-bl.PNG" alt="Hat 4" />
+                            <div class="variable-name">Hat 4</div>
+                        </div>
+                    </div>
+
+                
+                    <img id="table-image" src="table.png" alt="Table" />
+
+                </div>
+
             </div>
+
+        
             
+           
         </div>
     </div>
 
-    <!-- Interactive section for displaying questions or extra information -->
+    <!-- Interactive and Control Elements -->
     <div id="interactive-element" class="hidden">
-        <div id="question"></div> <!-- Questions will appear here -->
-        <button onclick="hideInteractive()">Close</button> <!-- Button to close the interactive section -->
+        <div id="question"></div>
+        <button onclick="hideInteractive()">Close</button>
     </div>
 
-    <!-- Control section for navigating through the loop iterations -->
+    <!-- Loop control buttons -->
     <div class="iteration-control">
-        <button class="custom-button" onclick="decrementLoop()">Previous Iteration</button> <!-- Button to go to the previous iteration -->
-        <button class="custom-button" onclick="incrementLoop()">Next Iteration</button> <!-- Button to go to the next iteration -->
-        <button class="custom-button" onclick="runAllIterations()">Run All Iterations</button> <!-- Button to run all iterations at once -->
-        <button class="custom-button" onclick="resetLoop()">Reset</button> <!-- Button to reset the loop to the initial state -->
+        <button class="custom-button" onclick="decrementLoop()">Previous Iteration</button>
+        <button class="custom-button" onclick="incrementLoop()">Next Iteration</button>
+        <button class="custom-button" onclick="runAllIterations()">Run All Iterations</button>
+        <button class="custom-button" onclick="resetLoop()">Reset</button>
     </div>
 
-    <!-- External JavaScript file to handle logic and interactions -->
     <script src="script.js"></script>
 </body>
 </html>
