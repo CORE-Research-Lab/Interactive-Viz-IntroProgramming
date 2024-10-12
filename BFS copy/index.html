@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive BFS Visualization</title>
+    <title>Interactive BFS Visualization: Superhero Network</title>
     <link rel="stylesheet" href="styles.css">
     <script src="script.js" defer></script>
 </head>
 <body>
-    <div class="step-explanation" id="step-explanation">Initialization: Start BFS with node A in the queue.</div>
+    <div class="step-explanation" id="step-explanation">Initialization: Start BFS with Superhero Headquarters in the queue.</div>
     <div class="container">
         <div class="code-window">
             <h3>Pseudocode</h3>
@@ -29,18 +29,25 @@
         </div>
         <div class="memory-window">
             <h3>Queue & Visited Nodes</h3>
+            <div class="queue-container">
+                <div id="queue-visual" class="queue-visual">
+                    <!-- Dynamic Queue Elements Will Appear Here -->
+                </div>
+            </div>
             <table id="bfs-table">
-                <tr><th>Queue</th><th>Visited</th></tr>
+                <tr><th>Visited Nodes</th></tr>
+                <!-- Visited nodes will be listed here -->
             </table>
         </div>
         <div class="visual-window">
-            <h3>Graph Visualization</h3>
-            <svg id="graph" width="400" height="400"></svg>
+            <h3>Superhero Network</h3>
+            <svg id="graph" width="600" height="600"></svg>
             <div id="legend">
                 <h4>Legend</h4>
                 <ul>
-                    <li><span class="legend-box enqueue-color"></span> Enqueued</li>
-                    <li><span class="legend-box visited-color"></span> Visited</li>
+                    <li><span class="legend-box enqueue-color"></span> Enqueued Nodes</li>
+                    <li><span class="legend-box visited-color"></span> Visited Nodes</li>
+                    <li><span class="legend-box current-node-color"></span> Current Node</li>
                 </ul>
             </div>
         </div>

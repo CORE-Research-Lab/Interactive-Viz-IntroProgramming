@@ -9,7 +9,7 @@ const graph = {
     F: []
 };
 
-// Updated steps to include enqueue and dequeue actions
+// Steps with enqueue and dequeue actions
 const steps = [
     // Step 0: Initial state
     { queue: ['A'], visited: [], codeLine: 2, currentNode: null, actionType: null, actionNode: null },
@@ -41,22 +41,22 @@ const steps = [
     { queue: [], visited: ['A', 'B', 'C', 'D', 'E', 'F'], codeLine: 10, currentNode: null, actionType: null, actionNode: null }
 ];
 
-// Updated step explanations
+// Step explanations with narrative
 const stepExplanations = [
-    "Initialization: Start BFS with node A in the queue.",
-    "Enqueue A to the queue.",
-    "Dequeue A from the queue and visit it.",
-    "Enqueue B to the queue.",
-    "Enqueue C to the queue.",
-    "Dequeue B from the queue and visit it.",
-    "Enqueue D to the queue.",
-    "Enqueue E to the queue.",
-    "Dequeue C from the queue and visit it.",
-    "Enqueue F to the queue.",
-    "Dequeue D from the queue and visit it.",
-    "Dequeue E from the queue and visit it.",
-    "Dequeue F from the queue and visit it.",
-    "BFS is complete."
+    "Initialization: Start BFS with Superhero Headquarters in the queue.",
+    "Enqueue Superhero Headquarters to plan your mission.",
+    "Dequeue Superhero Headquarters and begin your mission.",
+    "From Headquarters, you discover Hero Alpha. Enqueue Hero Alpha.",
+    "From Headquarters, you also find Hero Beta. Enqueue Hero Beta.",
+    "Dequeue Hero Alpha and start coordinating with them.",
+    "From Hero Alpha, you recruit Sidekick Delta. Enqueue Sidekick Delta.",
+    "From Hero Alpha, you also recruit Sidekick Epsilon. Enqueue Sidekick Epsilon.",
+    "Dequeue Hero Beta and start coordinating with them.",
+    "From Hero Beta, you confront Villain Omega. Enqueue Villain Omega.",
+    "Dequeue Sidekick Delta and assist them.",
+    "Dequeue Sidekick Epsilon and assist them.",
+    "Dequeue Villain Omega and neutralize them.",
+    "BFS is complete. All nodes have been visited."
 ];
 
 function incrementStep() {
@@ -90,7 +90,7 @@ function runAllSteps() {
 function updateVisualization() {
     // Update step explanation
     document.getElementById('step-explanation').innerHTML = stepExplanations[currentStep];
-    
+
     // Highlight current pseudocode line
     for (let i = 1; i <= 10; i++) { // Adjusted for new pseudocode lines
         document.getElementById(`line${i}`).classList.remove('highlight');
@@ -99,32 +99,59 @@ function updateVisualization() {
     if (currentCodeLine) {
         document.getElementById(`line${currentCodeLine}`).classList.add('highlight');
     }
-    
-    // Update queue and visited table
+
+    // Update queue visualization
+    updateQueueVisual(steps[currentStep].queue, steps[currentStep].actionType, steps[currentStep].actionNode);
+
+    // Update visited table
     const table = document.getElementById('bfs-table');
-    table.innerHTML = "<tr><th>Queue</th><th>Visited</th></tr>"; // Reset table header
-    for (let i = 0; i <= currentStep; i++) {
-        if (!steps[i].actionType) continue; // Skip steps without actions
-        const action = steps[i].actionType;
-        const node = steps[i].actionNode;
-        let actionColorClass = '';
-        if (action === 'enqueue') {
-            actionColorClass = 'enqueue-action';
-        } else if (action === 'dequeue') {
-            actionColorClass = 'dequeue-action';
-        }
-        const row = `<tr id="table-step-${i}" class="${i === currentStep ? 'highlight-table ' + actionColorClass : ''}">
-                        <td>${steps[i].queue.join(', ')}</td>
-                        <td>${steps[i].visited.join(', ')}</td>
-                    </tr>`;
+    table.innerHTML = "<tr><th>Visited Nodes</th></tr>"; // Reset table header
+    steps[currentStep].visited.forEach(node => {
+        const row = `<tr><td>${node}</td></tr>`;
         table.innerHTML += row;
-    }
-    
+    });
+
     // Update graph visualization
     drawGraph(steps[currentStep].queue, steps[currentStep].visited, steps[currentStep].currentNode, steps[currentStep].actionType, steps[currentStep].actionNode);
-    
+
     // Update step info
     document.getElementById('step-info').innerHTML = `Step ${currentStep}`;
+}
+
+function updateQueueVisual(queue, actionType, actionNode) {
+    const queueVisual = document.getElementById('queue-visual');
+    queueVisual.innerHTML = ''; // Clear existing queue
+
+    queue.forEach((node, index) => {
+        const nodeDiv = document.createElement('div');
+        nodeDiv.classList.add('queue-node');
+        nodeDiv.textContent = node;
+
+        // Highlight enqueue and dequeue actions
+        if (actionType === 'enqueue' && actionNode === node) {
+            nodeDiv.classList.add('enqueue-visual');
+        } else if (actionType === 'dequeue' && actionNode === node) {
+            nodeDiv.classList.add('dequeue-visual');
+        }
+
+        queueVisual.appendChild(nodeDiv);
+
+        // Add arrow between nodes except after the last node
+        if (index < queue.length - 1) {
+            const arrow = document.createElement('div');
+            arrow.classList.add('arrow');
+            arrow.innerHTML = '&rarr;';
+            queueVisual.appendChild(arrow);
+        }
+    });
+
+    // If queue is empty
+    if (queue.length === 0) {
+        const emptyDiv = document.createElement('div');
+        emptyDiv.classList.add('empty-queue');
+        emptyDiv.textContent = 'Empty';
+        queueVisual.appendChild(emptyDiv);
+    }
 }
 
 function drawGraph(queue, visited, currentNode, actionType, actionNode) {
@@ -134,15 +161,15 @@ function drawGraph(queue, visited, currentNode, actionType, actionNode) {
     }
 
     const nodes = {
-        A: { x: 200, y: 50 },
-        B: { x: 100, y: 150 },
-        C: { x: 300, y: 150 },
-        D: { x: 50, y: 250 },
-        E: { x: 150, y: 250 },
-        F: { x: 300, y: 250 }
+        A: { x: 300, y: 100 },
+        B: { x: 150, y: 250 },
+        C: { x: 450, y: 250 },
+        D: { x: 100, y: 400 },
+        E: { x: 200, y: 400 },
+        F: { x: 450, y: 400 }
     };
 
-    // Draw edges
+    // Draw edges (connections)
     drawEdge(svg, nodes.A, nodes.B);
     drawEdge(svg, nodes.A, nodes.C);
     drawEdge(svg, nodes.B, nodes.D);
@@ -150,7 +177,7 @@ function drawGraph(queue, visited, currentNode, actionType, actionNode) {
     drawEdge(svg, nodes.C, nodes.F);
     drawEdge(svg, nodes.E, nodes.F);
 
-    // Draw nodes with highlighting
+    // Draw nodes with highlighting and image placeholders
     Object.keys(nodes).forEach(node => {
         const isInQueue = queue.includes(node);
         const isVisited = visited.includes(node);
@@ -187,11 +214,12 @@ function drawEdge(svg, from, to) {
 function drawNode(svg, position, label, isInQueue, isVisited, isCurrentNode, isEnqueued, isDequeued) {
     const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
     group.setAttribute("id", `node-${label}`);
-    
+
+    // Create circle
     const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
     circle.setAttribute("cx", position.x);
     circle.setAttribute("cy", position.y);
-    circle.setAttribute("r", 20);
+    circle.setAttribute("r", 40); // Increased radius for larger images
     if (isCurrentNode) {
         circle.setAttribute("fill", "#ffff00"); // Yellow for current node
     } else if (isEnqueued) {
@@ -207,15 +235,56 @@ function drawNode(svg, position, label, isInQueue, isVisited, isCurrentNode, isE
     }
     circle.setAttribute("stroke", isCurrentNode ? "#ff6a00" : "black");
     circle.setAttribute("stroke-width", isCurrentNode ? "4" : "2");
-    svg.appendChild(circle);
-    
+    group.appendChild(circle);
+
+    // Determine image based on node label
+    let imagePath = 'images/placeholder.png'; // Default placeholder
+
+    switch(label) {
+        case 'A':
+            imagePath = 'images/headquarters.png';
+            break;
+        case 'B':
+            imagePath = 'images/hero_alpha.png';
+            break;
+        case 'C':
+            imagePath = 'images/hero_beta.png';
+            break;
+        case 'D':
+            imagePath = 'images/sidekick_delta.png';
+            break;
+        case 'E':
+            imagePath = 'images/sidekick_epsilon.png';
+            break;
+        case 'F':
+            imagePath = 'images/villain_omega.png';
+            break;
+        default:
+            imagePath = 'images/placeholder.png';
+    }
+
+    // Create image
+    const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
+    image.setAttributeNS("http://www.w3.org/1999/xlink", "href", imagePath); // Updated image path
+    image.setAttribute("x", position.x - 30); // Adjusted to center the larger image
+    image.setAttribute("y", position.y - 30);
+    image.setAttribute("width", 60); // Increased width
+    image.setAttribute("height", 60); // Increased height
+    image.setAttribute("opacity", "0.8"); // Semi-transparent for better text visibility
+    group.appendChild(image);
+
+    // Create text label
     const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
     text.setAttribute("x", position.x);
-    text.setAttribute("y", position.y + 5);
+    text.setAttribute("y", position.y + 70); // Shifted below the circle
     text.setAttribute("text-anchor", "middle");
     text.setAttribute("fill", "black");
+    text.setAttribute("font-size", "20px");
+    text.setAttribute("font-weight", "bold");
     text.textContent = label;
-    svg.appendChild(text);
+    group.appendChild(text);
+
+    svg.appendChild(group);
 }
 
 window.onload = () => {
