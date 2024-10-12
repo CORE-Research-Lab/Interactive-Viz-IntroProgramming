@@ -65,11 +65,11 @@ h3 {
 }
 
 .enqueue-action {
-    background-color: #ffe0b2; /* Light orange for enqueue actions */
+    background-color: #ffff00; /* Light orange for enqueue actions */
 }
 
 .dequeue-action {
-    background-color: #ffccbc; /* Light red for dequeue actions */
+    background-color: #ffff00; /* Light red for dequeue actions */
 }
 
 .step-explanation {
@@ -127,70 +127,8 @@ svg {
     background-color: #d5ddde; /* Light blue for visited nodes */
 }
 
-.current-node-color {
-    background-color: #ffff00; /* Yellow for current node */
-}
-
-/* Styles for the visual queue */
-.queue-container {
-    margin-bottom: 10px;
-    text-align: center;
-}
-
-.queue-visual {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 40px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-}
-
-.queue-node {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    margin: 0 5px;
-    background-color: #f0ad4e; /* Default color for in-queue nodes */
-    border: 2px solid #000;
-    border-radius: 4px;
-    position: relative;
-    transition: background-color 0.3s, transform 0.3s;
-}
-
-.queue-node.enqueue-visual {
-    background-color: #ffe0b2; /* Light orange for enqueue actions */
-    animation: enqueueAnimation 0.5s forwards;
-}
-
-.queue-node.dequeue-visual {
-    background-color: #ffccbc; /* Light red for dequeue actions */
-    animation: dequeueAnimation 0.5s forwards;
-}
-
-.empty-queue {
-    font-style: italic;
-    color: #777;
-}
-
-.arrow {
-    font-size: 24px;
-    margin: 0 5px;
-    color: #555;
-}
-
-/* Animation for enqueue */
-@keyframes enqueueAnimation {
-    0% { transform: scale(0.5); opacity: 0.5; }
-    100% { transform: scale(1); opacity: 1; }
-}
-
-/* Animation for dequeue */
-@keyframes dequeueAnimation {
-    0% { transform: scale(1); opacity: 1; }
-    100% { transform: scale(0.5); opacity: 0.5; }
+.highlight {
+    background-color: yellow;
+    outline: 3px solid #ff6a00;
+    outline-offset: 3px;
 }

@@ -90,7 +90,7 @@ function runAllSteps() {
 function updateVisualization() {
     // Update step explanation
     document.getElementById('step-explanation').innerHTML = stepExplanations[currentStep];
-
+    
     // Highlight current pseudocode line
     for (let i = 1; i <= 10; i++) { // Adjusted for new pseudocode lines
         document.getElementById(`line${i}`).classList.remove('highlight');
@@ -99,59 +99,32 @@ function updateVisualization() {
     if (currentCodeLine) {
         document.getElementById(`line${currentCodeLine}`).classList.add('highlight');
     }
-
-    // Update queue visualization
-    updateQueueVisual(steps[currentStep].queue, steps[currentStep].actionType, steps[currentStep].actionNode);
-
-    // Update visited table
+    
+    // Update queue and visited table
     const table = document.getElementById('bfs-table');
-    table.innerHTML = "<tr><th>Visited</th></tr>"; // Reset table header
-    steps[currentStep].visited.forEach(node => {
-        const row = `<tr><td>${node}</td></tr>`;
+    table.innerHTML = "<tr><th>Queue</th><th>Visited</th></tr>"; // Reset table header
+    for (let i = 0; i <= currentStep; i++) {
+        if (!steps[i].actionType) continue; // Skip steps without actions
+        const action = steps[i].actionType;
+        const node = steps[i].actionNode;
+        let actionColorClass = '';
+        if (action === 'enqueue') {
+            actionColorClass = 'enqueue-action';
+        } else if (action === 'dequeue') {
+            actionColorClass = 'dequeue-action';
+        }
+        const row = `<tr id="table-step-${i}" class="${i === currentStep ? 'highlight-table ' + actionColorClass : ''}">
+                        <td>${steps[i].queue.join(', ')}</td>
+                        <td>${steps[i].visited.join(', ')}</td>
+                    </tr>`;
         table.innerHTML += row;
-    });
-
+    }
+    
     // Update graph visualization
     drawGraph(steps[currentStep].queue, steps[currentStep].visited, steps[currentStep].currentNode, steps[currentStep].actionType, steps[currentStep].actionNode);
-
+    
     // Update step info
     document.getElementById('step-info').innerHTML = `Step ${currentStep}`;
-}
-
-function updateQueueVisual(queue, actionType, actionNode) {
-    const queueVisual = document.getElementById('queue-visual');
-    queueVisual.innerHTML = ''; // Clear existing queue
-
-    queue.forEach((node, index) => {
-        const nodeDiv = document.createElement('div');
-        nodeDiv.classList.add('queue-node');
-        nodeDiv.textContent = node;
-
-        // Highlight enqueue and dequeue actions
-        if (actionType === 'enqueue' && actionNode === node) {
-            nodeDiv.classList.add('enqueue-visual');
-        } else if (actionType === 'dequeue' && actionNode === node) {
-            nodeDiv.classList.add('dequeue-visual');
-        }
-
-        queueVisual.appendChild(nodeDiv);
-
-        // Add arrow between nodes except after the last node
-        if (index < queue.length - 1) {
-            const arrow = document.createElement('div');
-            arrow.classList.add('arrow');
-            arrow.innerHTML = '&rarr;';
-            queueVisual.appendChild(arrow);
-        }
-    });
-
-    // If queue is empty
-    if (queue.length === 0) {
-        const emptyDiv = document.createElement('div');
-        emptyDiv.classList.add('empty-queue');
-        emptyDiv.textContent = 'Empty';
-        queueVisual.appendChild(emptyDiv);
-    }
 }
 
 function drawGraph(queue, visited, currentNode, actionType, actionNode) {
@@ -214,7 +187,7 @@ function drawEdge(svg, from, to) {
 function drawNode(svg, position, label, isInQueue, isVisited, isCurrentNode, isEnqueued, isDequeued) {
     const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
     group.setAttribute("id", `node-${label}`);
-
+    
     const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
     circle.setAttribute("cx", position.x);
     circle.setAttribute("cy", position.y);
@@ -235,7 +208,7 @@ function drawNode(svg, position, label, isInQueue, isVisited, isCurrentNode, isE
     circle.setAttribute("stroke", isCurrentNode ? "#ff6a00" : "black");
     circle.setAttribute("stroke-width", isCurrentNode ? "4" : "2");
     svg.appendChild(circle);
-
+    
     const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
     text.setAttribute("x", position.x);
     text.setAttribute("y", position.y + 5);
