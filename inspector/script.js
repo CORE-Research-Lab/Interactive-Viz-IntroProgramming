@@ -85,6 +85,20 @@ function resetLoop() {
 
         document.getElementById('cont1').style.backgroundColor = '#e8e8e8';
         document.getElementById('cont1').style.border = '';
+        document.getElementById('hat1-image').style.visibility = 'visible';
+        document.getElementById('hat2-image').style.visibility = 'visible';
+
+        document.getElementById('hat1-image').src = 'hat-bl.PNG';
+        document.getElementById('hat2-image').src = 'hat-bl.PNG';
+        document.getElementById('hat3-image').src = 'hat-bl.PNG';
+
+        document.getElementById('hat-var1').classList.remove('highlight-item');
+        document.getElementById('hat-var1').classList.remove('highlight-visited-index');
+
+        document.getElementById('hat-var2').classList.remove('highlight-item');
+        document.getElementById('hat-var2').classList.remove('highlight-visited-index');
+        document.getElementById('hat-var3').classList.remove('highlight-item');
+        document.getElementById('hat-var3').classList.remove('highlight-visited-index');
 
      
     
