@@ -251,14 +251,16 @@ function updateMemory() {
 function updateVisual() {
     const visualDiv = document.getElementById('visual');
     
+    let vizcurrentIteration = currentIteration - 1;
+    
     // List of images for the boxes, without the '-hl' part
     const images = ['./fruit1-bw.png', './fruit2-bw.png', './fruit3-bw.png', './fruit4-bw.png'];
     const highlightedImages = ['./fruit1-hl.png', './fruit2-hl.png', './fruit3-hl.png', './fruit4-hl.png'];
 
     // Use scanner-hl.png for all steps except step 0
-    const scannerImage = currentIteration === -1 ? './scanner.png' : './scanner-hl.png';
+    const scannerImage = vizcurrentIteration === 0 ? './scanner.png' : './scanner-hl.png';
     // Set text color based on the scanner image
-    const textColor = currentIteration === -1 ? '#ffffff' : '#ff6a00';  // Default color or orange when scanner is highlighted
+    const textColor = vizcurrentIteration === 0 ? '#ffffff' : '#ff6a00';  // Default color or orange when scanner is highlighted
 
     // List of items on the conveyor belt
     const conveyorItems = lst.map((_, index) => {
@@ -266,11 +268,11 @@ function updateVisual() {
         let indexClass = '';
         let imageSrc = images[index];  // Default to the non-highlighted image
 
-        if (index === currentIteration - 1) {
+        if (index === vizcurrentIteration - 1) {
             // Current index is highlighted
             indexClass = 'highlight-item-index';
             imageSrc = highlightedImages[index];  // Use the highlighted version of the image
-        } else if (index < currentIteration - 1) {
+        } else if (index < vizcurrentIteration - 1) {
             // Indices that have been visited disappear
             return '';  // Skip adding to the conveyor belt
         }
