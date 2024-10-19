@@ -214,3 +214,8 @@ svg {
         height: auto;
     }
 }
+
+.variable {
+    font-family: 'Courier New', Courier, monospace; /* Example font */
+    color:#ff6a00
+}

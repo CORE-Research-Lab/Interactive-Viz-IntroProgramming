@@ -43,19 +43,19 @@ const steps = [
 
 // Step explanations with narrative
 const stepExplanations = [
-    "Initialization: Start BFS with Superhero Headquarters in the queue.",
-    "Enqueue Superhero Headquarters to plan your mission.",
-    "Dequeue Superhero Headquarters and begin your mission.",
-    "From Headquarters, you discover Hero Alpha. Enqueue Hero Alpha.",
-    "From Headquarters, you also find Hero Beta. Enqueue Hero Beta.",
-    "Dequeue Hero Alpha and start coordinating with them.",
-    "From Hero Alpha, you recruit Sidekick Delta. Enqueue Sidekick Delta.",
-    "From Hero Alpha, you also recruit Sidekick Epsilon. Enqueue Sidekick Epsilon.",
-    "Dequeue Hero Beta and start coordinating with them.",
-    "From Hero Beta, you confront Villain Omega. Enqueue Villain Omega.",
-    "Dequeue Sidekick Delta and assist them.",
-    "Dequeue Sidekick Epsilon and assist them.",
-    "Dequeue Villain Omega and neutralize them.",
+    "Initialization: Start BFS with <span class='variable'>Superhero Headquarters</span> in the queue.",
+    "Enqueue <span class='variable'>Superhero Headquarters</span> to plan your mission.",
+    "Dequeue <span class='variable'>Superhero Headquarters</span> and begin your mission.",
+    "From Headquarters, you discover <span class='variable'>Hero Alpha</span>. Enqueue <span class='variable'>Hero Alpha</span>.",
+    "From Headquarters, you also find <span class='variable'>Hero Beta</span>. Enqueue <span class='variable'>Hero Beta</span>.",
+    "Dequeue <span class='variable'>Hero Alpha</span> and start coordinating with them.",
+    "From <span class='variable'>Hero Alpha</span>, you recruit <span class='variable'>Sidekick Delta</span>. Enqueue <span class='variable'>Sidekick Delta</span>.",
+    "From <span class='variable'>Hero Alpha</span>, you also recruit <span class='variable'>Sidekick Epsilon</span>. Enqueue <span class='variable'>Sidekick Epsilon</span>.",
+    "Dequeue <span class='variable'>Hero Beta</span> and start coordinating with them.",
+    "From <span class='variable'>Hero Beta</span>, you confront <span class='variable'>Villain Omega</span>. Enqueue <span class='variable'>Villain Omega</span>.",
+    "Dequeue <span class='variable'>Sidekick Delta</span> and assist them.",
+    "Dequeue <span class='variable'>Sidekick Epsilon</span> and assist them.",
+    "Dequeue <span class='variable'>Villain Omega</span> and neutralize them.",
     "BFS is complete. All nodes have been visited."
 ];
 
