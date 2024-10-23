@@ -257,6 +257,12 @@ function createObjectBox(id, title, attributes, x, y, scope) {
         // Title (Class or Function Name)
         const objectTitle = document.createElement("h4");
         objectTitle.textContent = title;
+        objectTitle.style.top = "0";
+        objectTitle.style.right = "0";
+        objectTitle.style.fontSize = "14px";
+        objectTitle.style.backgroundColor = "white"; // Background to ensure readability
+        objectTitle.style.border = "1px solid black"; // To match the border of the box
+        objectTitle.style.position = "absolute";
         objectBox.appendChild(objectTitle);
 
         // ID in the top-left corner
