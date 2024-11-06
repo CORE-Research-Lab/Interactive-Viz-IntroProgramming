@@ -19,12 +19,7 @@ const stepExplanations = [
     'Print output: 90',//5
     'Searching <span class="variable">grades</span> for key <span class="variable">"Eve"</span>',//6
     'Print output: No Grade Found',//7
-    // 'Iteration 2: Current found item does not equal <span class="variable">wanted_item</span>. ',//8
-    // 'Enter else statement.',//9
-    // 'Increment <span class="variable">Counter</span>',//10
-    // 'Iteration 3: Current found item DOES equal <span class="variable">wanted_item</span>. Enter if statement',//11
-    // '<span class="variable">Searching</span> is now set to <span class="variable">False</span>',//12
-    // '<span class="variable">Searching</span> makes while loop condition negative, exit while loop',//13
+    
 ];
 
 // Increment loop iteration
@@ -269,6 +264,9 @@ function updateMemory() {
 
         document.getElementById('val0').style.backgroundColor = 'yellow';
         document.getElementById('val0').style.border = '3px solid #ff6a00';
+
+         memoryLstValue.style.backgroundColor = '#e8e8e8';
+        memoryLstValue.style.border = '1px solid #000000';
         
 
         
@@ -280,15 +278,13 @@ function updateMemory() {
     else if (currentIteration === 6) { // nothing
         document.getElementById('val0').style.backgroundColor = '#e8e8e8';
         document.getElementById('val0').style.border = '1px solid #000000';
+         memoryLstValue.style.backgroundColor = 'yellow';
+        memoryLstValue.style.border = '3px solid #ff6a00';
         
       
     
     }
-    else if (currentIteration === 7) { 
-       
-      
     
-    }
     
     
      
@@ -352,7 +348,7 @@ function updateVisual() {
         bob.style.backgroundColor = 'yellow';
         bob.style.border = '3px solid #ff6a00';
 
-        student.style.backgroundImage = "url('bubbleB-hl.png')";
+        student.style.backgroundImage = "url('bubbleB.png')";
         reply.style.backgroundImage = "url('bubble-hl.png')";
 
         //Bob: What is my grade
@@ -368,8 +364,8 @@ function updateVisual() {
     }
     else if (currentStep === 2){
 
-        student.innerText =  '\nDavid \nHanded in their \ntest';
-        reply.innerText = '\nAdd David';
+        student.innerText =  '\nDavid: \n I just handed in my\ntest';
+        reply.innerText = '\nOkay, adding David and their grade.';
 
         bob.style.backgroundColor = '';
         bob.style.border = '';
@@ -383,8 +379,7 @@ function updateVisual() {
         document.getElementById('david-name').innerText = 'David:\t';
         david.innerText = ' 88';
 
-        //David Handed in their test
-        //Highlight line in grade book, add david
+        
        
     }
     else if (currentStep === 3){
@@ -393,8 +388,7 @@ function updateVisual() {
         student.innerText =  '\nDavid:\nWhat is my\ngrade?';
         reply.innerText = '\n88';
         
-        //David: What is my grade
-        //Reply: 88
+       
         david.style.backgroundColor = 'yellow';
         david.style.border = '3px solid #ff6a00';
 
@@ -411,16 +405,14 @@ function updateVisual() {
         david.style.border = '';
 
         student.innerText =  '\nAlice: I \nneed a regrade.\n Should be 90';
-        reply.innerText = '\nUpdate';
+        reply.innerText = '\nOkay, updating Alice's grade';
         alice.style.backgroundColor = '';
         alice.style.border = '';
 
         document.getElementById('paper-line1').style.backgroundColor = 'yellow';
         document.getElementById('paper-line1').style.border = '3px solid #ff6a00';
         alice.innerText = ' 90';
-        //Alice: I need a regrade, it should be 90
-        //Reply: Okay
-        //Highlight grade book line
+      
        
     }
     
@@ -446,12 +438,11 @@ function updateVisual() {
         alice.style.backgroundColor = '';
         alice.style.border = '';
 
-        student.innerText =  '\nEve: I \nneed a regrade.\n Should be 90';
-        reply.innerText = '';
+        student.innerText =  '\nEve:\nWhat is my\ngrade?';
+        reply.innerText = 'Searching for Eve.';
         reply.style.backgroundImage = "url('bubble.png')";
 
-        //Eve: What is my grade
-        //highlight around grade book
+        
         gb.style.backgroundColor = 'yellow';
         gb.style.border = '3px solid #ff6a00';
 
@@ -462,7 +453,7 @@ function updateVisual() {
         //Reply: No grade found. 
         gb.style.backgroundColor = '';
         gb.style.border = '';
-        reply.innerText = '\nNo Grade Found';
+        reply.innerText = '\nNo student found. So no grade exists.';
 
         reply.style.backgroundImage = "url('bubble-hl.png')";
        
