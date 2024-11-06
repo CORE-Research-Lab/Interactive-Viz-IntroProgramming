@@ -64,6 +64,12 @@ function resetLoop() {
     currentIteration = 0;
     currentStep = 0;
     counter = 0;
+    const student = document.getElementById('box-top-left');
+    const reply = document.getElementById('box-bottom-right');
+    const alice = document.getElementById('alice-val');
+    const bob = document.getElementById('bob-val');
+    
+    const david = document.getElementById('david-val');
 
     document.getElementById('val1').style.backgroundColor = '#e8e8e8';
     document.getElementById('val1').style.border = '#e8e8e8';
@@ -75,6 +81,29 @@ function resetLoop() {
     alice.style.backgroundColor = '';
         alice.style.border = '';
         alice.innerText = '85';
+
+    student.innerText = '';
+        reply.innerText = '';
+    bob.style.backgroundColor = '';
+        bob.style.border = '';
+
+        alice.style.backgroundColor = '';
+        alice.style.border = '';
+
+        david.style.backgroundColor = '';
+        david.style.border = '';
+
+        student.style.backgroundImage = "url('bubbleB.png')";
+        reply.style.backgroundImage = "url('bubble.png')";
+
+        document.getElementById('paper-line1').style.backgroundColor = '';
+        document.getElementById('paper-line1').style.border = '';
+
+        document.getElementById('paper-line2').style.backgroundColor = '';
+        document.getElementById('paper-line2').style.border = '';
+
+        document.getElementById('paper-line4').style.backgroundColor = '';
+        document.getElementById('paper-line4').style.border = '';
     
        
 
