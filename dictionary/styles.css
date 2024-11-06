@@ -500,7 +500,7 @@ button:active {
     position: absolute;
     width: 140px; /* Size of the box */
     height: 95px;
-    border: 2px solid white;
+    
 }
 
 .top-left-box {
