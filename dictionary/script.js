@@ -69,6 +69,13 @@ function resetLoop() {
     document.getElementById('val1').style.border = '#e8e8e8';
 
     document.getElementById('cont3').style.visibility = 'hidden';
+    document.getElementById('david-name').innerText = '';
+    david.innerText = '';
+
+    alice.style.backgroundColor = '';
+        alice.style.border = '';
+        alice.innerText = '85';
+    
        
 
      
