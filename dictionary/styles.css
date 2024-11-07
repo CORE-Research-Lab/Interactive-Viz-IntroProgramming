@@ -495,49 +495,33 @@ button:active {
     height: auto;
 }
 
+/* Boxes overlayed on the laptop */
 .laptop-overlay {
     position: absolute;
     width: 140px; /* Size of the box */
     height: 95px;
-    font-size: 12px;
-    word-wrap: break-word;
-    hyphens: auto; /* Optional: Use hyphens to break words */
-    background-size: contain; /* Ensure the background scales with the container */
-    background-repeat: no-repeat; /* Prevent repeating of background */
+    
 }
 
-/* Adjust the top-left box */
 .top-left-box {
-    top: 50px;
+    top: 59px;
     left: 29px;
-    background-image: url('bubbleB.png'); /* Background image for the speech bubble */
-    background-size: 95% 90%; /* Scale to fit the container */
-    font-size: 14px; /* Adjust font size as needed */
+    background-image: url('bubbleB.png'); /* Background image for the conveyor belt */
+    background-size: cover;
+    font-size: 14px;         /* Adjust font size as needed */
     text-align: center;
     font-weight: bold;
 }
 
-/* Adjust the bottom-right box */
 .bottom-right-box {
     bottom: 110px;
     right: 25px;
-    background-image: url('bubble.png'); /* Background image for the speech bubble */
-    background-size: 100% 90%; /* Scale to fit the container */
-    font-size: 14px; /* Adjust font size as needed */
+    background-image: url('bubble.png'); /* Background image for the conveyor belt */
+    background-size: cover;
+    font-size: 14px;         /* Adjust font size as needed */
     text-align: center;
     font-weight: bold;
-    word-wrap: break-word;
-    hyphens: auto; /* Optional: Use hyphens to break words */
 }
-
-/* @media (max-width: 600px) {
-    .laptop-overlay {
-        width: 140px;
-        min-height: 80px;
-        font-size: 12px;
-        padding: 8px;
-    }
-} */
 
 .paper-with-image {
     flex: 1;
@@ -573,7 +557,7 @@ button:active {
 
 .laptop-title {
     position: absolute;
-    top: 20px; /* Adjust to move title vertically */
+    top: 30px; /* Adjust to move title vertically */
     left: 10%;
     padding: 5px 10px;
     font-size: 18px;

@@ -73,17 +73,14 @@ function resetLoop() {
     document.getElementById('david-name').innerText = '';
     david.innerText = '';
 
-    alice.style.backgroundColor = '';
+        alice.style.backgroundColor = '';
         alice.style.border = '';
         alice.innerText = '85';
 
-    student.innerText = '';
+        student.innerText = '';
         reply.innerText = '';
-    bob.style.backgroundColor = '';
+        bob.style.backgroundColor = '';
         bob.style.border = '';
-
-        alice.style.backgroundColor = '';
-        alice.style.border = '';
 
         david.style.backgroundColor = '';
         david.style.border = '';
@@ -280,9 +277,23 @@ function updateMemory() {
         document.getElementById('val0').style.border = '1px solid #000000';
          memoryLstValue.style.backgroundColor = 'yellow';
         memoryLstValue.style.border = '3px solid #ff6a00';
+
+        document.getElementById('cont0').style.backgroundColor = '';
+        document.getElementById('cont0').style.border = '';
+
+        document.getElementById('cont1').style.backgroundColor = '';
+        document.getElementById('cont1').style.border = '';
+
+        document.getElementById('cont2').style.backgroundColor = '';
+        document.getElementById('cont2').style.border = '';
         
       
     
+    }
+    else if(currentIteration === 7){
+        memoryLstValue.style.backgroundColor = '#e8e8e8';
+        memoryLstValue.style.border = '1px solid #000000';
+
     }
     
     
@@ -320,6 +331,7 @@ function updateVisual() {
 
         alice.style.backgroundColor = '';
         alice.style.border = '';
+        alice.innerText = '85';
 
         david.style.backgroundColor = '';
         david.style.border = '';
@@ -342,8 +354,8 @@ function updateVisual() {
         gb.style.backgroundColor = '';
         gb.style.border = '';
 
-        student.innerText =  '\n Bob:\nWhat is my\ngrade?';
-        reply.innerText = '\n 92';
+        student.innerText =  '\nBob:\nWhat is my\ngrade?';
+        reply.innerText = '\n92';
 
         bob.style.backgroundColor = 'yellow';
         bob.style.border = '3px solid #ff6a00';
@@ -364,8 +376,8 @@ function updateVisual() {
     }
     else if (currentStep === 2){
 
-        student.innerText =  '\n David: \n I just handed in \n mytest';
-        reply.innerText = '\n Okay \n  adding David and their grade.';
+        student.innerText =  '\nDavid: I just \nhanded in my\ntest';
+        reply.innerText = '\nOkay, adding\n David and their \ngrade.';
 
         bob.style.backgroundColor = '';
         bob.style.border = '';
@@ -404,8 +416,8 @@ function updateVisual() {
         david.style.backgroundColor = '';
         david.style.border = '';
 
-        student.innerText =  '\n Alice: I \nneed a regrade.\n Should be 90';
-        reply.innerText = '\n Okay, updating Alice\'s grade';
+        student.innerText =  '\nAlice: I \nneed a regrade.\n Should be 90';
+        reply.innerText = '\nOkay, updating\n Alice grade';
         alice.style.backgroundColor = '';
         alice.style.border = '';
 
@@ -421,7 +433,7 @@ function updateVisual() {
         document.getElementById('paper-line1').style.backgroundColor = '';
         document.getElementById('paper-line1').style.border = '';
 
-        student.innerText =  '\n Alice:\nWhat is my\ngrade?';
+        student.innerText =  '\nAlice:\nWhat is my\ngrade?';
         reply.innerText = '\n90';
         alice.style.backgroundColor = 'yellow';
         alice.style.border = '3px solid #ff6a00';
@@ -438,13 +450,14 @@ function updateVisual() {
         alice.style.backgroundColor = '';
         alice.style.border = '';
 
-        student.innerText =  '\n Eve:\nWhat is my\ngrade?';
-        reply.innerText = '\n Searching for Eve.';
+        student.innerText =  '\nEve:\nWhat is my\ngrade?';
+        reply.innerText = '\nSearching for\n Eve.';
         reply.style.backgroundImage = "url('bubble.png')";
 
         
         gb.style.backgroundColor = 'yellow';
         gb.style.border = '3px solid #ff6a00';
+        david.style.backgroundColor = '';
 
 
         
@@ -453,7 +466,9 @@ function updateVisual() {
         //Reply: No grade found. 
         gb.style.backgroundColor = '';
         gb.style.border = '';
-        reply.innerText = '\nNo student found. So no grade exists.';
+        reply.innerText = '\nNo student \nfound. So no\n grade exists.';
+        david.style.backgroundColor = '';
+        alice.style.backgroundColor = '';
 
         reply.style.backgroundImage = "url('bubble-hl.png')";
        
