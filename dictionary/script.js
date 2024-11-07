@@ -342,8 +342,8 @@ function updateVisual() {
         gb.style.backgroundColor = '';
         gb.style.border = '';
 
-        student.innerText =  '\nBob:\nWhat is my\ngrade?';
-        reply.innerText = '\n92';
+        student.innerText =  '\n Bob:\nWhat is my\ngrade?';
+        reply.innerText = '\n 92';
 
         bob.style.backgroundColor = 'yellow';
         bob.style.border = '3px solid #ff6a00';
@@ -364,8 +364,8 @@ function updateVisual() {
     }
     else if (currentStep === 2){
 
-        student.innerText =  '\nDavid: \n I just handed in my\ntest';
-        reply.innerText = '\nOkay, adding David and their grade.';
+        student.innerText =  '\n David: \n I just handed in \n mytest';
+        reply.innerText = '\n Okay \n  adding David and their grade.';
 
         bob.style.backgroundColor = '';
         bob.style.border = '';
@@ -404,8 +404,8 @@ function updateVisual() {
         david.style.backgroundColor = '';
         david.style.border = '';
 
-        student.innerText =  '\nAlice: I \nneed a regrade.\n Should be 90';
-        reply.innerText = '\nOkay, updating Alice's grade';
+        student.innerText =  '\n Alice: I \nneed a regrade.\n Should be 90';
+        reply.innerText = '\n Okay, updating Alice\'s grade';
         alice.style.backgroundColor = '';
         alice.style.border = '';
 
@@ -421,7 +421,7 @@ function updateVisual() {
         document.getElementById('paper-line1').style.backgroundColor = '';
         document.getElementById('paper-line1').style.border = '';
 
-        student.innerText =  '\nAlice:\nWhat is my\ngrade?';
+        student.innerText =  '\n Alice:\nWhat is my\ngrade?';
         reply.innerText = '\n90';
         alice.style.backgroundColor = 'yellow';
         alice.style.border = '3px solid #ff6a00';
@@ -438,8 +438,8 @@ function updateVisual() {
         alice.style.backgroundColor = '';
         alice.style.border = '';
 
-        student.innerText =  '\nEve:\nWhat is my\ngrade?';
-        reply.innerText = 'Searching for Eve.';
+        student.innerText =  '\n Eve:\nWhat is my\ngrade?';
+        reply.innerText = '\n Searching for Eve.';
         reply.style.backgroundImage = "url('bubble.png')";
 
         
