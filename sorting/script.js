@@ -30,7 +30,7 @@ const stepExplanations = [
     'Re-enter outer loop: <span class="variable">i</span> = 1',//12
     'Enter inner loop: <span class="variable">j</span> = 0', //13
     'Compare lst[j] (2) > lst[j+1] (3) ',//14
-    'Since 2 !> 3, do not swap them. <span class="variable">lst</span> is still  [2, 4, 3, 1]',//15
+    'Since 2 !> 3, do not swap them. <span class="variable">lst</span> is still  [2, 3, 1, 4]',//15
     'Re-enter inner loop: <span class="variable">j</span> = 1', //16
     'Compare lst[j] (3) > lst[j+1] (1) ',//17
     'Since 3 > 1, swap them. Now <span class="variable">lst</span> is [2, 1, 3, 4] ',//18
@@ -39,7 +39,9 @@ const stepExplanations = [
     'Compare lst[j] (2) > lst[j+1] (1) ',//21
     'Since 2 > 1, swap them. Now <span class="variable">lst</span> is [1, 2, 3, 4]',//22
     'From now on all lst[j] !> lst[j + 1] because list is sorted', //23
-    'Now lst is sorted: [1, 2, 3, 4]' //24
+    'Re-enter outer loop: <span class="variable">i</span> = 3',//24
+    'Now <span class="variable">n</span> - <span class="variable">i</span> - 1 = 0. Does not enter inner loop.', //25
+    'Exit Outer Loop. Now lst is sorted: [1, 2, 3, 4]' //26
     
    
 ];
@@ -82,6 +84,35 @@ function resetLoop() {
     currentStep = 0;
     counter = 0;
 
+    const blocks = ["block1","block2", "block3", "block4" ];
+    document.getElementById("block1").src = "block4.png";
+    document.getElementById("block2").src = "block2.png";
+    document.getElementById("block3").src = "block3.png";
+    document.getElementById("block4").src = "block1.png";
+
+    blocks.forEach(con => {
+        document.getElementById(con).style.backgroundColor = '#e8e8e8';
+        document.getElementById(con).style.border = '';
+       
+    });
+    
+   
+    const vars = ["block-var1","block-var2", "block-var3", "block-var4" ];
+    
+    // Clear all highlights
+    vars.forEach(con => {
+        document.getElementById(con).style.backgroundColor = '#e8e8e8';
+        document.getElementById(con).style.border = '1px solid #000000';
+    });
+
+    const pointers = ["pointer1","pointer2", "pointer3", "pointer4" ];
+    
+    // Clear all highlights
+    pointers.forEach(con => {
+        document.getElementById(con).style.visibility = 'hidden';
+       
+    });
+
 
      
     
@@ -119,7 +150,7 @@ function updateCodeHighlight() {
 
         document.getElementById("line2").classList.add("highlight");
 
-    } else if (currentIteration === 2 || currentIteration === 12 || currentIteration === 19 ) { // highlight outer loop
+    } else if (currentIteration === 2 || currentIteration === 12 || currentIteration === 19 || currentIteration === 24 || currentIteration === 25) { // highlight outer loop
 
         document.getElementById("line3").classList.add("highlight");
 
@@ -136,7 +167,7 @@ function updateCodeHighlight() {
         document.getElementById("line6").classList.add("highlight"); 
 
     } 
-    else if (currentIteration === 24) { //highlight end of program
+    else if (currentIteration === 26) { //highlight end of program
         document.getElementById("line7").classList.add("highlight"); 
 
 
@@ -445,45 +476,269 @@ function updateMemory() {
 // Update visual representation
 function updateVisual() {
     
+    const blocks = ["block1","block2", "block3", "block4" ];
 
+    blocks.forEach(con => {
+        document.getElementById(con).style.backgroundColor = '';
+        document.getElementById(con).style.border = '';
+       
+    });
+    
+   
+    const vars = ["block-var1","block-var2", "block-var3", "block-var4" ];
+    
+    // Clear all highlights
+    vars.forEach(con => {
+        document.getElementById(con).style.backgroundColor = '#e8e8e8';
+        document.getElementById(con).style.border = '1px solid #000000';
+    });
+
+    const pointers = ["pointer1","pointer2", "pointer3", "pointer4" ];
+    
+    // Clear all highlights
+    pointers.forEach(con => {
+        document.getElementById(con).style.visibility = 'hidden';
+       
+    });
     if (currentStep === 0){
+        document.getElementById("block1").src = "block4.png";
+        document.getElementById("block2").src = "block2.png";
+        document.getElementById("block3").src = "block3.png";
+        document.getElementById("block4").src = "block1.png";
+
+        
+    }
+
+    else if (currentStep === 4){
       
         
         
+        document.getElementById("block1").style.backgroundColor = 'yellow';
+        document.getElementById("block1").style.border = '3px solid #ff6a00';
+
+        document.getElementById("block2").style.backgroundColor = 'yellow';
+        document.getElementById("block2").style.border = '3px solid #ff6a00';
+
+        document.getElementById("block-var1").style.backgroundColor = 'yellow';
+        document.getElementById("block-var1").style.border = '3px solid #ff6a00';
+
+        document.getElementById("block-var2").style.backgroundColor = 'yellow';
+        document.getElementById("block-var2").style.border = '3px solid #ff6a00';
+
+        document.getElementById("pointer1").style.visibility = 'visible';
+        document.getElementById("pointer2").style.visibility = 'visible';
+
+        document.getElementById("block1").src = "block4.png";
+        document.getElementById("block2").src = "block2.png";
 
     }
-    else if (currentStep === 1){
+    else if (currentStep === 5){
+        document.getElementById("block1").style.backgroundColor = 'yellow';
+        document.getElementById("block1").style.border = '3px solid #ff6a00';
+
+        document.getElementById("block2").style.backgroundColor = 'yellow';
+        document.getElementById("block2").style.border = '3px solid #ff6a00';
+
+        document.getElementById("block1").src = "block2.png";
+        document.getElementById("block2").src = "block4.png";
+
+
+
+        document.getElementById("pointer1").style.visibility = 'visible';
+        document.getElementById("pointer2").style.visibility = 'visible';
+       
+       
         
     }
-    else if (currentStep === 2){
+    else if (currentStep === 7){
+        document.getElementById("block3").style.backgroundColor = 'yellow';
+        document.getElementById("block3").style.border = '3px solid #ff6a00';
+
+        document.getElementById("block2").style.backgroundColor = 'yellow';
+        document.getElementById("block2").style.border = '3px solid #ff6a00';
+
+        document.getElementById("block-var3").style.backgroundColor = 'yellow';
+        document.getElementById("block-var3").style.border = '3px solid #ff6a00';
+
+        document.getElementById("block-var2").style.backgroundColor = 'yellow';
+        document.getElementById("block-var2").style.border = '3px solid #ff6a00';
+
+        document.getElementById("pointer3").style.visibility = 'visible';
+        document.getElementById("pointer2").style.visibility = 'visible';
+
+        document.getElementById("block3").src = "block3.png";
+        document.getElementById("block2").src = "block4.png";
+      
 
         
     }
-    else if (currentStep === 3){
+    else if (currentStep === 8){
+        document.getElementById("block3").style.backgroundColor = 'yellow';
+        document.getElementById("block3").style.border = '3px solid #ff6a00';
+
+        document.getElementById("block2").style.backgroundColor = 'yellow';
+        document.getElementById("block2").style.border = '3px solid #ff6a00';
+
+        document.getElementById("block3").src = "block4.png";
+        document.getElementById("block2").src = "block3.png";
+
+
+
+        document.getElementById("pointer3").style.visibility = 'visible';
+        document.getElementById("pointer2").style.visibility = 'visible';
         
     }
-    else if (currentStep === 4){
+    else if (currentStep === 10){
+        document.getElementById("block3").style.backgroundColor = 'yellow';
+        document.getElementById("block3").style.border = '3px solid #ff6a00';
+
+        document.getElementById("block4").style.backgroundColor = 'yellow';
+        document.getElementById("block4").style.border = '3px solid #ff6a00';
+
+        document.getElementById("block-var3").style.backgroundColor = 'yellow';
+        document.getElementById("block-var3").style.border = '3px solid #ff6a00';
+
+        document.getElementById("block-var4").style.backgroundColor = 'yellow';
+        document.getElementById("block-var4").style.border = '3px solid #ff6a00';
+
+        document.getElementById("pointer3").style.visibility = 'visible';
+        document.getElementById("pointer4").style.visibility = 'visible';
+
+        document.getElementById("block3").src = "block4.png";
+        document.getElementById("block4").src = "block1.png";
        
        
     }
     
-    else if (currentStep === 5 ){ 
+    else if (currentStep === 11 ){ 
+        document.getElementById("block3").style.backgroundColor = 'yellow';
+        document.getElementById("block3").style.border = '3px solid #ff6a00';
+
+        document.getElementById("block4").style.backgroundColor = 'yellow';
+        document.getElementById("block4").style.border = '3px solid #ff6a00';
+
+        document.getElementById("block3").src = "block1.png";
+        document.getElementById("block4").src = "block4.png";
+
+        document.getElementById("pointer3").style.visibility = 'visible';
+        document.getElementById("pointer4").style.visibility = 'visible';
 
         
      
         
     }
-    else if (currentStep === 6 ){
-       
+    else if (currentStep === 14 ){
 
+        document.getElementById("block1").style.backgroundColor = 'yellow';
+        document.getElementById("block1").style.border = '3px solid #ff6a00';
+
+        document.getElementById("block2").style.backgroundColor = 'yellow';
+        document.getElementById("block2").style.border = '3px solid #ff6a00';
+
+        document.getElementById("block-var1").style.backgroundColor = 'yellow';
+        document.getElementById("block-var1").style.border = '3px solid #ff6a00';
+
+        document.getElementById("block-var2").style.backgroundColor = 'yellow';
+        document.getElementById("block-var2").style.border = '3px solid #ff6a00';
+
+        document.getElementById("pointer1").style.visibility = 'visible';
+        document.getElementById("pointer2").style.visibility = 'visible';
+
+      
 
         
     }
-    else if (currentStep === 7){ 
-        //Reply: No grade found. 
+    else if (currentStep === 15){ 
+        document.getElementById("block1").style.backgroundColor = 'yellow';
+        document.getElementById("block1").style.border = '3px solid #ff6a00';
+
+        document.getElementById("block2").style.backgroundColor = 'yellow';
+        document.getElementById("block2").style.border = '3px solid #ff6a00';
+
+        document.getElementById("pointer1").style.visibility = 'visible';
+        document.getElementById("pointer2").style.visibility = 'visible';
+
+        
+    }
+    else if (currentStep === 17 ){
+
+        document.getElementById("block3").style.backgroundColor = 'yellow';
+        document.getElementById("block3").style.border = '3px solid #ff6a00';
+
+        document.getElementById("block2").style.backgroundColor = 'yellow';
+        document.getElementById("block2").style.border = '3px solid #ff6a00';
+
+        document.getElementById("block-var3").style.backgroundColor = 'yellow';
+        document.getElementById("block-var3").style.border = '3px solid #ff6a00';
+
+        document.getElementById("block-var2").style.backgroundColor = 'yellow';
+        document.getElementById("block-var2").style.border = '3px solid #ff6a00';
+
+        document.getElementById("pointer2").style.visibility = 'visible';
+        document.getElementById("pointer3").style.visibility = 'visible';
+
+        document.getElementById("block2").src = "block3.png";
+        document.getElementById("block3").src = "block1.png";
+
+      
+
+        
+    }
+    else if (currentStep === 18){ 
+        document.getElementById("block3").style.backgroundColor = 'yellow';
+        document.getElementById("block3").style.border = '3px solid #ff6a00';
+
+        document.getElementById("block2").style.backgroundColor = 'yellow';
+        document.getElementById("block2").style.border = '3px solid #ff6a00';
+
+        document.getElementById("pointer3").style.visibility = 'visible';
+        document.getElementById("pointer2").style.visibility = 'visible';
+
+        document.getElementById("block2").src = "block1.png";
+        document.getElementById("block3").src = "block3.png";
        
         
     }
+    else if (currentStep === 21 ){
+
+        document.getElementById("block1").style.backgroundColor = 'yellow';
+        document.getElementById("block1").style.border = '3px solid #ff6a00';
+
+        document.getElementById("block2").style.backgroundColor = 'yellow';
+        document.getElementById("block2").style.border = '3px solid #ff6a00';
+
+        document.getElementById("block-var1").style.backgroundColor = 'yellow';
+        document.getElementById("block-var1").style.border = '3px solid #ff6a00';
+
+        document.getElementById("block-var2").style.backgroundColor = 'yellow';
+        document.getElementById("block-var2").style.border = '3px solid #ff6a00';
+
+        document.getElementById("pointer1").style.visibility = 'visible';
+        document.getElementById("pointer2").style.visibility = 'visible';
+
+        document.getElementById("block2").src = "block1.png";
+        document.getElementById("block1").src = "block2.png";
+
+      
+
+        
+    }
+    else if (currentStep === 22){ 
+        document.getElementById("block1").style.backgroundColor = 'yellow';
+        document.getElementById("block1").style.border = '3px solid #ff6a00';
+
+        document.getElementById("block2").style.backgroundColor = 'yellow';
+        document.getElementById("block2").style.border = '3px solid #ff6a00';
+
+        document.getElementById("pointer1").style.visibility = 'visible';
+        document.getElementById("pointer2").style.visibility = 'visible';
+
+        document.getElementById("block2").src = "block2.png";
+        document.getElementById("block1").src = "block1.png";
+       
+        
+    }
+
    
     
     
