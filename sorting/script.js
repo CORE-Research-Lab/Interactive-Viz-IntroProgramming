@@ -19,24 +19,24 @@ const stepExplanations = [
     'Define the variable <span class="variable">n</span> to the length of lst', //1
     'Enter outer loop: <span class="variable">i</span> = 0',//2 HIGHLIGHT OUTER and I
     'Enter inner loop: <span class="variable">j</span> = = 0', //3 HIGHLIGHT INNER and J
-    'Compare lst[j] (4) > lst[j+1] (2) ',//4 HIGHLIGHT THIS LINE
+    'Compare lst[j] > lst[j+1] ',//4 HIGHLIGHT THIS LINE
     'Since 4 > 2, swap them. Now <span class="variable">lst</span> is [2, 4, 3, 1]',//5 HIGHLIGHT THE LST VAR and inside if statment
     'Re-enter inner loop: <span class="variable">j</span> = = 1',//6
-    'Compare lst[j] (4) > lst[j+1] (3) ',//7
+    'Compare lst[j]  > lst[j+1]  ',//7
     'Since 4 > 3, swap them. Now <span class="variable">lst</span> is [2, 3, 4, 1]',//8
     'Re-enter inner loop: <span class="variable">j</span> = 2',//9
-    'Compare lst[j] (4) > lst[j+1] (1) ',//10
+    'Compare lst[j] > lst[j+1]  ',//10
     'Since 4 > 1, swap them. Now <span class="variable">lst</span> is [2, 3, 1, 4] ',//11
     'Re-enter outer loop: <span class="variable">i</span> = 1',//12
     'Enter inner loop: <span class="variable">j</span> = 0', //13
-    'Compare lst[j] (2) > lst[j+1] (3) ',//14
+    'Compare lst[j]  > lst[j+1]  ',//14
     'Since 2 !> 3, do not swap them. <span class="variable">lst</span> is still  [2, 3, 1, 4]',//15
     'Re-enter inner loop: <span class="variable">j</span> = 1', //16
-    'Compare lst[j] (3) > lst[j+1] (1) ',//17
+    'Compare lst[j] > lst[j+1] ',//17
     'Since 3 > 1, swap them. Now <span class="variable">lst</span> is [2, 1, 3, 4] ',//18
     'Re-enter outer loop: <span class="variable">i</span> = 2',//19
     'Enter inner loop: <span class="variable">j</span> = 0', //20
-    'Compare lst[j] (2) > lst[j+1] (1) ',//21
+    'Compare lst[j] > lst[j+1] ',//21
     'Since 2 > 1, swap them. Now <span class="variable">lst</span> is [1, 2, 3, 4]',//22
     'From now on all lst[j] !> lst[j + 1] because list is sorted', //23
     'Re-enter outer loop: <span class="variable">i</span> = 3',//24
@@ -45,6 +45,37 @@ const stepExplanations = [
     
    
 ];
+
+// Initialize Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyAn_mT725rpxJdgdZ_HchR6FpAYs1sD6Zo",
+    authDomain: "visual-interactions-csc108.firebaseapp.com",
+    projectId: "visual-interactions-csc108",
+    storageBucket: "visual-interactions-csc108.appspot.com",
+    messagingSenderId: "703068795993",
+    appId: "1:703068795993:web:2c734051b205606affad48",
+    measurementId: "G-QWCWFNX1BR"
+};
+
+firebase.initializeApp(firebaseConfig);
+const dbSorting = firebase.firestore().collection('sorting'); // Using "sorting" collection
+
+const userId = 'user-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
+
+// Logging function
+function logInteraction(eventType, details) {
+    dbSorting.add({
+        userId: userId,
+        eventType: eventType,
+        details: details,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+        console.log("Interaction logged successfully!");
+    }).catch((error) => {
+        console.error("Error logging interaction: ", error);
+    });
+}
+
 
 // Increment loop iteration
 function incrementLoop() {
@@ -58,8 +89,11 @@ function incrementLoop() {
         updateVisual();
         updateCodeHighlight();
         updateStepExplanation();
+        // Log the interaction
+        logInteraction('incrementLoop', { currentIteration: currentIteration, currentStep: currentStep });
     } else {
         alert("Program has finished executing.");
+        logInteraction('alert', { message: "Program has finished executing." });
     }
 }
 
@@ -73,8 +107,10 @@ function decrementLoop() {
         updateVisual();
         updateCodeHighlight();
         updateStepExplanation();
+        logInteraction('decrementLoop', { currentIteration: currentIteration, currentStep: currentStep });
     } else {
         alert("Already at the start of the loop.");
+        logInteraction('alert', { message: "Already at the start of the loop." });
     }
 }
 
@@ -113,6 +149,11 @@ function resetLoop() {
        
     });
 
+    document.getElementById('val0').innerText = "4";
+    document.getElementById('val1').innerText = "2";
+    document.getElementById('val2').innerText = "3";
+    document.getElementById('val3').innerText = "1";
+
 
      
     
@@ -122,7 +163,7 @@ function resetLoop() {
     updateCodeHighlight();
     updateStepExplanation();
 
-
+    logInteraction('resetLoop', { currentIteration: currentIteration, currentStep: currentStep });
 }
 
 // Run all iterations
@@ -130,6 +171,7 @@ function runAllIterations() {
     while (currentIteration < stepExplanations.length) {
         incrementLoop();
     }
+    logInteraction('runAllIterations', { finalIteration: currentIteration, finalStep: currentStep });
 }
 
 // Update code highlight based on current iteration
@@ -495,7 +537,7 @@ function updateVisual() {
 
     const pointers = ["pointer1","pointer2", "pointer3", "pointer4" ];
     
-    // Clear all highlights
+   
     pointers.forEach(con => {
         document.getElementById(con).style.visibility = 'hidden';
        
@@ -525,8 +567,8 @@ function updateVisual() {
         document.getElementById("block-var2").style.backgroundColor = 'yellow';
         document.getElementById("block-var2").style.border = '3px solid #ff6a00';
 
-        document.getElementById("pointer1").style.visibility = 'visible';
-        document.getElementById("pointer2").style.visibility = 'visible';
+        // document.getElementById("pointer1").style.visibility = 'visible';
+        // document.getElementById("pointer2").style.visibility = 'visible';
 
         document.getElementById("block1").src = "block4.png";
         document.getElementById("block2").src = "block2.png";
@@ -544,8 +586,8 @@ function updateVisual() {
 
 
 
-        document.getElementById("pointer1").style.visibility = 'visible';
-        document.getElementById("pointer2").style.visibility = 'visible';
+        // document.getElementById("pointer1").style.visibility = 'visible';
+        // document.getElementById("pointer2").style.visibility = 'visible';
        
        
         
@@ -563,8 +605,8 @@ function updateVisual() {
         document.getElementById("block-var2").style.backgroundColor = 'yellow';
         document.getElementById("block-var2").style.border = '3px solid #ff6a00';
 
-        document.getElementById("pointer3").style.visibility = 'visible';
-        document.getElementById("pointer2").style.visibility = 'visible';
+        // document.getElementById("pointer3").style.visibility = 'visible';
+        // document.getElementById("pointer2").style.visibility = 'visible';
 
         document.getElementById("block3").src = "block3.png";
         document.getElementById("block2").src = "block4.png";
@@ -584,8 +626,8 @@ function updateVisual() {
 
 
 
-        document.getElementById("pointer3").style.visibility = 'visible';
-        document.getElementById("pointer2").style.visibility = 'visible';
+        // document.getElementById("pointer3").style.visibility = 'visible';
+        // document.getElementById("pointer2").style.visibility = 'visible';
         
     }
     else if (currentStep === 10){
@@ -601,8 +643,8 @@ function updateVisual() {
         document.getElementById("block-var4").style.backgroundColor = 'yellow';
         document.getElementById("block-var4").style.border = '3px solid #ff6a00';
 
-        document.getElementById("pointer3").style.visibility = 'visible';
-        document.getElementById("pointer4").style.visibility = 'visible';
+        // document.getElementById("pointer3").style.visibility = 'visible';
+        // document.getElementById("pointer4").style.visibility = 'visible';
 
         document.getElementById("block3").src = "block4.png";
         document.getElementById("block4").src = "block1.png";
@@ -620,8 +662,8 @@ function updateVisual() {
         document.getElementById("block3").src = "block1.png";
         document.getElementById("block4").src = "block4.png";
 
-        document.getElementById("pointer3").style.visibility = 'visible';
-        document.getElementById("pointer4").style.visibility = 'visible';
+        // document.getElementById("pointer3").style.visibility = 'visible';
+        // document.getElementById("pointer4").style.visibility = 'visible';
 
         
      
@@ -641,8 +683,8 @@ function updateVisual() {
         document.getElementById("block-var2").style.backgroundColor = 'yellow';
         document.getElementById("block-var2").style.border = '3px solid #ff6a00';
 
-        document.getElementById("pointer1").style.visibility = 'visible';
-        document.getElementById("pointer2").style.visibility = 'visible';
+        // document.getElementById("pointer1").style.visibility = 'visible';
+        // document.getElementById("pointer2").style.visibility = 'visible';
 
       
 
@@ -655,8 +697,8 @@ function updateVisual() {
         document.getElementById("block2").style.backgroundColor = 'yellow';
         document.getElementById("block2").style.border = '3px solid #ff6a00';
 
-        document.getElementById("pointer1").style.visibility = 'visible';
-        document.getElementById("pointer2").style.visibility = 'visible';
+        // document.getElementById("pointer1").style.visibility = 'visible';
+        // document.getElementById("pointer2").style.visibility = 'visible';
 
         
     }
@@ -674,8 +716,8 @@ function updateVisual() {
         document.getElementById("block-var2").style.backgroundColor = 'yellow';
         document.getElementById("block-var2").style.border = '3px solid #ff6a00';
 
-        document.getElementById("pointer2").style.visibility = 'visible';
-        document.getElementById("pointer3").style.visibility = 'visible';
+        // document.getElementById("pointer2").style.visibility = 'visible';
+        // document.getElementById("pointer3").style.visibility = 'visible';
 
         document.getElementById("block2").src = "block3.png";
         document.getElementById("block3").src = "block1.png";
@@ -691,8 +733,8 @@ function updateVisual() {
         document.getElementById("block2").style.backgroundColor = 'yellow';
         document.getElementById("block2").style.border = '3px solid #ff6a00';
 
-        document.getElementById("pointer3").style.visibility = 'visible';
-        document.getElementById("pointer2").style.visibility = 'visible';
+        // document.getElementById("pointer3").style.visibility = 'visible';
+        // document.getElementById("pointer2").style.visibility = 'visible';
 
         document.getElementById("block2").src = "block1.png";
         document.getElementById("block3").src = "block3.png";
@@ -713,8 +755,8 @@ function updateVisual() {
         document.getElementById("block-var2").style.backgroundColor = 'yellow';
         document.getElementById("block-var2").style.border = '3px solid #ff6a00';
 
-        document.getElementById("pointer1").style.visibility = 'visible';
-        document.getElementById("pointer2").style.visibility = 'visible';
+        // document.getElementById("pointer1").style.visibility = 'visible';
+        // document.getElementById("pointer2").style.visibility = 'visible';
 
         document.getElementById("block2").src = "block1.png";
         document.getElementById("block1").src = "block2.png";
@@ -730,8 +772,8 @@ function updateVisual() {
         document.getElementById("block2").style.backgroundColor = 'yellow';
         document.getElementById("block2").style.border = '3px solid #ff6a00';
 
-        document.getElementById("pointer1").style.visibility = 'visible';
-        document.getElementById("pointer2").style.visibility = 'visible';
+        // document.getElementById("pointer1").style.visibility = 'visible';
+        // document.getElementById("pointer2").style.visibility = 'visible';
 
         document.getElementById("block2").src = "block2.png";
         document.getElementById("block1").src = "block1.png";
