@@ -1,7 +1,7 @@
 // script.js
 
 let currentStep = 0;
-const totalSteps = 4; // Total steps based on your description
+const totalSteps = 6; // Total steps based on your description
 const memoryData = {
     main: {},
     classes: {},
@@ -18,7 +18,9 @@ const stepDescriptions = [
     "Step 1: Create a LinkedList instance.",
     "Step 2: Execute LinkedList.__init__ constructor.",
     "Step 3: Append a node with data=10 to the LinkedList.",
-    "Step 4: Append a node with data=20 to the LinkedList."
+    "Step 4: Execute Node.__init__ constructor.",
+    "Step 5: Append a node with data=20 to the LinkedList.",
+    "Step 6: Execute Node.__init__ constructor."
 ];
 
 function highlightCode(step) {
@@ -44,8 +46,16 @@ function highlightCode(step) {
             if (line19) line19.classList.add('highlight');
             break;
         case 4:
+            const line2 = document.getElementById('line2');
+            if (line2) line2.classList.add('highlight');
+            break;
+        case 5:
             const line20 = document.getElementById('line20');
             if (line20) line20.classList.add('highlight');
+            break;
+        case 6:
+            const line2_ = document.getElementById('line2');
+            if (line2_) line2_.classList.add('highlight');
             break;
         default:
             break;
@@ -119,13 +129,14 @@ function executeStep(step) {
             // Step 2: Execute line6 - LinkedList.__init__()
             executeLinkedListConstructor();
             break;
-        case 3:
+        case 4:
             // Step 3: Execute line19 - ll1.append(10)
             appendNode(10);
             updateVisualDiagram(19);
             break;
-        case 4:
+        case 6:
             // Step 4: Execute line20 - ll1.append(20)
+            console.log("runs");
             appendNode(20);
             updateVisualDiagram(20);
             break;
@@ -144,7 +155,6 @@ function createLinkedListInstance() {
     // Show __main__ scope with ll1 variable
     createObjectBox("id3", "__main__", [
         {name: "ll1", value: linkedListId},
-        {name: "ll2", value: "id61"} // Assuming ll2 is unused or another list
     ], 20, 520, true);
 }
 
@@ -158,6 +168,7 @@ function executeLinkedListConstructor() {
             instanceVariables: ['_first']
         };
     }
+    console.log(memoryData.classes['LinkedList']);
     // Instantiate LinkedList object
     memoryData.objects[linkedListId] = {
         class: 'LinkedList',
@@ -177,6 +188,9 @@ function executeLinkedListConstructor() {
     createObjectBox("id63", "NoneType", [
         {name: "", value: "None"}
     ], 450, 20, false);
+    
+    // **Set idCounter to 64 to prevent reuse of id63**
+    idCounter = 64;
 }
 
 function appendNode(data) {
@@ -208,25 +222,24 @@ function appendNode(data) {
         {name: "next", value: "id63"} // None
     ], 260, (data === 10 ? 200 : 400), false);
 
-    // Update LinkedList's _first or last.next
-    const linkedList = memoryData.objects[linkedListId];
-    if (linkedList.variables['_first'] === 'id63') { // If list is empty
-        linkedList.variables['_first'] = nodeId;
-    } else {
-        // Traverse to the end and append
-        let lastNodeId = linkedList.variables['_first'];
-        while (memoryData.objects[lastNodeId].variables['next'] !== 'id63') {
-            lastNodeId = memoryData.objects[lastNodeId].variables['next'];
-        }
-        memoryData.objects[lastNodeId].variables['next'] = nodeId;
-    }
-
     // Show LinkedList object updated
     updateObjectBox(linkedListId, "_first", memoryData.objects[linkedListId].variables['_first']);
+    if(currentStep === 4){
+        createObjectBox("id60", "LinkedList", [
+            {name: "_first", value: "id65"}
+        ], 260, 20, false);
+    }
+    if(currentStep === 6){
+        createObjectBox("id65", "Node", [
+            {name: "data", value: "id66"},
+            {name: "next", value: "id68"}
+        ], 260, 200, false);
+    }
 }
 
 function updateObjectBox(objId, varName, varValue) {
     const objBox = document.getElementById(objId);
+    console.log(objId);
     if (objBox) {
         // Find the attribute div
         const attributes = objBox.querySelectorAll('.attribute');
@@ -319,6 +332,9 @@ function updateVisualDiagram() {
     const visualContainer = document.querySelector('.linked-list-container');
     visualContainer.innerHTML = ''; // Clear previous visualization
 
+    if (currentStep === 0) {
+        return; // No visualization needed for Step 0
+    }
     // Create Head Node
     const headDiv = document.createElement('div');
     headDiv.classList.add('head-node');
@@ -356,7 +372,7 @@ function updateVisualDiagram() {
         return nodeDiv;
     }
 
-    if (currentStep >= 1){
+    if (currentStep >= 4){
         // Create First Node (data = 10)
         const node1Div = createNode('10');
         visualContainer.appendChild(node1Div);
@@ -374,7 +390,7 @@ function updateVisualDiagram() {
         visualContainer.appendChild(pointer1);
     }
 
-    if (currentStep >= 2) {
+    if (currentStep >= 6) {
         // Create Second Node (data = 20)
         const node2Div = createNode('20');
         visualContainer.appendChild(node2Div);
