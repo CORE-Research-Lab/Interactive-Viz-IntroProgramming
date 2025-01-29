@@ -48,13 +48,67 @@ body {
 /* Memory Window Styles */
 .memory-window {
     width: 100%;
-    height: 700px;
+    height: 800px;
     background-color: #ffffff;
     border: 1px solid #000;
-    padding: 20px;
-    position: relative; /* To position child elements absolutely */
-    overflow: auto;
+    padding: 10px;
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    flex-direction: column;
 }
+
+.memory-content {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    height: 100%; /* Use full height */
+    gap: 10px; /* Spacing between sections */
+}
+
+.call-stack-section {
+    flex: 0.3; /* Allocate 30% of the space to the Call Stack */
+    overflow-y: auto;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.memory-objects-section {
+    flex: 0.7; /* Allocate 70% of the space to Memory Objects */
+    overflow-y: auto;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.call-stack-section h4, .memory-objects-section h4 {
+    margin: 0; /* Remove default margin */
+    padding: 10px 0; /* Add consistent padding around the title */
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #f1f1f1; /* Optional: Light background for better visibility */
+    border-bottom: 2px solid #ccc; /* Optional: Divider line below the title */
+}
+
+
+.vertical-divider {
+    width: 2px;
+    background-color: #ccc;
+    height: 100%; /* Full height of the memory-content container */
+    align-self: stretch;
+}
+
+
 
 /* Object Box Styles */
 .object-box, .scope-box {
@@ -136,24 +190,17 @@ body {
     display: flex;
     align-items: center;
     margin-top: 20px;
+    flex-direction: column; /* Stack items vertically */
 }
 
-.head-node {
-    width: 50px;
-    height: 50px;
-    background-color: white;
-    border: 2px solid black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 16px;
-}
 
 .node {
     display: flex;
+    flex-direction: column; /* Ensures elements inside are stacked vertically */
+    justify-content: flex-end;
     align-items: center;
-    height: 50px;
+    height: 100px;
+    width: 50px;
     background-color: white;
     border: 2px solid black;
     overflow: hidden; /* Ensure child elements don't overflow */
@@ -163,29 +210,30 @@ body {
     width: 80px; /* Increased width for the value box */
     text-align: center;
     line-height: 50px;
-    font-size: 16px;
-    border-right: 1px solid black; /* Separator between value and pointer */
+    font-size: 24px;
 }
 
 .pointer-dot {
-    width: 20px; /* Thinner width for the pointer box */
-    display: flex;
-    justify-content: center;
+    width: 50px; /* Thinner width for the pointer box */
+    display: flex; 
+    flex-direction: column;
     align-items: center;
+    justify-content: flex-end;
     height: 50px;
+    border: 2px solid black;
     position: relative; /* For positioning the dot */
 }
-
+/* 
 .pointer-dot::after {
     width: 12px;
     height: 12px;
     background-color: orange;
     border-radius: 50%;
     position: absolute;
-    top: 50%;
+    top: 95%; 
     left: 50%;
     transform: translate(-50%, -50%);
-}
+} */
 
 .pointer {
     display: flex;
@@ -198,6 +246,23 @@ body {
 
 .pointer svg circle {
     r: 6; /* Slightly larger dots */
+}
+
+.head-node {
+    width: 60px;
+    height: 60px;
+    background-color: #4CAF50;
+    border: 2px solid #000;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    position: relative;
+    animation: fadeIn 0.5s ease forwards;
+    margin-bottom: 20px; 
 }
 
 /* Control Buttons Styles */

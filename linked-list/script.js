@@ -80,14 +80,20 @@ function resetSteps() {
     memoryData.classes = {};
     memoryData.objects = {};
     idCounter = 60; // Reset ID counter
-    // Clear memory window
-    memoryWindow.innerHTML = '';
+    
+    // Clear the Call Stack
+    const callStack = document.getElementById('call-stack');
+    callStack.innerHTML = '';
+    
+    // Clear Memory Objects
+    const memoryObjects = document.getElementById('memory-objects');
+    memoryObjects.innerHTML = '';
+    
     // Clear linked list visualization
     updateVisualDiagram();
+    
     // Reset highlights and descriptions
     highlightCode(0);
-    updateMemoryDiagram();
-    updateVisualDiagram();
     updateStepDescription(0);
     updateStepInfo(0);
 }
@@ -155,7 +161,7 @@ function createLinkedListInstance() {
     // Show __main__ scope with ll1 variable
     createObjectBox("id3", "__main__", [
         {name: "ll1", value: linkedListId},
-    ], 20, 520, true);
+    ], 20, 620, true);
 }
 
 function executeLinkedListConstructor() {
@@ -179,15 +185,15 @@ function executeLinkedListConstructor() {
     // Show LinkedList.__init__ scope
     createObjectBox("id2", "LinkedList.__init__", [
         {name: "self", value: linkedListId}
-    ], 20, 380, true);
+    ], 20, 480, true);
     // Show LinkedList object in memory
     createObjectBox(linkedListId, "LinkedList", [
         {name: "_first", value: "id63"}
-    ], 260, 20, false);
+    ], 260, 70, false);
     // Show NoneType object
     createObjectBox("id63", "NoneType", [
         {name: "", value: "None"}
-    ], 450, 20, false);
+    ], 260, 250, false);
     
     // **Set idCounter to 64 to prevent reuse of id63**
     idCounter = 64;
@@ -209,31 +215,40 @@ function appendNode(data) {
     createObjectBox(nodeInitId, "Node.__init__", [
         {name: "self", value: nodeId},
         {name: "data", value: intId }
-    ], 20, (data === 10 ? 200 : 20), true);
+    ], 20, (data === 10 ? 250 : 70), true);
 
     // Create int object for data
     createObjectBox(intId, "int", [
         {name: "", value: data}
-    ], 450, (data === 10 ? 200 : 400), false);
+    ], 450, (data === 10 ? 250 : 450), false);
 
     // Create Node object with data
     createObjectBox(nodeId, "Node", [
         {name: "data", value: intId}, // id65 for 10, id67 for 20
         {name: "next", value: "id63"} // None
-    ], 260, (data === 10 ? 200 : 400), false);
+    ], 260, (data === 10 ? 250 : 450), false);
 
     // Show LinkedList object updated
     updateObjectBox(linkedListId, "_first", memoryData.objects[linkedListId].variables['_first']);
     if(currentStep === 4){
         createObjectBox("id60", "LinkedList", [
             {name: "_first", value: "id65"}
-        ], 260, 20, false);
+        ], 260, 70, "memory-objects", false);
+
+        createObjectBox("id63", "NoneType", [
+            {name: "", value: "None"}
+        ], 260, 450, false, "memory-objects", false);
+
     }
     if(currentStep === 6){
         createObjectBox("id65", "Node", [
             {name: "data", value: "id66"},
             {name: "next", value: "id68"}
-        ], 260, 200, false);
+        ], 260, 250, false, "memory-objects", false);
+
+        createObjectBox("id63", "NoneType", [
+            {name: "", value: "None"}
+        ], 260, 650, false, "memory-objects", false);
     }
 }
 
@@ -251,19 +266,12 @@ function updateObjectBox(objId, varName, varValue) {
     }
 }
 
-function updateMemoryDiagram() {
-    // No action needed as boxes are created per step
-}
-
-function drawMemory() {
-    // All boxes are created per step, no need to draw all at once
-}
-
-function createObjectBox(id, title, attributes, x, y, scope) {
+function createObjectBox(id, title, attributes, x, y, scope, section = "memory-objects", highlight = true) {
     const objectBox = document.createElement("div");
 
-    if (!scope){
-        objectBox.className = "object-box highlight"; // Add 'highlight' class
+    if (!scope) {
+        if (highlight) objectBox.className = "object-box highlight"; // Add 'highlight' class
+        else objectBox.className = "object-box";
         objectBox.style.left = `${x}px`;
         objectBox.style.top = `${y}px`;
 
@@ -290,8 +298,7 @@ function createObjectBox(id, title, attributes, x, y, scope) {
         idLabel.style.backgroundColor = "white"; // Background to ensure readability
         idLabel.style.border = "1px solid black"; // To match the border of the box
         objectBox.appendChild(idLabel);
-    }
-    else {
+    } else {
         objectBox.className = "scope-box highlight"; // Add 'highlight' class
         objectBox.style.left = `${x}px`;
         objectBox.style.top = `${y}px`;
@@ -319,13 +326,21 @@ function createObjectBox(id, title, attributes, x, y, scope) {
     });
 
     objectBox.appendChild(contentDiv);
-    memoryWindow.appendChild(objectBox);
+
+    // Append to the correct section
+    const sectionContainer = document.getElementById(section);
+    if (sectionContainer) {
+        sectionContainer.appendChild(objectBox);
+    } else {
+        console.error(`Section "${section}" not found.`);
+    }
 
     // Trigger animation
     setTimeout(() => {
         objectBox.classList.add('visible');
-    }, 10); // Slight delay to ensure transition
+    }, 1); // Slight delay to ensure transition
 }
+
 
 
 function updateVisualDiagram() {
@@ -341,17 +356,17 @@ function updateVisualDiagram() {
     headDiv.textContent = 'L1'; // Name of the LinkedList head
     visualContainer.appendChild(headDiv);
 
-    // Create Pointer from Head to First Node
-    const headPointer = document.createElement('div');
-    headPointer.classList.add('pointer');
-    headPointer.innerHTML = `
-        <svg height="50" width="100">
-            <line x1="0" y1="25" x2="94" y2="25" stroke="orange" stroke-width="1.5"/>
-            <circle cx="6" cy="25" r="6" fill="orange" />
-            <polygon points="90,20 100,25 90,30" fill="orange"/>
-        </svg>
-    `;
-    visualContainer.appendChild(headPointer);
+    // // Create Pointer from Head to First Node
+    // const headPointer = document.createElement('div');
+    // headPointer.classList.add('pointer');
+    // headPointer.innerHTML = `
+    //     <svg height="50" width="100">
+    //         <line x1="0" y1="25" x2="94" y2="25" stroke="orange" stroke-width="1.5"/>
+    //         <circle cx="6" cy="25" r="6" fill="orange" />
+    //         <polygon points="90,20 100,25 90,30" fill="orange"/>
+    //     </svg>
+    // `;
+    // visualContainer.appendChild(headPointer);
 
     // Function to create a node
     function createNode(data) {
@@ -364,11 +379,15 @@ function updateVisualDiagram() {
         valueDiv.textContent = data;
         nodeDiv.appendChild(valueDiv);
 
-        // Pointer Dot Part
+        // Pointer Dot Part with SVG Circle inside it
         const pointerDotDiv = document.createElement('div');
         pointerDotDiv.classList.add('pointer-dot');
+        pointerDotDiv.innerHTML = `
+        <svg height="50" width="50"> 
+            <circle cx="25" cy="45" r="6" fill="orange" />
+        </svg>
+        `; // Embedded the circle here
         nodeDiv.appendChild(pointerDotDiv);
-
         return nodeDiv;
     }
 
@@ -381,12 +400,11 @@ function updateVisualDiagram() {
         const pointer1 = document.createElement('div');
         pointer1.classList.add('pointer');
         pointer1.innerHTML = `
-            <svg height="50" width="100">
-                <line x1="0" y1="25" x2="94" y2="25" stroke="orange" stroke-width="1.5"/>
-                <circle cx="6" cy="25" r="6" fill="orange" />
-                <polygon points="90,20 100,25 90,30" fill="orange"/>
-            </svg>
-        `;
+        <svg height="100" width="50"> <!-- Taller SVG for vertical arrow -->
+            <line x1="25" y1="0" x2="25" y2="94" stroke="orange" stroke-width="1.5"/> <!-- Vertical line -->
+            <polygon points="20,90 25,100 30,90" fill="orange"/> <!-- Arrowhead at bottom -->
+        </svg>
+    `;    
         visualContainer.appendChild(pointer1);
     }
 
@@ -399,9 +417,10 @@ function updateVisualDiagram() {
         const pointer2 = document.createElement('div');
         pointer2.classList.add('pointer');
         pointer2.innerHTML = `
-            <svg height="50" width="100">
-                <circle cx="6" cy="25" r="6" fill="orange" />
-            </svg>
+        <svg height="100" width="50"> <!-- Taller SVG for vertical arrow -->
+            <line x1="25" y1="0" x2="25" y2="94" stroke="orange" stroke-width="1.5"/> <!-- Vertical line -->
+            <polygon points="20,90 25,100 30,90" fill="orange"/> <!-- Arrowhead at bottom -->
+        </svg>
         `;
         visualContainer.appendChild(pointer2);
     }
