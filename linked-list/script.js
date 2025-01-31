@@ -1,5 +1,36 @@
 // script.js
 
+// Firebase Initialization
+const firebaseConfig = {
+    apiKey: "AIzaSyAn_mT725rpxJdgdZ_HchR6FpAYs1sD6Zo",
+    authDomain: "visual-interactions-csc108.firebaseapp.com",
+    projectId: "visual-interactions-csc108",
+    storageBucket: "visual-interactions-csc108.appspot.com",
+    messagingSenderId: "703068795993",
+    appId: "1:703068795993:web:2c734051b205606affad48",
+    measurementId: "G-QWCWFNX1BR"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore().collection('linked-list');  // Using "linked-list" collection
+
+// Generate a unique user ID
+const userId = 'user-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
+
+// Function to log user interactions to Firebase
+function logInteraction(eventType, details) {
+    db.add({
+        userId: userId,
+        eventType: eventType,
+        details: details,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+        console.log(`Logged: ${eventType}`, details);
+    }).catch((error) => {
+        console.error("Error logging interaction: ", error);
+    });
+}
+
 let currentStep = 0;
 const totalSteps = 6; // Total steps based on your description
 const memoryData = {
@@ -96,14 +127,17 @@ function resetSteps() {
     highlightCode(0);
     updateStepDescription(0);
     updateStepInfo(0);
+    logInteraction('resetSteps', { step: currentStep });
 }
 
 function incrementStep() {
     if (currentStep < totalSteps) {
         currentStep++;
         executeStep(currentStep);
+        logInteraction('incrementStep', { step: currentStep });
     } else {
         alert("All steps completed.");
+        logInteraction('alert', { message: "All steps completed." });
     }
 }
 
@@ -111,15 +145,19 @@ function decrementStep() {
     if (currentStep > 0) {
         currentStep--;
         executeStep(currentStep);
+        logInteraction('decrementStep', { step: currentStep });
     } else {
         alert("Already at the first step.");
+        logInteraction('alert', { message: "Already at the first step." });
     }
 }
+
 
 function runAllSteps() {
     while (currentStep < totalSteps) {
         currentStep++;
         executeStep(currentStep);
+        logInteraction('runAllSteps', { step: currentStep });
     }
 }
 
