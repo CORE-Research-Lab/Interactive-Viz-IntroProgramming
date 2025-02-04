@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.code-line {
+  padding: 2px 4px;
+  transition: background-color 0.2s;
+}
+
+.line-number {
+  user-select: none;
+}
+
+.node {
+  transition: all 0.3s ease;
+}
+
+.pointer {
+  transition: opacity 0.3s ease;
+}
+
+.head-node {
+  font-weight: bold;
+}
+
+.none-pointer {
+  opacity: 0.7;
+} 
