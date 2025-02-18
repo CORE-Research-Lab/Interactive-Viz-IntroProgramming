@@ -57,6 +57,15 @@ function decrementLoop() {
     }
 }
 
+function scaleApp() {
+    const app = document.getElementById('app');
+    // For example, base design is for 1920px width
+    const scaleFactor = window.innerWidth / 1920;
+    app.style.transform = 'scale(' + scaleFactor + ')';
+    app.style.transformOrigin = 'top left';
+  }
+
+
 // Reset loop
 function resetLoop() {
     currentIteration = 0;
@@ -542,6 +551,8 @@ function updateStepExplanation() {
 }
 
 window.onload = () => {
+    window.addEventListener('resize', scaleApp);
+    window.addEventListener('load', scaleApp);
     updateCodeHighlight();
     updateMemory();
     updateVisual();

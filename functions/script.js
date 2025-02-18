@@ -32,6 +32,14 @@ function logInteraction(eventType, details) {
     });
 }
 
+function scaleApp() {
+    const app = document.getElementById('app');
+    // For example, base design is for 1920px width
+    const scaleFactor = window.innerWidth / 1920;
+    app.style.transform = 'scale(' + scaleFactor + ')';
+    app.style.transformOrigin = 'top left';
+}
+
 const userId = 'user-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
 
 let currentStep = 0;
@@ -674,6 +682,8 @@ function drawInteractionArrow(svg, x1, y1, x2, y2, label, curveDirection = 'up',
 }
 
 window.onload = () => {
+    window.addEventListener('resize', scaleApp);
+    window.addEventListener('load', scaleApp);
     resetSteps();
     updateStepExplanation();
 }
