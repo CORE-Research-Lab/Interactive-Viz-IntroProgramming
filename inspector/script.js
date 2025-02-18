@@ -1,11 +1,11 @@
 let currentIteration = 0;
 const maxIterations = 4; // Adjusted for your list length
 let total = "";
-const lst = ['item1', 'item2', 'Wanted Item Name', 'item4'];
+const lst = ['""', '""', 'Bunny', '""'];
 let wantedItemInitialized = false;
 let searching = true;
 let counter = 0;
-let wanted_item = 'Wanted Item Name';
+let wanted_item = 'Bunny';
 
 let currentStep = 0;
 
@@ -13,7 +13,7 @@ let currentStep = 0;
 const stepExplanations = [
     'Initialize <span class="variable">Searching</span> to <span class="variable">True</span>',
     'Initialize <span class="variable">Counter</span> to <span class="variable">0</span>',
-    'Initialize <span class="variable">wanted_item</span> to <span class="variable">"Wanted Item Name"</span>',
+    'Initialize <span class="variable">wanted_item</span> to <span class="variable">"Bunny"</span>',
     'Define the list <span class="variable">lst</span>',
     'Check while loop condition',
     'Iteration 1: Current found item does not equal <span class="variable">wanted_item</span>. Enter else statement.',
@@ -174,7 +174,8 @@ function updateMemory() {
         document.getElementById('memory-item').classList.add('hidden')
         document.getElementById('memory-counter').classList.add('hidden')
         document.getElementById('memory-lst').classList.add('hidden')
-        memorySearchingValue.innerText = searching;
+        if (searching) memorySearchingValue.innerText = 'True';
+        else memorySearchingValue.innerText = 'False';
         memorySearchingValue.style.display = 'block'; // Show searching
         
 
@@ -406,7 +407,7 @@ function updateMemory() {
     } else if (currentStep === 10) { //Searching turns false
         memorySearchingValue.style.backgroundColor = 'yellow';
         memorySearchingValue.style.border = '3px solid #ff6a00';
-        memorySearchingValue.innerText = 'false';
+        memorySearchingValue.innerText = 'False';
 
         document.getElementById('var0').style.backgroundColor = '#e8e8e8';
         document.getElementById('var0').style.border = '1px solid #000000';
