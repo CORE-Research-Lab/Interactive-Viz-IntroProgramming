@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Linked List Visualization</title>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive Linked List Visualization</title>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="script.js" defer></script>
 </head>
 <body>
-    <div class="step-explanation" id="step-explanation">Step 0: Initialize two empty Linked Lists.</div>
-    <div class="container">
-        <!-- Code Window -->
-        <div class="code-window">
-            <h3>Python Code</h3>
-            <pre id="code">
+  <div class="step-explanation" id="step-explanation">
+    Step 0: Initialize two empty Linked Lists.
+  </div>
+  <div class="container">
+    <!-- Code Window -->
+    <div class="code-window">
+      <h3>Python Code</h3>
+      <pre id="code">
 <code>
 <span id="line1">class Node:</span>
 <span id="line2">    def __init__(self, data):</span>
@@ -42,54 +44,41 @@
 <span id="line19">ll1.append(10)</span>
 <span id="line20">ll1.append(20)</span>
 </code>
-            </pre>
-        </div>
-
-        <!-- Memory Window -->
-        <div class="memory-window" id="memory-window">
-            <h3>Memory Visualization</h3>
-            <div class="memory-content">
-                <!-- Call Stack Division -->
-                <div class="call-stack-section" id="call-stack">
-                    <h4>Call Stack</h4>
-                </div>
-        
-                <!-- Vertical Divider -->
-                <div class="vertical-divider"></div>
-        
-                <!-- Memory Objects Division -->
-                <div class="memory-objects-section" id="memory-objects">
-                    <h4>Memory Objects</h4>
-                </div>
-            </div>
-        </div>
-        
-
-        <!-- Linked List Visualizations -->
-        <div class="visual-window">
-            <h3>Linked List Visualization</h3>
-            <div class="linked-list-visualization">
-                <div class="linked-list-container">
-                    <div class="node" id="node1">
-                        <div class="value">10</div>
-                        <div class="pointer">→</div>
-                    </div>
-                    <div class="node" id="node2">
-                        <div class="value">20</div>
-                        <div class="pointer">→</div>
-                    </div>
-                </div>
-            </div>            
-        </div>
+      </pre>
     </div>
 
-    <!-- Control Buttons -->
-    <div class="iteration-control">
-        <span id="step-info">Step 0</span>
-        <button onclick="decrementStep()">Previous Step</button>
-        <button onclick="incrementStep()">Next Step</button>
-        <button onclick="runAllSteps()">Run All Steps</button>
-        <button onclick="resetSteps()">Reset</button>
+    <!-- Memory Window -->
+    <div class="memory-window" id="memory-window">
+      <h3>Memory Visualization</h3>
+      <!-- This image will update based on the current step -->
+      <img
+        id="memory-image"
+        src="memory/Step0.png"
+        alt="Memory Visualization"
+        style="width: 100%; height: auto;"
+      />
     </div>
+
+    <!-- Linked List Visualization -->
+    <div class="visual-window">
+        <h3>Linked List Visualization</h3>
+        <!-- This image will update based on the current step -->
+        <img
+          id="visual-image"
+          src=""
+          alt="No visual visualization for Step 0"
+          style="width: 100%; height: auto;"
+        />
+      </div>
+  </div>
+
+  <!-- Control Buttons -->
+  <div class="iteration-control">
+    <span id="step-info">Step 0</span>
+    <button onclick="decrementStep()">Previous Step</button>
+    <button onclick="incrementStep()">Next Step</button>
+    <button onclick="runAllSteps()">Run All Steps</button>
+    <button onclick="resetSteps()">Reset</button>
+  </div>
 </body>
 </html>
