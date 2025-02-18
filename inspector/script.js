@@ -28,8 +28,6 @@ const stepExplanations = [
 // Increment loop iteration
 function incrementLoop() {
     if (currentIteration < stepExplanations.length) {
-        
-        
         currentIteration++;
         currentStep++;
 
@@ -62,8 +60,8 @@ function scaleApp() {
     // For example, base design is for 1920px width
     const scaleFactor = window.innerWidth / 1920;
     app.style.transform = 'scale(' + scaleFactor + ')';
-    app.style.transformOrigin = 'top left';
-  }
+    app.style.transformOrigin = 'center center';
+}
 
 
 // Reset loop
@@ -144,11 +142,12 @@ function updateCodeHighlight() {
     } else if (currentIteration === 2) {
         document.getElementById("item").classList.add("highlight");
     } else if (currentIteration === 3) {
+        scaleApp();
         document.getElementById("line2").classList.add("highlight");
     } else if (currentIteration === 4) {
         document.getElementById("line3").classList.add("highlight");
     } else if (currentIteration === 5 || currentIteration === 7) {
-        document.getElementById("line6").classList.add("highlight"); // Highlight else statement
+        document.getElementById("line4").classList.add("highlight"); // Highlight else statement
     } 
     else if (currentIteration === 6 || currentIteration === 8) {
         document.getElementById("line7").classList.add("highlight"); // Highlight counter statement

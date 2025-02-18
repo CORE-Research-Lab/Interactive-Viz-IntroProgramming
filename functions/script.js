@@ -37,7 +37,7 @@ function scaleApp() {
     // For example, base design is for 1920px width
     const scaleFactor = window.innerWidth / 1920;
     app.style.transform = 'scale(' + scaleFactor + ')';
-    app.style.transformOrigin = 'top left';
+    app.style.transformOrigin = 'center center';
 }
 
 const userId = 'user-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
