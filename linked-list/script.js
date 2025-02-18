@@ -48,6 +48,14 @@ const firebaseConfig = {
     "Step 6: Execute Node.__init__ constructor for data 20.",
   ];
   
+  function scaleApp() {
+    const app = document.getElementById('app');
+    // For example, base design is for 1920px width
+    const scaleFactor = window.height/ 750;
+    app.style.transform = 'scale(' + scaleFactor + ')';
+    app.style.transformOrigin = 'center center';
+}
+
   function highlightCode(step) {
     // Remove existing highlights
     for (let i = 1; i <= 20; i++) {
@@ -168,6 +176,8 @@ function updateVisualWindow(step) {
   }
   
   window.onload = () => {
+    window.addEventListener('resize', scaleApp);
+    window.addEventListener('load', scaleApp);
     resetSteps();
   };
   
