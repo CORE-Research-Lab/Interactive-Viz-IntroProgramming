@@ -110,7 +110,7 @@ const firebaseConfig = {
   // NEW: Function to update the visual window image based on the step number.
 function updateVisualWindow(step) {
     const visualImage = document.getElementById("visual-image");
-    visualImage.src = `visual/Step${step}.png`;
+    visualImage.src = `memory2/Step${step}.png`;
     visualImage.alt = `Visual Visualization Step ${step}`;
     
   }
