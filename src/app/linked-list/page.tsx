@@ -33,11 +33,14 @@ export default function LinkedListPage() {
 
   return (
     <main className="min-h-screen p-4 bg-gray-300">
-      <h1 className="text-2xl font-bold mb-4 text-black text-center">Linked List Visualization</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-        <CodeWindow currentStep={currentStep} codeConfig={linkedListCode} script={stepConfigs} />
-        <VisualWindow currentStep={currentStep} script={stepConfigs} />
-        <div className="md:col-span-2 flex justify-center -mt-1 -mb-1">
+      <h1 className="text-5xl font-bold my-8 text-black text-center">Linked List Visualization</h1>
+      <div className="flex flex-col gap-4">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-2">
+          <CodeWindow currentStep={currentStep} codeConfig={linkedListCode} script={stepConfigs} />
+          <VisualWindow currentStep={currentStep} script={stepConfigs} />
+          <MemoryWindow currentStep={currentStep} script={stepConfigs} />
+        </div>
+        <div className="flex justify-center mt-16">
           <ControlButtons 
             currentStep={currentStep}
             totalSteps={totalSteps}
@@ -46,9 +49,6 @@ export default function LinkedListPage() {
             onNext={incrementStep}
             onRunAll={runAllSteps}
           />
-        </div>
-        <div className="md:col-span-2">
-          <MemoryWindow currentStep={currentStep} script={stepConfigs} />
         </div>
       </div>
     </main>
