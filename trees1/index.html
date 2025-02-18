@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Interactive Tree Deletion Visualization with Brushing & Lines</title>
+  <title>Interactive Tree Deletion Visualization with Brushing &amp; Lines</title>
   <!-- Firebase (optional) -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
@@ -53,101 +53,12 @@
       line-height: 1.5;
       white-space: pre;
     }
-    /* Memory Window Styles */
-    .memory-window {
+    /* Memory & Visual Window Images */
+    .memory-window img,
+    .visual-window img {
       width: 100%;
-      height: 600px;
-      background-color: #ffffff;
-      border: 1px solid #000;
-      padding: 10px;
-      box-sizing: border-box;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-    }
-    .memory-content {
-      display: flex;
-      flex: 1;
-      flex-direction: row;
       height: 100%;
-      gap: 10px;
-    }
-    .call-stack-section,
-    .memory-objects-section {
-      background-color: #f9f9f9;
-      padding: 10px;
-      border-radius: 8px;
-      box-sizing: border-box;
-    }
-    .call-stack-section {
-      flex: 0.3;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .memory-objects-section {
-      flex: 0.7;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .call-stack-section h4,
-    .memory-objects-section h4 {
-      margin: 0;
-      padding: 10px 0;
-      text-align: center;
-      font-size: 16px;
-      font-weight: bold;
-      background-color: #f1f1f1;
-      border-bottom: 2px solid #ccc;
-    }
-    .vertical-divider {
-      width: 2px;
-      background-color: #ccc;
-      height: 100%;
-      align-self: stretch;
-    }
-    /* Make each stack entry have spacing so they don't overlap */
-    .call-stack-entry {
-      width: 100%;
-      margin-bottom: 10px;
-    }
-    
-    /* Tree Visualization Styles */
-    .tree-visualization {
-      position: relative;
-      width: 95%;
-      min-height: 400px;
-      border: 1px solid #ccc;
-      background-color: #fff;
-      padding: 10px;
-      overflow: hidden;
-    }
-    .tree-node {
-      position: absolute;
-      padding: 8px 12px;
-      border: 2px solid #4CAF50;
-      border-radius: 50%;
-      background-color: #e7f9e7;
-      text-align: center;
-      font-weight: bold;
-      width: 50px;
-      height: 50px;
-      line-height: 30px;
-      transition: all 0.5s ease;
-    }
-    /* Highlight (brushing) style: yellow background with orange outline */
-    .highlight, .brushed {
-      background-color: yellow !important;
-      outline: 2px solid orange !important;
-    }
-    /* Grey out unvisited nodes – they will be gray when not actively traversed */
-    .greyed-out {
-      background-color: #ccc !important;
-      border-color: #ccc !important;
-      opacity: 1 !important;
+      object-fit: contain;
     }
     /* Control Buttons */
     .iteration-control {
@@ -183,8 +94,11 @@
   </style>
 </head>
 <body>
+  <div id="app">
   <!-- Step Explanation -->
-  <div class="step-explanation" id="step-explanation">Step 0: Initial tree structure.</div>
+  <div class="step-explanation" id="step-explanation">
+    Step 0: <code>Initial</code>.
+  </div>
   
   <!-- Main Container -->
   <div class="container">
@@ -217,26 +131,14 @@ delete_item(70)</span>
     
     <!-- Memory Visualization Window -->
     <div class="memory-window" id="memory-window">
-      <h3>Memory Visualization (Call Stack)</h3>
-      <div class="memory-content">
-        <!-- Call Stack -->
-        <div class="call-stack-section" id="call-stack">
-          <h4>Call Stack</h4>
-        </div>
-        <div class="vertical-divider"></div>
-        <!-- (Additional memory objects could be shown here) -->
-        <div class="memory-objects-section" id="memory-objects">
-          <h4>Memory Objects</h4>
-        </div>
-      </div>
+      <h3>Memory Visualization</h3>
+      <img id="memoryImage" src="Memory/Step0.png" alt="Memory Step 0">
     </div>
     
-    <!-- Tree Visualization Window -->
+    <!-- Visual (Tree) Visualization Window -->
     <div class="visual-window">
       <h3>Tree Visualization</h3>
-      <div class="tree-visualization">
-        <!-- Tree nodes and connecting lines will appear here -->
-      </div>
+      <img id="visualImage" src="Visual/Step0.png" alt="Visual Step 0">
     </div>
   </div>
   
@@ -248,7 +150,7 @@ delete_item(70)</span>
     <button onclick="runAllSteps()">Run All Steps</button>
     <button onclick="resetSteps()">Reset</button>
   </div>
-  
+</div>
   <script>
     /********* Firebase Initialization (optional) **********/
     const firebaseConfig = {
@@ -278,168 +180,37 @@ delete_item(70)</span>
     
     /********* Global Variables **********/
     let currentStep = 0;
-    const totalSteps = 6;
+    const totalSteps = 6;  // Steps 0 through 6
     const stepDescriptions = [
-      "Step 1: We call delete_item(70) on the tree with root 50 (starting traversal).",
-      "Step 2: Traversing nodes: 50 → 30 → 70. (Active traversal highlights these nodes.)",
-      "Step 3: Target node 70 is located. Highlight node 70.",
-      "Step 4: Mark node 70 as 'deleting'.",
-      "Step 5: Promote node 60 to replace 70 and attach node 80 under 60. Previous traversal is now finished.",
-      "Step 6: Final tree structure after deletion."
+      "Step 0: <code>Initial</code>.",
+      "Step 1: <code>delete_item(70)</code> called on the <code>root</code> – it is not <code>70</code>.",
+      "Step 2: <code>delete_item(70)</code> called on <code>subtree[0]</code> but <code>30</code> is not <code>70</code>.",
+      "Step 3: <code>delete_item(70)</code> called on <code>subtree[1]</code> and this node should be <code>deleted</code>.",
+      "Step 4: Need to promote the last child (<code>80</code>) – <code>pop()</code> it.",
+      "Step 5: Replace current tree's node with <code>child's root</code>.",
+      "Step 6: <code>New tree</code>."
     ];
     const stepInfo = document.getElementById('step-info');
     const stepExplanation = document.getElementById('step-explanation');
     
-    // Global constant for deletion target.
-    const deleteTarget = 70;
-    // Keep track of nodes visited/traversed during an active traversal
-    let traversedNodes = [];
-    
-    // Initial tree data
-    let treeData = {
-      value: 50,
-      children: [
-        { value: 30, children: [] },
-        { value: 70, children: [
-            { value: 60, children: [] },
-            { value: 80, children: [] }
-        ]}
-      ]
-    };
-    
-    /********* Update Tree Visualization with Arrows **********/
-    function updateTreeDiagram(tree) {
-      const treeContainer = document.querySelector('.tree-visualization');
-      if (!treeContainer) {
-        console.error("Tree container not found.");
-        return;
-      }
-      treeContainer.innerHTML = '';
-      
-      // Create an SVG for the connecting lines (with arrow markers)
-      let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      svg.setAttribute("class", "tree-lines");
-      svg.setAttribute("width", treeContainer.offsetWidth);
-      svg.setAttribute("height", treeContainer.offsetHeight);
-      svg.style.position = "absolute";
-      svg.style.top = "12.5";
-      svg.style.left = "12.5";
-
-      // Define an arrow marker in <defs>, so lines have arrowheads.
-      const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
-      const marker = document.createElementNS("http://www.w3.org/2000/svg", "marker");
-      marker.setAttribute("id", "arrow");
-      marker.setAttribute("markerWidth", "10");
-      marker.setAttribute("markerHeight", "10");
-      marker.setAttribute("refX", "0");
-      marker.setAttribute("refY", "3");
-      marker.setAttribute("orient", "auto");
-      marker.setAttribute("markerUnits", "strokeWidth");
-      // The arrowhead path
-      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-      path.setAttribute("d", "M0,0 L0,6 L9,3 z");
-      path.setAttribute("fill", "#ccc");
-      marker.appendChild(path);
-      defs.appendChild(marker);
-      svg.appendChild(defs);
-
-      treeContainer.appendChild(svg);
-      
-      /**
-       * Recursive function to draw a node and lines from its parent.
-       * x,y = top-left corner for the node’s DIV
-       * (parentCenterX, parentCenterY) = center coordinates of parent's node
-       */
-      function drawNode(node, x, y, parentCenterX, parentCenterY, parentVal) {
-        const nodeWidth = 50, nodeHeight = 50;
-        const nodeCenterX = x + nodeWidth / 2;
-        const nodeCenterY = y + nodeHeight / 2;
-        
-        // If there's a parent, draw a line from parent's center to this node's center
-        if (parentCenterX !== undefined && parentCenterY !== undefined) {
-          let line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-          line.setAttribute("x1", parentCenterX);
-          line.setAttribute("y1", parentCenterY - 5);
-          line.setAttribute("x2", nodeCenterX);
-          line.setAttribute("y2", y - 25);
-          
-          // Highlight line only if both nodes are actively traversed.
-          if (traversedNodes.includes(parentVal) && traversedNodes.includes(node.value)) {
-            line.setAttribute("stroke", "orange");
-            line.setAttribute("stroke-width", "4");
-            line.setAttribute("marker-end", "url(#arrow)");
-            line.setAttribute("stroke-linecap", "round");
-          } else {
-            // Default grey arrow
-            line.setAttribute("stroke", "#ccc");
-            line.setAttribute("stroke-width", "2");
-            line.setAttribute("marker-end", "url(#arrow)");
-          }
-          svg.appendChild(line);
-        }
-        
-        // Create the node's DIV and determine its styling.
-        const nodeDiv = document.createElement('div');
-        let classes = ['tree-node'];
-        // If the node is promoted, highlight it.
-        if (node.promoted) {
-          classes.push('highlight');
-        }
-        // If it's actively traversed (and not cleared), highlight it.
-        else if (node.deleting || traversedNodes.includes(node.value)) {
-          classes.push('highlight');
-        }
-        // Otherwise, grey it out.
-        else {
-          classes.push('greyed-out');
-        }
-        
-        // Special highlight for the deletion target in steps 3-4.
-        if (node.value === deleteTarget && currentStep >= 3 && currentStep < 5) {
-          classes.push('highlight');
-        }
-        nodeDiv.className = classes.join(" ");
-        
-        nodeDiv.style.left = `${x}px`;
-        nodeDiv.style.top = `${y}px`;
-        nodeDiv.textContent = node.deleting ? "Deleting" : (node.value !== null ? node.value : "None");
-        
-        treeContainer.appendChild(nodeDiv);
-        
-        // Recursively draw children
-        if (node.children && node.children.length > 0) {
-          const childCount = node.children.length;
-          const offsetX = 100;
-          node.children.forEach((child, index) => {
-            // Spread children horizontally
-            const childX = x - ((childCount - 1) * offsetX) / 2 + index * offsetX;
-            const childY = y + 100;
-            drawNode(child, childX, childY, nodeCenterX, nodeCenterY, node.value);
-          });
-        }
-      }
-      
-      // Draw from the root
-      drawNode(tree, treeContainer.offsetWidth / 2 - 25, 20);
+    function scaleApp() {
+      const app = document.getElementById('app');
+      // For example, base design is for 1920px width
+      const scaleFactor = window.innerWidth / 1200;
+      app.style.transform = 'scale(' + scaleFactor + ')';
+      app.style.transformOrigin = 'center center';
     }
-    
-    /********* Call Stack Functions **********/
-    function addCallStackEntry(title, description, brushed = false) {
-      const callStack = document.getElementById('call-stack');
-      if (!callStack) return;
-      const entry = document.createElement('div');
-      entry.className = 'call-stack-entry';
-      if (brushed) entry.classList.add('brushed');
-      entry.innerHTML = `<strong>${title}</strong>: ${description}`;
-      callStack.appendChild(entry);
+
+    /********* Update Memory & Visual Images **********/
+    function updateImages(step) {
+      document.getElementById("memoryImage").src = `Memory/Step${step}.png`;
+      document.getElementById("visualImage").src = `Visual/Step${step}.png`;
     }
     
     /********* Step Description & Info **********/
     function updateStepDescription(step) {
-      if (step >= 1 && step <= stepDescriptions.length) {
-        stepExplanation.textContent = stepDescriptions[step - 1];
-      } else {
-        stepExplanation.textContent = "Step 0: Initial tree structure.";
+      if (step >= 0 && step <= totalSteps) {
+        stepExplanation.innerHTML = stepDescriptions[step];
       }
     }
     function updateStepInfo(step) {
@@ -448,99 +219,52 @@ delete_item(70)</span>
     
     /********* Code Highlighting **********/
     function highlightCode(step) {
+      // Remove previous highlights
       for (let i = 1; i <= 17; i++) {
         const line = document.getElementById(`line${i}`);
         if (line) line.classList.remove('highlight');
       }
-      // Example highlight logic
-      if (step === 1) {
-        document.getElementById('line17').classList.add('highlight');
-      } else if (step >= 2 && step < 6) {
-        document.getElementById('line12').classList.add('highlight');
+      // Highlight code lines based on the current step.
+      // (These mappings are approximate based on the new description.)
+      switch(step) {
+        case 1:
+          document.getElementById('line17').classList.add('highlight');
+          break;
+        case 2:
+          document.getElementById('line11').classList.add('highlight');
+          break;
+        case 3:
+          document.getElementById('line15').classList.add('highlight');
+          break;
+        case 4:
+          document.getElementById('line15').classList.add('highlight');
+          break;
+        case 5:
+          document.getElementById('line16').classList.add('highlight');
+          break;
+        case 6:
+          document.getElementById('line16').classList.add('highlight');
+          break;
+        default:
+          break;
       }
     }
     
     /********* Reset Visualization **********/
     function resetSteps() {
       currentStep = 0;
-      traversedNodes = [];
-      const callStack = document.getElementById('call-stack');
-      if (callStack) callStack.innerHTML = "<h4>Call Stack</h4>";
-      const memoryObjects = document.getElementById('memory-objects');
-      if (memoryObjects) memoryObjects.innerHTML = "<h4>Memory Objects</h4>";
-      
-      // Reset the tree data
-      treeData = {
-        value: 50,
-        children: [
-          { value: 30, children: [] },
-          { value: 70, children: [
-              { value: 60, children: [] },
-              { value: 80, children: [] }
-          ]}
-        ]
-      };
-      
-      updateTreeDiagram(treeData);
-      highlightCode(0);
-      updateStepDescription(0);
-      updateStepInfo(0);
+      updateImages(currentStep);
+      highlightCode(currentStep);
+      updateStepDescription(currentStep);
+      updateStepInfo(currentStep);
       logInteraction('resetSteps', { step: currentStep });
     }
     
     /********* Execute a Step **********/
     function executeStep(step) {
-      switch(step) {
-        case 1:
-          // Step 1: Call delete_item(70) on the tree with root=50.
-          addCallStackEntry("delete_item(70)", "Called on tree with root 50.", true);
-          updateTreeDiagram(treeData);
-          break;
-        case 2:
-          // Step 2: Actively traverse the tree: 50 → 30 → 70.
-          traversedNodes = [50, 30, 70];
-          addCallStackEntry("traverse", "Visiting node 50.", true);
-          addCallStackEntry("traverse", "Visiting node 30.", true);
-          addCallStackEntry("traverse", "Visiting node 70.", true);
-          updateTreeDiagram(treeData);
-          break;
-        case 3:
-          // Step 3: Target node 70 is found.
-          addCallStackEntry("target_found", "Node 70 located.", true);
-          updateTreeDiagram(treeData);
-          break;
-        case 4:
-          // Step 4: Mark node 70 as 'deleting'.
-          addCallStackEntry("delete", "Marking node 70 as 'deleting'.", true);
-          if (treeData.children[1] && treeData.children[1].value === 70) {
-            treeData.children[1].deleting = true;
-          }
-          updateTreeDiagram(treeData);
-          break;
-        case 5:
-          // Step 5: Clear previous traversal and promote node 60.
-          traversedNodes = []; // Clear traversal highlights.
-          addCallStackEntry("promote", "Promoting node 60 to replace 70; attach 80 under 60.", true);
-          if (treeData.children[1] && treeData.children[1].value === 70) {
-            let deletedNode = treeData.children[1];
-            let promotedNode = deletedNode.children[0]; // node 60.
-            if (deletedNode.children[1]) {
-              promotedNode.children.push(deletedNode.children[1]); // attach node 80.
-            }
-            // Mark the promoted node so it gets highlighted.
-            promotedNode.promoted = true;
-            treeData.children[1] = promotedNode;
-          }
-          updateTreeDiagram(treeData);
-          break;
-        case 6:
-          // Step 6: Final tree structure.
-          addCallStackEntry("final_state", "Deletion complete; final tree structure displayed.", true);
-          updateTreeDiagram(treeData);
-          break;
-        default:
-          break;
-      }
+      // For this revised version the visualization is entirely image-based.
+      // We simply update the images, code highlighting, and step description.
+      updateImages(step);
       highlightCode(step);
       updateStepDescription(step);
       updateStepInfo(step);
@@ -562,10 +286,7 @@ delete_item(70)</span>
     function decrementStep() {
       if (currentStep > 0) {
         currentStep--;
-        resetSteps();
-        for (let i = 1; i <= currentStep; i++) {
-          executeStep(i);
-        }
+        executeStep(currentStep);
         logInteraction('decrementStep', { step: currentStep });
       } else {
         alert("Already at the first step.");
@@ -580,6 +301,8 @@ delete_item(70)</span>
     }
     
     window.onload = () => {
+      window.addEventListener('resize', scaleApp);
+      window.addEventListener('load', scaleApp);
       resetSteps();
     };
   </script>
