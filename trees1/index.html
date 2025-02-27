@@ -192,14 +192,6 @@ delete_item(70)</span>
     ];
     const stepInfo = document.getElementById('step-info');
     const stepExplanation = document.getElementById('step-explanation');
-    
-    function scaleApp() {
-      const app = document.getElementById('app');
-      // For example, base design is for 1920px width
-      const scaleFactor = window.innerWidth / 1200;
-      app.style.transform = 'scale(' + scaleFactor + ')';
-      app.style.transformOrigin = 'center center';
-    }
 
     /********* Update Memory & Visual Images **********/
     function updateImages(step) {
@@ -301,8 +293,6 @@ delete_item(70)</span>
     }
     
     window.onload = () => {
-      window.addEventListener('resize', scaleApp);
-      window.addEventListener('load', scaleApp);
       resetSteps();
     };
   </script>
