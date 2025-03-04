@@ -23,17 +23,11 @@ export interface VisualNode {
 export interface StepConfig {
   description: string;
   highlightLine?: number;
-  memoryData?: {
-    main: { [key: string]: string };
-    classes: { [key: string]: any };
-    objects: { [key: string]: any };
-  };
-  callStack?: {
-    id: string;
-    title: string;
-    attributes: { name: string; value: string }[];
-  }[];
-  visualNodes?: { data: number; hasNext: boolean; }[];
+  memoryData?: any;
+  callStack?: any[];
+  visualNodes?: any[];
+  memoryImagePath?: string;
+  visualImagePath?: string;
 }
 
 export interface StepConfigs {
