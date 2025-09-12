@@ -1,0 +1,293 @@
+/* Existing CSS */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+    flex-direction: column;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+h1 {
+    grid-column: span 2;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.iteration-control {
+    grid-column: span 2;
+    text-align: center;
+}
+
+.iteration-control button {
+    margin: 5px;
+}
+
+.input-control {
+    grid-column: span 2;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.input-control label {
+    margin-right: 10px;
+}
+
+.input-control input {
+    padding: 5px;
+    font-size: 16px;
+    width: 60px;
+    text-align: center;
+}
+
+.code-window, .visual-window, .memory-window {
+    flex: 1;
+    margin: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.code-window h3, .visual-window h3, .memory-window h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.code-window pre {
+    margin: 0;
+    white-space: pre-wrap; /* Preserves formatting and wraps lines if necessary */
+    padding: 0 30px 0 10px; /* Adds 10px padding on the right side */
+    text-align: left; /* Align text to the left */
+    display: flex; /* Use flexbox to align child elements */
+    flex-direction: column; /* Arrange child elements in a column */
+    align-items: flex-start; /* Align child elements to the start (left) */
+}
+
+.code-window span {
+    display: inline-block; /* Ensure each line of code is on a new line */
+    padding: 0;
+    margin: 0;
+    text-align: left; /* Align span content to the left */
+    white-space: nowrap; /* Prevents individual spans from wrapping */
+}
+
+.highlight {
+    background-color: yellow;
+    outline: 3px solid #ff6a00; /* Adds an orange outline */
+    outline-offset: 3px; /* Optional: Adds some space between the element and the outline */
+}
+
+.highlight-changes {
+    stroke: #ff6a00 !important; /* Only affects lines */
+    fill: #ffff00 !important; /* Affects fill for rect elements */
+    stroke-width: 3 !important;
+}
+
+.highlight-arrow {
+    stroke: #ff6a00 !important; /* Only affects lines */
+    stroke-width: 2 !important;
+}
+
+.dashed-arrow {
+    stroke-dasharray: 5, 5;
+    stroke: #757575 !important; /* Only affects lines */
+}
+
+/* New specific styles */
+.highlight-text {
+    fill: black !important; /* Ensures text remains black */
+}
+
+.step-explanation {
+    background-color: #e4edef; /* Light blue background */
+    color: #000000; /* Darker blue text */
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 24px; /* Increase font size */
+    font-weight: bold;
+}
+
+
+.visual-window {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.visual-window svg {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.memory-window {
+    grid-column: span 2;
+    text-align: center;
+}
+
+.memory-block {
+    display: flex;
+    align-items: center;
+    margin: 10px;
+}
+
+.variable-name {
+    background-color: lightblue;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.pointer {
+    width: 30px;
+    height: 2px;
+    background-color: black;
+    margin: 0 10px;
+    position: relative;
+}
+
+.pointer::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent transparent black;
+}
+
+.memory-value {
+    background-color: #cdf8bf;
+    border: 1px solid #9ccd8b;
+    border-radius: 5px;
+    padding: 10px;
+    min-width: 40px;
+    text-align: center;
+}
+.hidden {
+    display: none;
+}
+
+#interactive-element {
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+:root {
+  --c-blue-bg: #e0f0ff;   /* light blue background */
+  --c-blue-border: #b0d4f1;
+  --c-blue-text: #0f3d63; /* darker ink for readability */
+  --c-blue-hover: #cde6fc;
+  --c-blue-active: #b3d9f7;
+}
+
+.btn--blue {
+  background: var(--c-blue-bg);
+  border: 1px solid var(--c-blue-border);
+  color: var(--c-blue-text);
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: background-color .2s ease, transform .05s ease;
+}
+
+.btn--blue:hover {
+  background: var(--c-blue-hover);
+}
+
+.btn--blue:active {
+  background: var(--c-blue-active);
+  transform: translateY(1px);
+}
+
+.btn--blue:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59,130,246,.35); /* soft focus ring */
+}
+
+
+/* Make the info 'i' button match the new style */
+.info-button{
+  all: unset;
+  display: grid;
+  place-items: center;
+  width: 22px; height: 22px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  color: #111827;
+  font-size: 14px; font-weight: 700;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: transform .05s ease, background-color .2s ease, box-shadow .2s ease;
+}
+.info-button:hover{ background: #f3f4f6; }
+.info-button:active{ transform: translateY(1px); }
+
+/* Arrange iteration controls a bit nicer */
+.iteration-control{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.iteration-control #step-info{
+  font-weight: 700;
+  color: #374151;
+}
+
+/* Respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce){
+  .btn, .info-button{
+    transition: none;
+  }
+}
+
+.variable {
+    font-family: 'Courier New', Courier, monospace; /* Example font */
+    color:#ff6a00
+}
+
+pre, code {
+    font-size: 18px; /* Increase font size as needed */
+    line-height: 1.5; /* Optional: Improve readability with increased line height */
+    font-family: 'Courier New', Courier, monospace; /* Ensure it's a monospaced font */
+}
+
+pre {
+    text-align: left; /* Aligns text to the left */
+    margin: 0; /* Removes default margin */
+    padding: 0; /* Removes default padding */
+}
+
+@media (prefers-color-scheme: dark){
+  :root{
+    --c-neutral-bg: #1f2937;
+    --c-neutral-ink: #f9fafb;
+  }
+  body{ background-color: #0b0f14; }
+  .btn--ghost{ border-color: #374151; color: #e5e7eb; }
+  .info-button{ background: #374151; color: #f9fafb; }
+}
