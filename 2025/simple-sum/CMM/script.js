@@ -375,6 +375,7 @@ function hideInteractive() {
     interactiveElement.classList.add('hidden');
 }
 
+window.addEventListener('resize', updateVisual);
 window.onload = () => {
     updateCodeHighlight();
     updateMemory();
