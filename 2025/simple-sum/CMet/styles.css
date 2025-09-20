@@ -1,6 +1,6 @@
 #scale-root {
   width: 1200px;     
-  min-height: 800px;   
+  min-height: 500px; 
   transform-origin: top center;
   margin: 0 auto;  
   -webkit-font-smoothing: antialiased;
