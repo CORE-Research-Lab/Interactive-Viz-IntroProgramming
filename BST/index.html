@@ -141,6 +141,7 @@
     <div class="iteration-control">
       <span id="step-info">Step 0</span>
       <button onclick="decrementStep()">Previous Step</button>
+      <button onclick="generateHint()">Hint</button>
       <button onclick="incrementStep()">Next Step</button>
       <button onclick="runAllSteps()">Run All Steps</button>
       <button onclick="resetSteps()">Reset</button>
@@ -295,6 +296,11 @@
       while (currentStep < totalSteps) {
         incrementStep();
       }
+    }
+
+    /********* Hint Execution **********/
+    function generateHint(step) {
+      pass
     }
     
     window.onload = () => {
