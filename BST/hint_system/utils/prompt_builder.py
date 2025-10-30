@@ -1,4 +1,4 @@
-"The prompt that the LLM will have, kept in a seperate file so it's able to be edited"
+
 
 # Variablizing these two inputs so that they can be reused in the future 
 concept = "Binary Search tree - __contains__ method"
@@ -16,13 +16,23 @@ bst1.__contains__(30)
 """
 
 def llm_prompt(code_context, current_node, previous_hints):
-    # create history_context of all previous hints as a string 
+    """
+    Function for creating the  prompt that the LLM will have which changes dynamically 
+    due to the changing context at each step.
+    """
+    history_context = "\n".join(previous_hints) if previous_hints else "None so far." 
     return f"""
-You are a teaching assistant for CSC148. The student is learning about {concept}.
+You are a teaching assistant for CSC148. 
+The student is learning about {concept}.
 
-Concept's code: {concept_code}
-Current step: {code_context}
-Highlighted node: {current_node}
+Concept's code:
+{concept_code}
+
+Current code execution context:
+{code_context}
+
+Highlighted node in visualization:
+{current_node}
 
 Prior hints so far:
 {history_context}

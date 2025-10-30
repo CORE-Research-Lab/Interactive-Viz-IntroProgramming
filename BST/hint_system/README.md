@@ -11,6 +11,10 @@
 - creating plan for flask + req setup with hardcoded line for now
 
 ### Week 2 (Oct 28 - Nov 3):
+- created flask pipeline, still need to write some of the functions required
+- wrote the build_prompt function
+- wrote the parse_hints function
+x need to connect actual LLM model to start testing how the output is being produced
 
 ### Week 3 (Nov 4 - Nov 10):
 
