@@ -1,7 +1,8 @@
 "The prompt that the LLM will have, kept in a seperate file so it's able to be edited"
 
-
-concept = """
+# Variablizing these two inputs so that they can be reused in the future 
+concept = "Binary Search tree - __contains__ method"
+concept_code = """
 def __contains__(self, item: Any) -> bool:
     if self.is_empty():
         return False
@@ -19,6 +20,7 @@ def llm_prompt(code_context, current_node, previous_hints):
     return f"""
 You are a teaching assistant for CSC148. The student is learning about {concept}.
 
+Concept's code: {concept_code}
 Current step: {code_context}
 Highlighted node: {current_node}
 
