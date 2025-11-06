@@ -17,7 +17,7 @@
 x need to connect actual LLM model to start testing how the output is being produced
 
 ### Week 3 (Nov 4 - Nov 10):
-
+- Started creating the frontend script - button functionality and updating
 
 ### Week 4 (Nov 11 - Nov 15):
 

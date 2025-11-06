@@ -3,7 +3,13 @@ Provides the output of the hints in a dictionary format
 """
 
 def parse_hints(raw_text):
+    """
+    Provides the output of the hints in a dictionary format.
+    """
     hints = {}
+    if not raw_text or not raw_text.strip():
+        return {"hints":{}, "error": "No hints provided"}
+
     for line in raw_text.strip().split("\n"):
         line = line.strip()
         print(f"here is the line: {line}")
