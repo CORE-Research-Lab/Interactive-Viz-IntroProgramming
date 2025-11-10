@@ -19,10 +19,12 @@ x need to connect actual LLM model to start testing how the output is being prod
 ### Week 3 (Nov 4 - Nov 10):
 - Started creating the frontend script - button functionality and updating
 - setup GCP account + Gemini API Key
+- tested the backend-- working 
 - fixed the helper functions files in utils/
 - worked more on the frontend logic that connects to the backend (hint-system.js)
-### Week 4 (Nov 11 - Nov 15):
 
+### Week 4 (Nov 11 - Nov 15):
+x continue working on hint-system.js and test it out 
 
 ### Issue Log:
 
