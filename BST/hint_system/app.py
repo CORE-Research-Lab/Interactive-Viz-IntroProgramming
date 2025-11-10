@@ -18,8 +18,8 @@ app = Flask(__name__)
 
 @app.route("/generate_hint", methods=["POST"])
 def generate_hint():
-    """
-    function docstring
+    """ 
+    Function that will generate a hint for the current node in the BST.
     """
     # Extract the data from the input
     data = request.get_json()
@@ -29,7 +29,6 @@ def generate_hint():
 
     # Build the prompt for the LLM
     build_prompt = llm_prompt(code_context, current_node, previous_hints)
-    print(build_prompt)
     # Call the LLM agent with the prompt
     llm_output = generate_hints(build_prompt)
     print(llm_output)
