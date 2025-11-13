@@ -9,8 +9,6 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <!-- Hint System -->
-  <script src="hint_system/hint-system.js"></script>
-  <button id="hint-button" onclick=""generateHint()>Hint</button>
   <style>
     /* Global Styles */
     body {
@@ -144,6 +142,7 @@
     <div class="iteration-control">
       <span id="step-info">Step 0</span>
       <button onclick="decrementStep()">Previous Step</button>
+      <button id="hint-button" onclick="generateHint()">Hint</button>
       <button onclick="incrementStep()">Next Step</button>
       <button onclick="runAllSteps()">Run All Steps</button>
       <button onclick="resetSteps()">Reset</button>
@@ -179,6 +178,7 @@
 
     /********* Global Variables **********/
     let currentStep = 0;
+    window.currentStep = currentStep;
     // Adjust totalSteps based on your explanation steps.
     // For this example, we show steps for searching for the value 30.
     const totalSteps = 4;
@@ -189,7 +189,13 @@
       "Step 3: In the left subtree, compare 30 with node 20. Since 30 &gt; 20, check the right subtree of 20 (which should contain 30).",
       "Step 4: 30 is found in the right subtree of 20 – search completed."
     ];
-
+    const stepNodeMap = [
+      {value: null, position: "initial", label: "Starting state"},
+      {value: 40, position: "root", label: "Root"},
+      {value: 20, position: "left", label: "Left child of 40"},
+      {value: 30, position: "right", label: "Right child of 20"},
+      {value: 30, position: "right", label: "Right child of 20"},
+    ]
     const stepInfo = document.getElementById('step-info');
     const stepExplanation = document.getElementById('step-explanation');
 
@@ -255,6 +261,7 @@
     /********* Reset Visualization **********/
     function resetSteps() {
       currentStep = 0;
+      window.currentStep = 0;
       updateImages(currentStep);
       highlightCode(currentStep);
       updateStepDescription(currentStep);
@@ -275,7 +282,18 @@
     function incrementStep() {
       if (currentStep < totalSteps) {
         currentStep++;
+        window.currentStep = currentStep;
         executeStep(currentStep);
+        // ----- reset hint state when step changes -----
+        if (!hintHistory[currentStep]) {
+          hintHistory[currentStep] = {hints: [],hintsShown: 0};
+        }else{
+          hintHistory[currentStep].hints= [];
+          hintHistory[currentStep].hintsShown = 0;
+        }
+        // ----- update hint button text -----
+        updateHintButtonText();
+        // --------------------------------------------------
         logInteraction('incrementStep', { step: currentStep });
       } else {
         alert("All steps completed.");
@@ -286,7 +304,20 @@
     function decrementStep() {
       if (currentStep > 0) {
         currentStep--;
+        window.currentStep = currentStep;
         executeStep(currentStep);
+        // ----- reset hint state when step changes -----
+        if (!hintHistory[currentStep]) {
+          hintHistory[currentStep] = {hints: [], hintsShown: 0, lastHint: null, lastHintLevel: 0};
+        }else{
+          hintHistory[currentStep].hints= [];
+          hintHistory[currentStep].hintsShown = 0;
+          hintHistory[currentStep].lastHint = null;
+          hintHistory[currentStep].lastHintLevel = 0;
+        }
+        // ----- update hint button text -----
+        updateHintButtonText();
+        // --------------------------------------------------
         logInteraction('decrementStep', { step: currentStep });
       } else {
         alert("Already at the first step.");
@@ -307,4 +338,5 @@
     };
   </script>
 </body>
+<script src="hint_system/hint-system.js"></script>
 </html>

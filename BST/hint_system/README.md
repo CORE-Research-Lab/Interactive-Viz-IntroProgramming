@@ -24,8 +24,11 @@ x need to connect actual LLM model to start testing how the output is being prod
 - worked more on the frontend logic that connects to the backend (hint-system.js)
 
 ### Week 4 (Nov 11 - Nov 15):
-x continue working on hint-system.js and test it out 
+ - edited the llm prompt to fix output of the set of hints
+ - fixed the hint button displaying remaining hints
+ - hint count resetting b/w code steps is working too
+ x have to fix storage of previous hints
 
 ### Issue Log:
-
+x have to strengthen the llm prompt to make sure it doesn't produce even a slightly different output than expected
 

@@ -33,7 +33,7 @@ Current program state:
 Previous hints:
 {history_context}
 
-Now, generate the next **5 step-by-step hints** in this exact structured format:
+Only once, produce one list of 5 hints that follow this format, using exactly the numbering shown:
 1. Prompt (a reflective question)
 2. Reasoning (the logic behind what to check or infer)
 3. Explanation (conceptual summary)
