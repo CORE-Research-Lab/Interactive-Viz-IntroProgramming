@@ -24,9 +24,27 @@ function revealHintLevel(stepData){
     if (!currentHint || !level_key){
         return false;
     }
+    const hintText = currentHint[level_key];
+    const currentStep = window.currentStep ?? 0;
+
     document.querySelector(".hint-content").innerHTML = `
-    <h3>${level_labels[level_key]}</h3>
-    <p>${currentHint[level_key]}</p>
+        <h3>${level_labels[level_key]}</h3>
+        <p>${hintText}</p>
+        <div class="hint-feedback" style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #ddd; text-align: center;">
+            <p style="margin-bottom: 10px; color: #666; font-size: 14px;">Was this hint helpful?</p>
+            <button onclick="submitHintFeedback(${currentStep}, ${index}, 'up')" 
+                    id="thumbs-up-${currentStep}-${index}"
+                    class="feedback-btn" 
+                    style="background: none; border: 2px solid #4CAF50; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer; margin-right: 10px; transition: all 0.2s;">
+                👍
+            </button>
+            <button onclick="submitHintFeedback(${currentStep}, ${index}, 'down')" 
+                    id="thumbs-down-${currentStep}-${index}"
+                    class="feedback-btn" 
+                    style="background: none; border: 2px solid #f44336; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer; transition: all 0.2s;">
+                👎
+            </button>
+        </div>
     `;
     document.getElementById("hint-modal").style.display = "block";
 
