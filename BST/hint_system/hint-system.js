@@ -118,7 +118,8 @@ async function generateHint(){
             hints: [],
             hintsShown: 0,
             lastHint: null,
-            lastHintLevel: 0
+            lastHintLevel: 0,
+            feedback: {}
         };
     const stepData = hintHistory[currentStep];
     const code_context = getCodeContext();
@@ -190,11 +191,11 @@ function createHintModal(){
     `;
     document.body.appendChild(modal);
     // Close modal when clicking outside
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            closeHintModal();
-        }
-    });
+    // modal.addEventListener('click', function(e) {
+    //     if (e.target === modal) {
+    //         closeHintModal();
+    //     }
+    // });
 }
 
 /**

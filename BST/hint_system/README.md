@@ -28,7 +28,8 @@ x need to connect actual LLM model to start testing how the output is being prod
  - fixed the hint button displaying remaining hints
  - hint count resetting b/w code steps is working too
  x have to fix storage of previous hints
+ - added hint feedback buttons + logged into firebase 
 
 ### Issue Log:
-x have to strengthen the llm prompt to make sure it doesn't produce even a slightly different output than expected
+- have to strengthen the llm prompt to make sure it doesn't produce even a slightly different output than expected
 

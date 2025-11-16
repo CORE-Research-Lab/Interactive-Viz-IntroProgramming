@@ -333,11 +333,33 @@
     
     /********* Feedback Button **********/
     function submitHintFeedback(step, levelIndex, feedbackType) {
+      // Access variables from hint-system.js
       const level_key = level_order[levelIndex];
       const stepData = hintHistory[step];
+
       const hintText = stepData.lastHint?.[level_key] || '';
-      
+
+      if (!stepData.feedback) stepData.feedback={};
+
+      // feedback key
+      const feedbackKey = `${step}_${levelIndex}`;
+
       // LOG THE FEEDBACK TO FIREBASE
+      const feedbackData = {
+        step:step,
+        level:level_key,
+        levelIndex : levelIndex,
+        hintText: hintText?.substring(0,100) || '',
+        rating: feedbackType === 'up' ? 'thumbs_up' : 'thumbs_down'
+      }
+
+      stepData.feedback[feedbackKey] = feedbackData;
+
+      if (window.logInteraction) {
+        window.logInteraction('hint_feedback', feedbackData);
+      }else{
+        console.log('hint_feedback', feedbackData);
+      }
 
       // Visual feedback - disable buttons and show confirmation
       const upThumbs = document.getElementById(`thumbs-up-${step}-${levelIndex}`);
