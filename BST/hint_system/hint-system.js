@@ -17,6 +17,9 @@ const level_labels = {
     'next_step': 'Next Step'
 };
 
+// Robot assistant state   
+let robotInteractionsSetup = false;
+
 function revealHintLevel(stepData){
     const currentHint = stepData.lastHint;
     const index = stepData.lastHintLevel;
@@ -27,26 +30,30 @@ function revealHintLevel(stepData){
     const hintText = currentHint[level_key];
     const currentStep = window.currentStep ?? 0;
 
-    document.querySelector(".hint-content").innerHTML = `
-        <h3>${level_labels[level_key]}</h3>
-        <p>${hintText}</p>
-        <div class="hint-feedback" style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #ddd; text-align: center;">
-            <p style="margin-bottom: 10px; color: #666; font-size: 14px;">Was this hint helpful?</p>
-            <button onclick="submitHintFeedback(${currentStep}, ${index}, 'up')" 
-                    id="thumbs-up-${currentStep}-${index}"
-                    class="feedback-btn" 
-                    style="background: none; border: 2px solid #4CAF50; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer; margin-right: 10px; transition: all 0.2s;">
-                👍
-            </button>
-            <button onclick="submitHintFeedback(${currentStep}, ${index}, 'down')" 
-                    id="thumbs-down-${currentStep}-${index}"
-                    class="feedback-btn" 
-                    style="background: none; border: 2px solid #f44336; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer; transition: all 0.2s;">
-                👎
-            </button>
-        </div>
-    `;
-    document.getElementById("hint-modal").style.display = "block";
+    // Show hint in speech bubble
+    const speechBubbleContent = document.getElementById("speech-bubble-content");
+    if (speechBubbleContent) {
+        speechBubbleContent.innerHTML = `
+            <h3>${level_labels[level_key]}</h3>
+            <p>${hintText}</p>
+            <div class="speech-bubble-feedback">
+                <p>Was this hint helpful?</p>
+                <button onclick="submitHintFeedback(${currentStep}, ${index}, 'up')" 
+                        id="thumbs-up-${currentStep}-${index}"
+                        style="border-color: #4CAF50;">
+                    👍
+                </button>
+                <button onclick="submitHintFeedback(${currentStep}, ${index}, 'down')" 
+                        id="thumbs-down-${currentStep}-${index}"
+                        style="border-color: #f44336;">
+                    👎
+                </button>
+            </div>
+        `;
+    }
+
+    // Activate robot assistant
+    activateRobotAssistant();
 
     stepData.lastHintLevel ++;
     stepData.hintsShown ++;
@@ -143,12 +150,12 @@ async function generateHint(){
         }
         // Parse the response FROM the backend
         const data = await response.json();
-        const hints_dict = data.hint_output.hints; // dict of 5 hints (new)
+        const hints_dict = data.hint_output.hints; // dict of 5 hints 
         // store as formatted string
         const hintString = `Prompt: ${hints_dict.prompt || ''}\nReasoning: ${hints_dict.reasoning || ''}\nExplanation: ${hints_dict.explanation || ''}`;
 
         stepData.hints.push(hintString);
-        createHintModal();
+        activateRobotAssistant();
         stepData.lastHint = hints_dict;
         stepData.lastHintLevel = 0;
         revealHintLevel(stepData); // display the first hint
@@ -158,55 +165,44 @@ async function generateHint(){
         console.error("Error generating hint:", error);
     }
 }
+
 /**
- * Create modal popup 
+ * Create + activate the robot assistant
  */
-function createHintModal(){
-    // Check if modal already exists
-    if (document.getElementById('hint-modal')) {
+function activateRobotAssistant(){
+    const robot = document.getElementById('robot-assistant');
+    const speechBubble = document.getElementById('speech-bubble');
+    
+    if (!robot || !speechBubble) {
+        console.error('Robot assistant elements not found in HTML');
         return;
     }
-    // Create modal element
-    const modal = document.createElement('div');
-    modal.id = 'hint-modal';
-    modal.style.cssText = `
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0,0,0,0.5);
-    `;
-    
-    modal.innerHTML = `
-        <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%; max-width: 600px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-            <span onclick="closeHintModal()" style="color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; line-height: 20px;">&times;</span>
-            <div class="hint-content"></div>
-            <div style="margin-top: 20px; text-align: right;">
-                <button onclick="closeHintModal()" style="padding: 8px 16px; background-color: #bdd5d7; border: none; border-radius: 4px; cursor: pointer;">Close</button>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(modal);
-    // Close modal when clicking outside
-    // modal.addEventListener('click', function(e) {
-    //     if (e.target === modal) {
-    //         closeHintModal();
-    //     }
-    // });
+
+    // Activate robot
+    robot.classList.add('active');
+
+    // Show speech bubble with animation
+    setTimeout(() => {
+        speechBubble.classList.add('show');
+    }, 100);
 }
 
 /**
- * Close modal popup
+ * Collapse robot and hide speech bubble
  */
-function closeHintModal(hint){
-    /* Closes the modal popup */
-    const modal = document.getElementById('hint-modal');
-    if (modal){
-        modal.style.display = 'none';
-    }
+function collapseRobot(){
+    const robot = document.getElementById('robot-assistant');
+    const speechBubble = document.getElementById('speech-bubble');
+    
+    if (!robot || !speechBubble) return;
+
+    // Hide speech bubble
+    speechBubble.classList.remove('show');
+    
+    // Shrink robot back to idle state
+    setTimeout(() => {
+        robot.classList.remove('active');
+    }, 300);
 }
 
 /**

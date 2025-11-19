@@ -8,7 +8,6 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <!-- Hint System -->
   <style>
     /* Global Styles */
     body {
@@ -92,6 +91,106 @@
       background-color: yellow;
       outline: 2px solid orange;
     }
+    /* Robot Assistant Styles */
+    .robot-assistant {
+      position: fixed;
+      top: 550px;
+      right: 170px;
+      width: 90px;
+      height: 90px;
+      z-index: 100;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      opacity: 0.6;
+    }
+
+    .robot-assistant img {
+      width: 90px;
+      height: 90px;
+      object-fit: contain;
+      display: block;
+    }
+    .robot-assistant:hover {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+    .robot-assistant.active {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+    .ai-logo {
+      position: absolute;
+      width: 150px;
+      height: 50px;
+      left: -400px;
+      top: -650px;
+    }
+    /* Speech Bubble Styles */
+    .speech-bubble {
+      position: absolute;
+      bottom: 120px;
+      background-color: white;
+      border: 2px solid #bdd5d7;
+      border-radius: 12px;
+      padding: 15px;
+      max-height: 400px;
+      width: auto;
+      min-width: 150px;
+      max-width: 400px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      transform: translateY(10px) scale(0.9);
+      transition: all 0.3s ease;
+      pointer-events: none;
+      z-index: 1001;
+      overflow-y: auto;
+      word-wrap: break-word;
+    }
+    .speech-bubble.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+    .speech-bubble-content {
+      font-size: 14px;
+      line-height: 1.5;
+      color: #333;
+    }
+    .speech-bubble-content h3 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
+      color: #2c3e50;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 5px;
+    }
+    .speech-bubble-content p {
+      margin: 0 0 10px 0;
+    }
+    .speech-bubble-feedback {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #ddd;
+      text-align: center;
+    }
+    .speech-bubble-feedback p {
+      margin-bottom: 8px;
+      color: #666;
+      font-size: 12px;
+    }
+    .speech-bubble-feedback button {
+      background: none;
+      border: 2px solid;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      font-size: 18px;
+      cursor: pointer;
+      margin: 0 5px;
+      transition: all 0.2s;
+    }
+    .speech-bubble-feedback button:hover {
+      transform: scale(1.1);
+    }
   </style>
 </head>
 <body>
@@ -146,6 +245,14 @@
       <button onclick="incrementStep()">Next Step</button>
       <button onclick="runAllSteps()">Run All Steps</button>
       <button onclick="resetSteps()">Reset</button>
+    </div>
+  </div>
+
+  <!-- Robot Assistant -->
+  <div class="robot-assistant" id="robot-assistant">
+      <img src="./hint_system/ai_logo.png" alt="AI Logo">
+    <div class="speech-bubble" id="speech-bubble">
+      <div class="speech-bubble-content" id="speech-bubble-content"></div>
     </div>
   </div>
 
@@ -271,10 +378,17 @@
     
     /********* Execute a Step **********/
     function executeStep(step) {
+      console.log(' executeStep called with step: ', step);
+      console.log(' current state ', {
+        step:step,
+        totalSteps: totalSteps,
+        description: stepDescriptions[step]})
       updateImages(step);
       highlightCode(step);
       updateStepDescription(step);
       updateStepInfo(step);
+
+      console.log('step exeuction complete')
       logInteraction('executeStep', { step: step });
     }
     
@@ -293,6 +407,10 @@
         }
         // ----- update hint button text -----
         updateHintButtonText();
+        // Collapse hint when step changes
+        if (typeof collapseRobot === 'function'){
+          collapseRobot();
+        }
         // --------------------------------------------------
         logInteraction('incrementStep', { step: currentStep });
       } else {
@@ -317,6 +435,10 @@
         }
         // ----- update hint button text -----
         updateHintButtonText();
+        // Collapse hint when step changes
+        if (typeof collapseRobot === 'function'){
+          collapseRobot();
+        }
         // --------------------------------------------------
         logInteraction('decrementStep', { step: currentStep });
       } else {
@@ -382,6 +504,10 @@
       window.addEventListener('resize', scaleApp);
       window.addEventListener('load', scaleApp);
       resetSteps();
+      // Initialize robot assistant
+      if (typeof activateRobotAssistant === 'function') {
+        activateRobotAssistant();
+      }
     };
   </script>
 </body>
