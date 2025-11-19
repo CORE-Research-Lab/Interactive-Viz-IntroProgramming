@@ -286,8 +286,6 @@
     /********* Global Variables **********/
     let currentStep = 0;
     window.currentStep = currentStep;
-    // Adjust totalSteps based on your explanation steps.
-    // For this example, we show steps for searching for the value 30.
     const totalSteps = 4;
     const stepDescriptions = [
       "Step 0: <code>Initial BST Setup</code> – the BST has been constructed (e.g., with nodes 40, 20, 60, 10, 30, 50, 70).",
@@ -381,7 +379,6 @@
       console.log(' executeStep called with step: ', step);
       console.log(' current state ', {
         step:step,
-        totalSteps: totalSteps,
         description: stepDescriptions[step]})
       updateImages(step);
       highlightCode(step);
@@ -504,9 +501,10 @@
       window.addEventListener('resize', scaleApp);
       window.addEventListener('load', scaleApp);
       resetSteps();
-      // Initialize robot assistant
-      if (typeof activateRobotAssistant === 'function') {
-        activateRobotAssistant();
+      // Click handler to robot for toggling
+      const robot = document.getElementById('robot-assistant')
+      if (robot && typeof toggleRobot === 'function'){
+        robot.addEventListener('click', toggleRobot);
       }
     };
   </script>

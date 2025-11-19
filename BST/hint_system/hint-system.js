@@ -206,6 +206,21 @@ function collapseRobot(){
 }
 
 /**
+ * Toggle the robot assistant
+ */
+function toggleRobot(){
+    const robot = document.getElementById('robot-assistant');
+    if (!robot) return;
+    // If robot is active, collapse it
+    if (robot.classList.contains('active')){
+        collapseRobot();
+    } 
+    // Otherwise if robot idle, redisplay the last hint
+    else{
+        activateRobotAssistant();
+    }
+}
+/**
  * Update the text and state of the hint button
  */
 function updateHintButtonText(){
