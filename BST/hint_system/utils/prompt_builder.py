@@ -13,15 +13,27 @@ def __contains__(self, item: Any) -> bool:
 bst1.__contains__(30)
 """
 
-def llm_prompt(code_context, current_node, previous_hints):
+def llm_prompt(code_context, current_node, previous_hints, previousAvgHintUsage):
     """
     Function for creating the prompt that the LLM will use which changes dynamically 
     due to the changing context at each step of the BST search.
     """
     history_context = "\n".join(previous_hints) if previous_hints else "None yet." 
+    # Determining the level of difficulty for hint generation
+    difficulty_level = ''
+    if previousAvgHintUsage >= 3:
+        difficulty_level = f"The student previously required many hints on average: {previousAvgHintUsage}. Provide simpler, more scaffolded hints."
+    elif previousAvgHintUsage >= 1.5:
+        difficulty_level = f"The student previously required a moderate number of hints: {previousAvgHintUsage}. Provide normal-level hints."
+    else:
+        difficulty_level = f"The student previously required none/ very few hints on average: {previousAvgHintUsage}. Provide more challenging hints."
+    print(f'difficulty level: {difficulty_level}')
     return f"""
 You are a teaching assistant for CSC148 helping a student understand the concept of: 
 **{concept}**.
+
+Student's prior performance: difficulty level:
+{difficulty_level}
 
 Concept's code:
 {concept_code}

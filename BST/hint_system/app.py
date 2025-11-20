@@ -31,9 +31,9 @@ def generate_hint():
     
     previous_hints = data.get("previous_hints")
     print(f'previous hints: {previous_hints}')
-
+    previousAvgHintUsage = data.get("previousAvgHintUsage")
     # Build the prompt for the LLM
-    build_prompt = llm_prompt(code_context, current_node, previous_hints)
+    build_prompt = llm_prompt(code_context, current_node, previous_hints, previousAvgHintUsage)
     # Call the LLM agent with the prompt
     llm_output = generate_hints(build_prompt)
     print(f'llm output: {llm_output}')

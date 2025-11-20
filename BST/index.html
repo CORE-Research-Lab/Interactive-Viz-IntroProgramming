@@ -371,6 +371,25 @@
       highlightCode(currentStep);
       updateStepDescription(currentStep);
       updateStepInfo(currentStep);
+      // Reset hint state for step 0
+      if (hintHistory[0]) {
+        hintHistory[0].hints = [];
+        hintHistory[0].hintsShown = 0;
+        hintHistory[0].lastHint = null;
+        hintHistory[0].lastHintLevel = 0;
+        hintHistory[0].feedback = {};
+      } else {
+        hintHistory[0] = {hints: [], hintsShown: 0, lastHint: null, lastHintLevel: 0, feedback: {}};
+      }
+      // Update hint button text
+      if (typeof updateHintButtonText === 'function'){
+        updateHintButtonText();
+      }
+
+      // Collapse robot if active
+      if (typeof collapseRobot === 'function'){
+        collapseRobot();
+      }
       logInteraction('resetSteps', { step: currentStep });
     }
     

@@ -133,6 +133,22 @@ async function generateHint(){
     const current_node = getCurrentNode();
     const previous_hints = stepData.hints;
 
+
+    let previousAvgHintUsage = null;
+    let counter = 0;
+    // Get previous steps' average hint usage
+    for (let i = currentStep -1; i>=0; i--){
+        if (hintHistory[i]){
+            counter +=1;
+            previousAvgHintUsage += hintHistory[i].hintsShown;
+        }
+    }
+    if (counter > 0){
+    previousAvgHintUsage = Math.round(previousAvgHintUsage / counter);
+    }
+    else{
+        previousAvgHintUsage = 0;
+    }
     if (
         stepData.lastHint && stepData.lastHintLevel < level_order.length && revealHintLevel(stepData)){
             return; // don't fetch yet - use exisiting hint, no API call needed
@@ -142,7 +158,7 @@ async function generateHint(){
         const response = await fetch("http://localhost:5000/generate_hint", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({code_context, current_node, previous_hints})
+            body: JSON.stringify({code_context, current_node, previous_hints, previousAvgHintUsage})
         });
         // check if the response was ok
         if (!response.ok){
