@@ -12,7 +12,12 @@ def generate_hints(prompt_text):
     required hints
     """
     try:
-        model = genai.GenerativeModel("gemini-2.5-flash-lite")
+        model = genai.GenerativeModel(
+            "gemini-2.5-flash-lite",
+            generation_config={
+                "temperature": 0.7,
+                "max_output_tokens": 1000,
+            })
         response = model.generate_content(prompt_text)
         return response.text.strip()
     except Exception as e:
