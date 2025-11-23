@@ -32,7 +32,9 @@ x need to connect actual LLM model to start testing how the output is being prod
 
 ### Week 4 (Nov 15 - Nov 21):
  - changed display of hint + robot
+ - added functionality to go back and forth and view hints already seen
+ - reset button now resets all hint states for the steps
+ - can switch between hints viewed within a step
 
 ### Issue Log:
-- have to strengthen the llm prompt to make sure it doesn't produce even a slightly different output than expected
 
