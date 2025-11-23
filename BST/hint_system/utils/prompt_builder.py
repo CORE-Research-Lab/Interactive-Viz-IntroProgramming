@@ -1,4 +1,4 @@
-# Variablizing these two inputs so that they can be reused in the future 
+# Concept and code definitions so that they can be reused in the future 
 concept = "Binary Search tree - __contains__ method"
 concept_code = """
 def __contains__(self, item: Any) -> bool:

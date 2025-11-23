@@ -1,6 +1,3 @@
-"""
-Provides the output of the hints in a dictionary format
-"""
 
 def parse_hints(raw_text):
     """

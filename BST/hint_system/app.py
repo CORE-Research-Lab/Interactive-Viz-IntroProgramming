@@ -11,7 +11,8 @@ CORS(app)
 @app.route("/generate_hint", methods=["POST"])
 def generate_hint():
     """ 
-    Function that will generate a hint for the current node in the BST.
+    API endpoint that generates scaffolded hints based on current BST search step.
+    Receives code context, current node, and hint usage information.
     """
     # Extract the data from the input
     data = request.get_json()
