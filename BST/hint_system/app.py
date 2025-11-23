@@ -1,13 +1,3 @@
-"""
-notes: flask backend 
-
-- will accept request containign the line, step, code state
-- containing the previous hints history?
-- calls the llm
-- returns 5 structured hints 
-- returns as json to the frontend
-"""
-
 from flask import Flask, request, jsonify
 from flask_cors import CORS 
 from utils.llm_client import generate_hints
@@ -28,12 +18,9 @@ def generate_hint():
     code_context = data.get("code_context")
     current_node = data.get("current_node")
     print(f'current node: {current_node}')
-    
-    previous_hints = data.get("previous_hints")
-    print(f'previous hints: {previous_hints}')
     previousAvgHintUsage = data.get("previousAvgHintUsage")
     # Build the prompt for the LLM
-    build_prompt = llm_prompt(code_context, current_node, previous_hints, previousAvgHintUsage)
+    build_prompt = llm_prompt(code_context, current_node, previousAvgHintUsage)
     # Call the LLM agent with the prompt
     llm_output = generate_hints(build_prompt)
     print(f'llm output: {llm_output}')
