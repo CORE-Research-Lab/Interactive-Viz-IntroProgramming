@@ -6,9 +6,9 @@ const hintSystem = {
     previousStep: -1,
     maxHints: 5
 }
-let hintHistory = hintSystem.history;
-let previousStep = hintSystem.previousStep;
+// Hint levels in order
 const level_order = ['prompt', 'reasoning', 'explanation', 'connection', 'next_step'];
+// Labels for each of the hint levels
 const level_labels = {
     'prompt': 'Prompt',
     'reasoning': 'Reasoning',
@@ -21,7 +21,7 @@ const level_labels = {
 let robotInteractionsSetup = false;
 
 function revealHintLevel(stepData){
-    const currentHint = stepData.lastHint;
+    const currentHint = stepData.hintSet;
     const index = stepData.lastHintLevel;
     const level_key = level_order[index];
     if (!currentHint || !level_key){
@@ -30,27 +30,27 @@ function revealHintLevel(stepData){
     const hintText = currentHint[level_key];
     const currentStep = window.currentStep ?? 0;
 
-    // Show hint in speech bubble
-    const speechBubbleContent = document.getElementById("speech-bubble-content");
-    if (speechBubbleContent) {
-        speechBubbleContent.innerHTML = `
-            <h3>${level_labels[level_key]}</h3>
-            <p>${hintText}</p>
-            <div class="speech-bubble-feedback">
-                <p>Was this hint helpful?</p>
-                <button onclick="submitHintFeedback(${currentStep}, ${index}, 'up')" 
-                        id="thumbs-up-${currentStep}-${index}"
-                        style="border-color: #4CAF50;">
-                    👍
-                </button>
-                <button onclick="submitHintFeedback(${currentStep}, ${index}, 'down')" 
-                        id="thumbs-down-${currentStep}-${index}"
-                        style="border-color: #f44336;">
-                    👎
-                </button>
-            </div>
-        `;
+    // Initialize viewedHints array if it doesn't exist
+    if (!stepData.viewedHints) {
+        stepData.viewedHints = [];
     }
+
+    // Only add to viewedHints if we're not navigating backwards
+    if (!stepData.isNavigating) {
+        stepData.viewedHints.push({
+            level: level_key,
+            levelIndex: index,
+            hintText: hintText,
+            hintObject: currentHint
+        });
+        stepData.currentHintIndex = stepData.viewedHints.length - 1;
+    }
+    
+    //TODO: log the hint revealed event to firebase
+
+    // Show hint in speech bubble
+    const goBack = stepData.currentHintIndex > 0;
+    displayHintInBubble(hintText, currentStep, level_key, index, goBack);
 
     // Activate robot assistant
     activateRobotAssistant();
@@ -58,7 +58,30 @@ function revealHintLevel(stepData){
     stepData.lastHintLevel ++;
     stepData.hintsShown ++;
     updateHintButtonText();
+    stepData.isNavigating = false; //Reset flag
     return true;
+}
+
+function goBacktoPreviousHint(step){
+    const stepData = hintSystem.history[step];
+    if (!stepData || !stepData.viewedHints || stepData.viewedHints.length <= 1){
+        return;
+    }
+    if (stepData.currentHintIndex > 0){
+        stepData.currentHintIndex -=1;
+        stepData.isNavigating = true; // set flag to prevent adding duplicate hints
+        
+        const previousHint = stepData.viewedHints[stepData.currentHintIndex]
+        const currentStep = window.currentStep ?? 0;
+
+        // Show hint in speech bubble
+        const goBack = stepData.currentHintIndex >0;
+        displayHintInBubble(previousHint.hintText,currentStep, previousHint.level, previousHint.levelIndex, goBack);
+        // Activate robot assistant
+        activateRobotAssistant();
+
+        stepData.isNavigating = false; //reset flag
+    }
 }
 
 function getCodeContext(){
@@ -120,37 +143,37 @@ async function generateHint(){
     //getting current step from window object
     const currentStep = window.currentStep ?? 0;
     // Initialize hint history for this step --- check parameters
-    if (!hintHistory[currentStep])
-        hintHistory[currentStep] = {
-            hints: [],
+    if (!hintSystem.history[currentStep])
+        hintSystem.history[currentStep] = {
             hintsShown: 0,
-            lastHint: null,
+            hintSet: null,
             lastHintLevel: 0,
-            feedback: {}
+            feedback: {},
+            viewedHints:[],
+            currentHintIndex: -1
         };
-    const stepData = hintHistory[currentStep];
+    const stepData = hintSystem.history[currentStep];
     const code_context = getCodeContext();
     const current_node = getCurrentNode();
-    const previous_hints = stepData.hints;
 
 
-    let previousAvgHintUsage = null;
+    let previousAvgHintUsage = 0;
     let counter = 0;
     // Get previous steps' average hint usage
     for (let i = currentStep -1; i>=0; i--){
-        if (hintHistory[i]){
+        if (hintSystem.history[i]){
             counter +=1;
-            previousAvgHintUsage += hintHistory[i].hintsShown;
+            previousAvgHintUsage += hintSystem.history[i].hintsShown;
         }
     }
     if (counter > 0){
     previousAvgHintUsage = Math.round(previousAvgHintUsage / counter);
     }
     else{
-        previousAvgHintUsage = 0;
+        previousAvgHintUsage = null;
     }
     if (
-        stepData.lastHint && stepData.lastHintLevel < level_order.length && revealHintLevel(stepData)){
+        stepData.hintSet && stepData.lastHintLevel < level_order.length && revealHintLevel(stepData)){
             return; // don't fetch yet - use exisiting hint, no API call needed
         }
     try{
@@ -158,7 +181,7 @@ async function generateHint(){
         const response = await fetch("http://localhost:5000/generate_hint", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({code_context, current_node, previous_hints, previousAvgHintUsage})
+            body: JSON.stringify({code_context, current_node, previousAvgHintUsage})
         });
         // check if the response was ok
         if (!response.ok){
@@ -167,12 +190,8 @@ async function generateHint(){
         // Parse the response FROM the backend
         const data = await response.json();
         const hints_dict = data.hint_output.hints; // dict of 5 hints 
-        // store as formatted string
-        const hintString = `Prompt: ${hints_dict.prompt || ''}\nReasoning: ${hints_dict.reasoning || ''}\nExplanation: ${hints_dict.explanation || ''}`;
 
-        stepData.hints.push(hintString);
-        activateRobotAssistant();
-        stepData.lastHint = hints_dict;
+        stepData.hintSet = hints_dict;
         stepData.lastHintLevel = 0;
         revealHintLevel(stepData); // display the first hint
 
@@ -233,7 +252,16 @@ function toggleRobot(){
     } 
     // Otherwise if robot idle, redisplay the last hint
     else{
-        activateRobotAssistant();
+        const currentStep = window.currentStep ?? 0;
+        const stepData = hintSystem.history[currentStep];
+        if (stepData.hintSet && stepData.lastHintLevel >0){
+            const lastShownIndex = stepData.lastHintLevel -1;
+            const level_key = level_order[lastShownIndex]
+            const hintText = stepData.hintSet[level_key]
+            displayHintInBubble(hintText, currentStep, level_key, lastShownIndex, lastShownIndex > 0);
+        } else{
+            activateRobotAssistant();
+        }
     }
 }
 /**
@@ -250,7 +278,7 @@ function updateHintButtonText(){
     if (!stepData){
         return;
     }
-    const hintsShown = stepData ? stepData.hintsShown : 0;
+    const hintsShown = stepData.hintsShown;
     const remaining = hintSystem.maxHints - hintsShown;
 
     // Updating the button text and state based on remaining
@@ -266,3 +294,29 @@ function updateHintButtonText(){
     }
 }
 
+
+function displayHintInBubble(hint, currentStep, levelKey, levelIndex, canGoBack){
+    const speechBubbleContent = document.getElementById("speech-bubble-content");
+    if (speechBubbleContent) {
+        speechBubbleContent.innerHTML = `
+        <div class="hint-header">
+            ${canGoBack ? `<button class="hint-back-btn" onclick="goBacktoPreviousHint(${currentStep})" title="Previous">👈</button>` : ''}
+            <h3>${level_labels[levelKey]}</h3>
+        </div>
+            <p>${hint}</p>
+            <div class="speech-bubble-feedback">
+                <p>Was this hint helpful?</p>
+                <button onclick="submitHintFeedback(${currentStep}, ${levelIndex}, 'up')" 
+                        id="thumbs-up-${currentStep}-${levelIndex}"
+                        style="border-color: #4CAF50;">
+                    👍
+                </button>
+                <button onclick="submitHintFeedback(${currentStep}, ${levelIndex}, 'down')" 
+                        id="thumbs-down-${currentStep}-${levelIndex}"
+                        style="border-color: #f44336;">
+                    👎
+                </button>
+            </div>
+        `;
+    }
+}

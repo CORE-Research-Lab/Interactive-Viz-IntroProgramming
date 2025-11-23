@@ -191,6 +191,85 @@
     .speech-bubble-feedback button:hover {
       transform: scale(1.1);
     }
+    .hint-navigation {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .hint-content {
+      flex: 1;
+    }
+
+    .hint-nav-btn {
+      background: #bdd5d7;
+      border: 2px solid #8ba3a5;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      color: #2c3e50;
+      font-weight: bold;
+    }
+
+    .hint-nav-btn:hover {
+      background: #8ba3a5;
+      transform: scale(1.1);
+    }
+
+    .hint-nav-btn:active {
+      transform: scale(0.95);
+    }
+
+    .hint-nav-placeholder {
+      width: 35px;
+      height: 35px;
+      /* Invisible placeholder to maintain layout */
+    }
+    .hint-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 8px;
+    }
+
+    .hint-header h3 {
+        margin: 0;
+        flex: 1;
+    }
+
+    .hint-back-btn {
+        background: #bdd5d7;
+        border: 2px solid #8ba3a5;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        font-size: 18px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        color: #2c3e50;
+        font-weight: bold;
+        padding: 0;
+        line-height: 1;
+    }
+
+    .hint-back-btn:hover {
+        background: #8ba3a5;
+        transform: scale(1.1);
+    }
+
+    .hint-back-btn:active {
+        transform: scale(0.95);
+    }
   </style>
 </head>
 <body>
@@ -294,15 +373,30 @@
       "Step 3: In the left subtree, compare 30 with node 20. Since 30 &gt; 20, check the right subtree of 20 (which should contain 30).",
       "Step 4: 30 is found in the right subtree of 20 – search completed."
     ];
-    const stepNodeMap = [
-      {value: null, position: "initial", label: "Starting state"},
-      {value: 40, position: "root", label: "Root"},
-      {value: 20, position: "left", label: "Left child of 40"},
-      {value: 30, position: "right", label: "Right child of 20"},
-      {value: 30, position: "right", label: "Right child of 20"},
-    ]
     const stepInfo = document.getElementById('step-info');
     const stepExplanation = document.getElementById('step-explanation');
+
+    /********* Hint Restoration **********/
+    function restoreLastHint(step) {
+      const stepData = hintSystem.history[step];
+      if (!stepData) return;
+      stepData.isNavigating = false;  // reset navigating state
+      // Clear any old content
+      const speechBubbleContent = document.getElementById("speech-bubble-content");
+      if (speechBubbleContent) {
+        speechBubbleContent.innerHTML = '';
+      }
+      // Restore hints if they exist
+      if (stepData.viewedHints && stepData.viewedHints.length > 0) {
+        const lastIndex = stepData.currentHintIndex >= 0 ? stepData.currentHintIndex : stepData.viewedHints.length - 1;
+        stepData.currentHintIndex = lastIndex;
+        const lastHint = stepData.viewedHints[lastIndex];
+        displayHintInBubble(lastHint.hintText, step, lastHint.level, lastHint.levelIndex, lastIndex > 0);
+        activateRobotAssistant();
+      } else {
+        collapseRobot();
+      }
+    }
 
     // Scale UI to fit the window if necessary.
     function scaleApp() {
@@ -371,25 +465,19 @@
       highlightCode(currentStep);
       updateStepDescription(currentStep);
       updateStepInfo(currentStep);
-      // Reset hint state for step 0
-      if (hintHistory[0]) {
-        hintHistory[0].hints = [];
-        hintHistory[0].hintsShown = 0;
-        hintHistory[0].lastHint = null;
-        hintHistory[0].lastHintLevel = 0;
-        hintHistory[0].feedback = {};
-      } else {
-        hintHistory[0] = {hints: [], hintsShown: 0, lastHint: null, lastHintLevel: 0, feedback: {}};
-      }
+      // Reset hint state
+      hintSystem.history = {};
+      //initialize step 0
+      hintSystem.history[0] = {hintsShown: 0, hintSet: null, lastHintLevel: 0, feedback: {}, viewedHints: [], currentHintIndex: -1};
       // Update hint button text
-      if (typeof updateHintButtonText === 'function'){
-        updateHintButtonText();
+      updateHintButtonText();
+      // Clear any old content
+      const speechBubbleContent = document.getElementById("speech-bubble-content");
+      if (speechBubbleContent) {
+        speechBubbleContent.innerHTML = '';
       }
-
       // Collapse robot if active
-      if (typeof collapseRobot === 'function'){
-        collapseRobot();
-      }
+      collapseRobot();
       logInteraction('resetSteps', { step: currentStep });
     }
     
@@ -414,20 +502,13 @@
         currentStep++;
         window.currentStep = currentStep;
         executeStep(currentStep);
-        // ----- reset hint state when step changes -----
-        if (!hintHistory[currentStep]) {
-          hintHistory[currentStep] = {hints: [],hintsShown: 0};
-        }else{
-          hintHistory[currentStep].hints= [];
-          hintHistory[currentStep].hintsShown = 0;
+        // Only initialize if step doesn't exist - preserve hint data
+        if (!hintSystem.history[currentStep]) {  
+          hintSystem.history[currentStep] = {hintsShown: 0, hintSet: null, lastHintLevel: 0, feedback: {}, viewedHints: [], currentHintIndex: -1};
         }
-        // ----- update hint button text -----
+        // Don't reset hintsShown - preserve historical data
         updateHintButtonText();
-        // Collapse hint when step changes
-        if (typeof collapseRobot === 'function'){
-          collapseRobot();
-        }
-        // --------------------------------------------------
+        restoreLastHint(currentStep);
         logInteraction('incrementStep', { step: currentStep });
       } else {
         alert("All steps completed.");
@@ -440,22 +521,13 @@
         currentStep--;
         window.currentStep = currentStep;
         executeStep(currentStep);
-        // ----- reset hint state when step changes -----
-        if (!hintHistory[currentStep]) {
-          hintHistory[currentStep] = {hints: [], hintsShown: 0, lastHint: null, lastHintLevel: 0};
-        }else{
-          hintHistory[currentStep].hints= [];
-          hintHistory[currentStep].hintsShown = 0;
-          hintHistory[currentStep].lastHint = null;
-          hintHistory[currentStep].lastHintLevel = 0;
+        // Only initialize if step doesn't exist - preserve hint data
+        if (!hintSystem.history[currentStep]) {
+          hintSystem.history[currentStep] = {hintsShown: 0, hintSet: null, lastHintLevel: 0, feedback: {}, viewedHints: [], currentHintIndex: -1};
         }
-        // ----- update hint button text -----
+        // Don't reset hintsShown - preserve historical data
         updateHintButtonText();
-        // Collapse hint when step changes
-        if (typeof collapseRobot === 'function'){
-          collapseRobot();
-        }
-        // --------------------------------------------------
+        restoreLastHint(currentStep);
         logInteraction('decrementStep', { step: currentStep });
       } else {
         alert("Already at the first step.");
@@ -473,9 +545,9 @@
     function submitHintFeedback(step, levelIndex, feedbackType) {
       // Access variables from hint-system.js
       const level_key = level_order[levelIndex];
-      const stepData = hintHistory[step];
+      const stepData = hintSystem.history[step];
 
-      const hintText = stepData.lastHint?.[level_key] || '';
+      const hintText = stepData.hintSet?.[level_key] || '';
 
       if (!stepData.feedback) stepData.feedback={};
 
@@ -522,7 +594,7 @@
       resetSteps();
       // Click handler to robot for toggling
       const robot = document.getElementById('robot-assistant')
-      if (robot && typeof toggleRobot === 'function'){
+      if (robot){
         robot.addEventListener('click', toggleRobot);
       }
     };
