@@ -31,39 +31,53 @@ function getCodeContext(){
     const step = window.currentStep ?? 0;
     const contexts = {
         0: {
-            current_line: "bst1.__contains__(30)",
-            line_number: 11,
+            current_line: "Initial",
+            line_number: 0,
             step_number: 0,
-            variables: { item: 30 },
-            visualization_state: "Initial BST setup"
+            variables: {},
+            visualization_state: "Initial tree state"
         },
         1: {
-            current_line: "if self.is_empty():",
-            line_number: 3,
+            current_line: "delete_item(70)",
+            line_number: 17,
             step_number: 1,
-            variables: { item: 30, root: 40 },
-            visualization_state: "Checking if tree is empty, then comparing root (40) with item (30)"
+            variables: { item: 70, root: "root value" },
+            visualization_state: "delete_item(70) called on the root – it is not 70"
         },
         2: {
-            current_line: "elif item < self._root:",
-            line_number: 7,
+            current_line: "for subtree in self._subtrees:",
+            line_number: 15,
             step_number: 2,
-            variables: { item: 30, root: 40, comparison: "30 < 40" },
-            visualization_state: "Navigating to left subtree (rooted at 20)"
+            variables: { item: 70, subtree: "subtree[0]", root: 30 },
+            visualization_state: "delete_item(70) called on subtree[0] but 30 is not 70"
         },
         3: {
-            current_line: "elif item > self._root:",
-            line_number: 9,
+            current_line: "subtree.delete_item(item)",
+            line_number: 16,
             step_number: 3,
-            variables: { item: 30, root: 20, comparison: "30 > 20" },
-            visualization_state: "In left subtree, comparing with node 20, moving to right subtree"
+            variables: { item: 70, subtree: "subtree[1]", root: 70 },
+            visualization_state: "delete_item(70) called on subtree[1] and this node should be deleted"
         },
         4: {
-            current_line: "return item in self._right",
-            line_number: 10,
+            current_line: "self._delete_root()",
+            line_number: 12,
             step_number: 4,
-            variables: { item: 30, root: 30, found: true },
-            visualization_state: "Found item 30 in right subtree of node 20"
+            variables: { item: 70, child: 80 },
+            visualization_state: "Need to promote the last child (80) – pop() it"
+        },
+        5: {
+            current_line: "Replace current tree's node",
+            line_number: 12,
+            step_number: 5,
+            variables: { item: 70, new_root: 80 },
+            visualization_state: "Replace current tree's node with child's root"
+        },
+        6: {
+            current_line: "New tree",
+            line_number: 0,
+            step_number: 6,
+            variables: { item: 70 },
+            visualization_state: "New tree structure after deletion"
         }
     };
     return contexts[step] || contexts[0];
@@ -73,10 +87,12 @@ function getCurrentNode(){
     const step = window.currentStep ?? 0;
     const nodes = {
         0: { value: null, position: "initial"},
-        1: { value: 40, position: "root"},
-        2: { value: 40, position: "root"},
-        3: { value: 20, position: "left_subtree"},
-        4: { value: 30, position: "right_subtree"}
+        1: { value: "root", position: "root"},
+        2: { value: 30, position: "subtree[0]"},
+        3: { value: 70, position: "subtree[1]"},
+        4: { value: 80, position: "child_to_promote"},
+        5: { value: 80, position: "new_root"},
+        6: { value: null, position: "final_tree"}
     };
     return nodes[step] || nodes[0];
 }

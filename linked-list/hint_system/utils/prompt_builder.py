@@ -1,5 +1,5 @@
 # Concept and code definitions so that they can be reused in the future 
-concept = "Linked List - append metho"
+concept = "Linked List - append method"
 concept_code = """
 class Node:
     def __init__(self, data):
@@ -29,7 +29,7 @@ ll1.append(20)
 def llm_prompt(code_context, current_node, previousAvgHintUsage):
     """
     Function for creating the prompt that the LLM will use which changes dynamically 
-    due to the changing context at each step of the BST search.
+    due to the changing context at each step of the linked list append.
     """
     # Determining the level of difficulty for hint generation
     difficulty_level = 'No difficulty data available yet.'

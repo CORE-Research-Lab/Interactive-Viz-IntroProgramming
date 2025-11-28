@@ -1,22 +1,30 @@
 # Concept and code definitions so that they can be reused in the future 
-concept = "Binary Search tree - __contains__ method"
+concept =  "Tree - delete_item method"
 concept_code = """
-def __contains__(self, item: Any) -> bool:
+def delete_item(self, item: Any) -> bool:
     if self.is_empty():
-        return False
-    elif item == self._root:
-        return True
-    elif item < self._root:
-        return item in self._left
+        return False  # tree is empty
+    elif self._subtrees == []:
+        if self._root != item:
+            return False
+        else:
+            self._root = None
+            return True
     else:
-        return item in self._right
-bst1.__contains__(30)
+        if self._root == item:
+            self._delete_root()  # promote a child
+            return True
+        else:
+            for subtree in self._subtrees:
+                subtree.delete_item(item)
+# Example call:
+delete_item(70)
 """
 
 def llm_prompt(code_context, current_node, previousAvgHintUsage):
     """
     Function for creating the prompt that the LLM will use which changes dynamically 
-    due to the changing context at each step of the BST search.
+    due to the changing context at each step of the tree deletion.
     """
     # Determining the level of difficulty for hint generation
     difficulty_level = 'No difficulty data available yet.'

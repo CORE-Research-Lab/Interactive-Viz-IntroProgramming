@@ -31,39 +31,53 @@ function getCodeContext(){
     const step = window.currentStep ?? 0;
     const contexts = {
         0: {
-            current_line: "bst1.__contains__(30)",
-            line_number: 11,
+            current_line: "ll1 = LinkedList()",
+            line_number: 18,
             step_number: 0,
-            variables: { item: 30 },
-            visualization_state: "Initial BST setup"
+            variables: {},
+            visualization_state: "Initialize two empty Linked Lists"
         },
         1: {
-            current_line: "if self.is_empty():",
-            line_number: 3,
+            current_line: "ll1 = LinkedList()",
+            line_number: 18,
             step_number: 1,
-            variables: { item: 30, root: 40 },
-            visualization_state: "Checking if tree is empty, then comparing root (40) with item (30)"
+            variables: { ll1: "LinkedList instance" },
+            visualization_state: "Create a LinkedList instance"
         },
         2: {
-            current_line: "elif item < self._root:",
-            line_number: 7,
+            current_line: "def __init__(self):",
+            line_number: 6,
             step_number: 2,
-            variables: { item: 30, root: 40, comparison: "30 < 40" },
-            visualization_state: "Navigating to left subtree (rooted at 20)"
+            variables: { self: "ll1", first: "None" },
+            visualization_state: "Execute LinkedList.__init__ constructor, setting first to None"
         },
         3: {
-            current_line: "elif item > self._root:",
-            line_number: 9,
+            current_line: "ll1.append(10)",
+            line_number: 19,
             step_number: 3,
-            variables: { item: 30, root: 20, comparison: "30 > 20" },
-            visualization_state: "In left subtree, comparing with node 20, moving to right subtree"
+            variables: { ll1: "LinkedList instance", data: 10 },
+            visualization_state: "Append a node with data=10 to the LinkedList"
         },
         4: {
-            current_line: "return item in self._right",
-            line_number: 10,
+            current_line: "def __init__(self, data):",
+            line_number: 2,
             step_number: 4,
-            variables: { item: 30, root: 30, found: true },
-            visualization_state: "Found item 30 in right subtree of node 20"
+            variables: { self: "new_node", data: 10 },
+            visualization_state: "Execute Node.__init__ constructor for data 10, creating first node"
+        },
+        5: {
+            current_line: "ll1.append(20)",
+            line_number: 20,
+            step_number: 5,
+            variables: { ll1: "LinkedList instance", data: 20 },
+            visualization_state: "Append a node with data=20 to the LinkedList"
+        },
+        6: {
+            current_line: "def __init__(self, data):",
+            line_number: 2,
+            step_number: 6,
+            variables: { self: "new_node", data: 20 },
+            visualization_state: "Execute Node.__init__ constructor for data 20, creating second node and linking to first"
         }
     };
     return contexts[step] || contexts[0];
@@ -73,10 +87,12 @@ function getCurrentNode(){
     const step = window.currentStep ?? 0;
     const nodes = {
         0: { value: null, position: "initial"},
-        1: { value: 40, position: "root"},
-        2: { value: 40, position: "root"},
-        3: { value: 20, position: "left_subtree"},
-        4: { value: 30, position: "right_subtree"}
+        1: { value: "ll1", position: "linked_list_instance"},
+        2: { value: "ll1", position: "linked_list_constructor"},
+        3: { value: "ll1", position: "linked_list_append"},
+        4: { value: 10, position: "node_creation"},
+        5: { value: "ll1", position: "linked_list_append"},
+        6: { value: 20, position: "node_creation"}
     };
     return nodes[step] || nodes[0];
 }
