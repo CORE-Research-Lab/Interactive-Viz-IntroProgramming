@@ -126,18 +126,35 @@ function updateVisualWindow(step) {
   
   function resetSteps() {
     currentStep = 0;
+    window.currentStep = 0;
     highlightCode(0);
     updateStepDescription(0);
     updateStepInfo(0);
     updateMemoryWindow(0);
     updateVisualWindow(0);
+    // Reset hint state
+    if (typeof hintSystem !== 'undefined') {
+      hintSystem.history = {};
+      hintSystem.history[0] = {hintsShown: 0, hintSet: null, currHintLevel: 0, feedback: {}, viewedHints: [], currentHintIndex: -1};
+      updateHintButtonText();
+      collapseRobot();
+    }
     logInteraction("resetSteps", { step: currentStep });
   }
   
   function incrementStep() {
     if (currentStep < totalSteps) {
       currentStep++;
+      window.currentStep = currentStep;
       executeStep(currentStep);
+      // Initialize hint history for new step
+      if (typeof hintSystem !== 'undefined') {
+        if (!hintSystem.history[currentStep]) {
+          hintSystem.history[currentStep] = {hintsShown: 0, hintSet: null, currHintLevel: 0, feedback: {}, viewedHints: [], currentHintIndex: -1};
+        }
+        updateHintButtonText();
+        restoreLastHint(currentStep);
+      }
       logInteraction("incrementStep", { step: currentStep });
     } else {
       alert("All steps completed.");
@@ -148,7 +165,16 @@ function updateVisualWindow(step) {
   function decrementStep() {
     if (currentStep > 0) {
       currentStep--;
+      window.currentStep = currentStep;
       executeStep(currentStep);
+      // Initialize hint history for new step
+      if (typeof hintSystem !== 'undefined') {
+        if (!hintSystem.history[currentStep]) {
+          hintSystem.history[currentStep] = {hintsShown: 0, hintSet: null, currHintLevel: 0, feedback: {}, viewedHints: [], currentHintIndex: -1};
+        }
+        updateHintButtonText();
+        restoreLastHint(currentStep);
+      }  
       logInteraction("decrementStep", { step: currentStep });
     } else {
       alert("Already at the first step.");
@@ -174,10 +200,66 @@ function updateVisualWindow(step) {
     updateStepInfo(step);
     // (You can still call other functions here if you wish to update the linked list visualization.)
   }
-  
+// Hint Restoration
+function restoreLastHint(step) {
+  if (typeof hintSystem === 'undefined') return;
+  const stepData = hintSystem.history[step];
+  if (!stepData) return;
+  stepData.isNavigating = false;
+  const speechBubbleContent = document.getElementById("speech-bubble-content");
+  if (speechBubbleContent) {
+    speechBubbleContent.innerHTML = '';
+  }
+  if (stepData.viewedHints && stepData.viewedHints.length > 0) {
+    const lastIndex = stepData.currentHintIndex >= 0 ? stepData.currentHintIndex : stepData.viewedHints.length - 1;
+    stepData.currentHintIndex = lastIndex;
+    const lastHint = stepData.viewedHints[lastIndex];
+    displayHintInBubble(lastHint.hintText, step, lastHint.level, lastHint.levelIndex, lastIndex > 0);
+    activateRobotAssistant();
+  } else {
+    collapseRobot();
+  }
+}
+
+// Feedback Button
+function submitHintFeedback(step, levelIndex, feedbackType) {
+  if (typeof hintSystem === 'undefined') return;
+  const level_key = hint_levels[levelIndex];
+  const stepData = hintSystem.history[step];
+  const hintText = stepData.hintSet?.[level_key] || '';
+  if (!stepData.feedback) stepData.feedback={};
+  const feedbackKey = `${step}_${levelIndex}`;
+  const feedbackData = {
+    step:step,
+    level:level_key,
+    levelIndex : levelIndex,
+    hintText: hintText?.substring(0,100) || '',
+    rating: feedbackType === 'up' ? 'thumbs_up' : 'thumbs_down'
+  }
+  stepData.feedback[feedbackKey] = feedbackData;
+  logInteraction('hint_feedback', feedbackData);
+  const upThumbs = document.getElementById(`thumbs-up-${step}-${levelIndex}`);
+  const downThumbs = document.getElementById(`thumbs-down-${step}-${levelIndex}`);
+  if (feedbackType === 'up') {
+    upThumbs.style.backgroundColor = '#4CAF50';
+    upThumbs.style.color = 'white';
+    upThumbs.disabled = true;
+    if (downThumbs) downThumbs.disabled = true;
+  } else{
+    downThumbs.style.backgroundColor = '#f44336';
+    downThumbs.style.color = 'white';
+    downThumbs.disabled = true;
+    if (upThumbs) upThumbs.disabled = true;
+  }
+}  
   window.onload = () => {
     window.addEventListener('resize', scaleApp);
     window.addEventListener('load', scaleApp);
     resetSteps();
+    // Click handler to robot for toggling
+    const robot = document.getElementById('robot-assistant')
+    if (robot){
+      robot.addEventListener('click', toggleRobot);
+    }  
   };
   
