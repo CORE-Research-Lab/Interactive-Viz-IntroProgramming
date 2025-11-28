@@ -91,7 +91,7 @@
       background-color: yellow;
       outline: 2px solid orange;
     }
-    /* Robot Assistant Styles */
+    /* --- Robot Assistant Styles ---*/
     .robot-assistant {
       position: fixed;
       top: 550px;
@@ -103,7 +103,6 @@
       transition: all 0.3s ease;
       opacity: 0.6;
     }
-
     .robot-assistant img {
       width: 90px;
       height: 90px;
@@ -118,14 +117,7 @@
       opacity: 1;
       transform: scale(1.2);
     }
-    .ai-logo {
-      position: absolute;
-      width: 150px;
-      height: 50px;
-      left: -400px;
-      top: -650px;
-    }
-    /* Speech Bubble Styles */
+    /* --- Speech Bubble ---*/
     .speech-bubble {
       position: absolute;
       bottom: 120px;
@@ -146,11 +138,12 @@
       overflow-y: auto;
       word-wrap: break-word;
     }
-    .speech-bubble.show {
+    .speech-bubble.show { 
       opacity: 1;
       transform: translateY(0) scale(1);
       pointer-events: auto;
     }
+    /* --- Speech Bubble Content ---*/
     .speech-bubble-content {
       font-size: 14px;
       line-height: 1.5;
@@ -191,59 +184,17 @@
     .speech-bubble-feedback button:hover {
       transform: scale(1.1);
     }
-    .hint-navigation {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .hint-content {
-      flex: 1;
-    }
-
-    .hint-nav-btn {
-      background: #bdd5d7;
-      border: 2px solid #8ba3a5;
-      border-radius: 50%;
-      width: 35px;
-      height: 35px;
-      font-size: 18px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-      color: #2c3e50;
-      font-weight: bold;
-    }
-
-    .hint-nav-btn:hover {
-      background: #8ba3a5;
-      transform: scale(1.1);
-    }
-
-    .hint-nav-btn:active {
-      transform: scale(0.95);
-    }
-
-    .hint-nav-placeholder {
-      width: 35px;
-      height: 35px;
-      /* Invisible placeholder to maintain layout */
-    }
+    /* --- Hint Navigation Buttons ---*/
     .hint-header {
         display: flex;
         align-items: center;
         gap: 10px;
         margin-bottom: 8px;
     }
-
     .hint-header h3 {
         margin: 0;
         flex: 1;
     }
-
     .hint-back-btn {
         background: #bdd5d7;
         border: 2px solid #8ba3a5;
@@ -363,7 +314,7 @@
     }
 
     /********* Global Variables **********/
-    let currentStep = 0;
+    let currentStep =0;
     window.currentStep = currentStep;
     const totalSteps = 4;
     const stepDescriptions = [
@@ -468,7 +419,7 @@
       // Reset hint state
       hintSystem.history = {};
       //initialize step 0
-      hintSystem.history[0] = {hintsShown: 0, hintSet: null, lastHintLevel: 0, feedback: {}, viewedHints: [], currentHintIndex: -1};
+      hintSystem.history[0] = {hintsShown: 0, hintSet: null, currHintLevel: 0, feedback: {}, viewedHints: [], currentHintIndex: -1};
       // Update hint button text
       updateHintButtonText();
       // Clear any old content
@@ -492,7 +443,7 @@
       updateStepDescription(step);
       updateStepInfo(step);
 
-      console.log('step exeuction complete')
+      console.log('step execution complete')
       logInteraction('executeStep', { step: step });
     }
     
@@ -504,7 +455,7 @@
         executeStep(currentStep);
         // Only initialize if step doesn't exist - preserve hint data
         if (!hintSystem.history[currentStep]) {  
-          hintSystem.history[currentStep] = {hintsShown: 0, hintSet: null, lastHintLevel: 0, feedback: {}, viewedHints: [], currentHintIndex: -1};
+          hintSystem.history[currentStep] = {hintsShown: 0, hintSet: null, currHintLevel: 0, feedback: {}, viewedHints: [], currentHintIndex: -1};
         }
         // Don't reset hintsShown - preserve historical data
         updateHintButtonText();
@@ -523,7 +474,7 @@
         executeStep(currentStep);
         // Only initialize if step doesn't exist - preserve hint data
         if (!hintSystem.history[currentStep]) {
-          hintSystem.history[currentStep] = {hintsShown: 0, hintSet: null, lastHintLevel: 0, feedback: {}, viewedHints: [], currentHintIndex: -1};
+          hintSystem.history[currentStep] = {hintsShown: 0, hintSet: null, currHintLevel: 0, feedback: {}, viewedHints: [], currentHintIndex: -1};
         }
         // Don't reset hintsShown - preserve historical data
         updateHintButtonText();
@@ -542,9 +493,13 @@
     }
     
     /********* Feedback Button **********/
-    function submitHintFeedback(step, levelIndex, feedbackType) {
+    function submitHintFeedback(step, levelIndex, feedbackType, event) {
+      if (event) {
+        event.stopPropagation();
+        event.preventDefault();
+      }
       // Access variables from hint-system.js
-      const level_key = level_order[levelIndex];
+      const level_key = hint_levels[levelIndex];
       const stepData = hintSystem.history[step];
 
       const hintText = stepData.hintSet?.[level_key] || '';
@@ -565,11 +520,7 @@
 
       stepData.feedback[feedbackKey] = feedbackData;
 
-      if (window.logInteraction) {
-        window.logInteraction('hint_feedback', feedbackData);
-      }else{
-        console.log('hint_feedback', feedbackData);
-      }
+      logInteraction('hint_feedback', feedbackData);
 
       // Visual feedback - disable buttons and show confirmation
       const upThumbs = document.getElementById(`thumbs-up-${step}-${levelIndex}`);
