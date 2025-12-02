@@ -59,7 +59,7 @@ Concept's code:
 
 Current program state:
 - Code context: {code_context}
-- Current node being inspected in the visualization: {current_node}
+- Current object/node being inspected in the visualization: {current_node}
 
 Only once, produce one list of 5 hints that follow this format, using exactly the numbering shown:
 1. Prompt (a METACOGNITIVE question that is reflective and helps the student think about the concept)

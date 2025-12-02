@@ -56,28 +56,28 @@ function getCodeContext(){
             line_number: 19,
             step_number: 3,
             variables: { ll1: "LinkedList instance", data: 10 },
-            visualization_state: "Append a node with data=10 to the LinkedList"
+            visualization_state: "Append a node with data=10 to the LinkedList. Since list is empty (self.first is None), the if condition on line 10 is true, so new_node is assigned to self.first and we return"
         },
         4: {
             current_line: "def __init__(self, data):",
             line_number: 2,
             step_number: 4,
-            variables: { self: "new_node", data: 10 },
-            visualization_state: "Execute Node.__init__ constructor for data 10, creating first node"
+            variables: { self: "new_node", data: 10, new_node: "Node(10)" },
+            visualization_state: "Execute Node.__init__ constructor for data 10, creating first node with data=10 and next=None"
         },
         5: {
             current_line: "ll1.append(20)",
             line_number: 20,
             step_number: 5,
-            variables: { ll1: "LinkedList instance", data: 20 },
-            visualization_state: "Append a node with data=20 to the LinkedList"
+            variables: { ll1: "LinkedList instance", data: 20, self_first: "Node(10)" },
+            visualization_state: "Append a node with data=20. Since list is not empty (self.first points to Node(10)), we skip the if block. We traverse: last = self.first (line 13), then while last.next (line 14) - since last.next is None, we exit the loop. Then we set last.next = new_node (line 16)"
         },
         6: {
             current_line: "def __init__(self, data):",
             line_number: 2,
             step_number: 6,
-            variables: { self: "new_node", data: 20 },
-            visualization_state: "Execute Node.__init__ constructor for data 20, creating second node and linking to first"
+            variables: { self: "new_node", data: 20, new_node: "Node(20)", last: "Node(10)" },
+            visualization_state: "Execute Node.__init__ constructor for data 20, creating second node. After creation, last.next = new_node links Node(20) to Node(10), completing the append operation"
         }
     };
     return contexts[step] || contexts[0];
