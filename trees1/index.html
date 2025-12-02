@@ -416,6 +416,7 @@ delete_item(70)</span>
     /********* Reset Visualization **********/
     function resetSteps() {
       currentStep = 0;
+      window.currentStep = 0;
       updateImages(currentStep);
       highlightCode(currentStep);
       updateStepDescription(currentStep);
@@ -451,6 +452,7 @@ delete_item(70)</span>
     function incrementStep() {
       if (currentStep < totalSteps) {
         currentStep++;
+        window.currentStep = currentStep;
         executeStep(currentStep);
         // Only initialize if step doesn't exist - preserve hint data
         if (!hintSystem.history[currentStep]) {  
@@ -469,6 +471,7 @@ delete_item(70)</span>
     function decrementStep() {
       if (currentStep > 0) {
         currentStep--;
+        window.currentStep = currentStep;
         executeStep(currentStep);
         // Only initialize if step doesn't exist - preserve hint data
         if (!hintSystem.history[currentStep]) {

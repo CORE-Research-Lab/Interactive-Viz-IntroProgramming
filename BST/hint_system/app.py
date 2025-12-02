@@ -6,7 +6,7 @@ from utils.response_parser import parse_hints
 
 
 app = Flask(__name__)
-CORS(app)
+CORS(app) #allows for cross origin requests from the frontend
 
 @app.route("/generate_hint", methods=["POST"])
 def generate_hint():
@@ -14,18 +14,22 @@ def generate_hint():
     API endpoint that generates scaffolded hints based on current BST search step.
     Receives code context, current node, and hint usage information.
     """
-    # Extract the data from the input
+    #1. Extract the data from the input
     data = request.get_json()
     code_context = data.get("code_context")
     current_node = data.get("current_node")
     print(f'current node: {current_node}')
     previousAvgHintUsage = data.get("previousAvgHintUsage")
-    # Build the prompt for the LLM
+    print(f'Previous avg hint usage: {previousAvgHintUsage}')
+
+    #2. Build the prompt for the LLM
     build_prompt = llm_prompt(code_context, current_node, previousAvgHintUsage)
-    # Call the LLM agent with the prompt
+
+    #3. Call the LLM agent with the prompt
     llm_output = generate_hints(build_prompt)
     print(f'llm output: {llm_output}')
-    # Split the hints output into a dictionary
+    
+    #4. Split the hints output into a dictionary
     hints_dict = parse_hints(llm_output)
 
     return jsonify({"hint_output": hints_dict})

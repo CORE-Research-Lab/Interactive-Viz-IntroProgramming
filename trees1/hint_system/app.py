@@ -11,7 +11,7 @@ CORS(app) #allows for cross origin requests from the frontend
 @app.route("/generate_hint", methods=["POST"])
 def generate_hint():
     """ 
-    API endpoint that generates scaffolded hints based on current BST search step.
+    API endpoint that generates scaffolded hints based on current tree deletion step.
     Receives code context, current node, and hint usage information.
     """
     #1. Extract the data from the input

@@ -227,7 +227,13 @@ function updateHintButtonText(){
     }
 }
 
-function goBacktoPreviousHint(step){
+function goBacktoPreviousHint(step, event){
+    // Stop event propagation to prevent triggering robot toggle
+    if (event) {
+        event.stopPropagation();
+        event.preventDefault();
+    }
+    
     const stepData = hintSystem.history[step];
     const currentStep = window.currentStep ?? 0;
     if (!stepData || !stepData.viewedHints || stepData.viewedHints.length <= 1){
@@ -313,12 +319,16 @@ function toggleRobot(){
     else{
         const currentStep = window.currentStep ?? 0;
         const stepData = hintSystem.history[currentStep];
-        if (stepData.hintSet && stepData.currHintLevel >0){
-            const lastShownIndex = stepData.currHintLevel -1;
-            const level_key = hint_levels[lastShownIndex]
-            const hintText = stepData.hintSet[level_key]
-            displayHintInBubble(hintText, currentStep, level_key, lastShownIndex, lastShownIndex > 0);
-        } else{
+        
+        // If hints exist and have been viewed, use currentHintIndex to restore the correct hint
+        if (stepData && stepData.viewedHints && stepData.viewedHints.length > 0){
+            const lastIndex = stepData.currentHintIndex >= 0 ? stepData.currentHintIndex : stepData.viewedHints.length - 1;
+            const lastHint = stepData.viewedHints[lastIndex];
+            displayHintInBubble(lastHint.hintText, currentStep, lastHint.level, lastHint.levelIndex, lastIndex > 0);
+            activateRobotAssistant();
+        }
+        // If no hints exist yet, just activate the robot
+        else{
             activateRobotAssistant();
         }
     }
@@ -333,7 +343,7 @@ function displayHintInBubble(hint, currentStep, levelKey, levelIndex, canGoBack)
     if (speechBubbleContent) {
         speechBubbleContent.innerHTML = `
         <div class="hint-header">
-            ${canGoBack ? `<button class="hint-back-btn" onclick="goBacktoPreviousHint(${currentStep})" title="Previous">👈</button>` : ''}
+            ${canGoBack ? `<button class="hint-back-btn" onclick="goBacktoPreviousHint(${currentStep}, event)" title="Previous">👈</button>` : ''}
             <h3>${hint_labels[levelKey]}</h3>
         </div>
             <p>${hint}</p>
