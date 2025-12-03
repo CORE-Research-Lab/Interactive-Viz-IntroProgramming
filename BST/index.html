@@ -221,6 +221,32 @@
     .hint-back-btn:active {
         transform: scale(0.95);
     }
+    .hint-forward-btn {
+    background: #bdd5d7;
+    border: 2px solid #8ba3a5;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    color: #2c3e50;
+    font-weight: bold;
+    padding: 0;
+    line-height: 1;
+    }
+
+    .hint-forward-btn:hover {
+        background: #8ba3a5;
+        transform: scale(1.1);
+    }
+
+    .hint-forward-btn:active {
+        transform: scale(0.95);
+    }
   </style>
 </head>
 <body>
@@ -479,6 +505,7 @@
         // Don't reset hintsShown - preserve historical data
         updateHintButtonText();
         restoreLastHint(currentStep);
+
         logInteraction('decrementStep', { step: currentStep });
       } else {
         alert("Already at the first step.");
@@ -491,7 +518,7 @@
         incrementStep();
       }
     }
-    
+
     /********* Feedback Button **********/
     function submitHintFeedback(step, levelIndex, feedbackType, event) {
       if (event) {
@@ -538,7 +565,7 @@
         if (upThumbs) upThumbs.disabled = true;
       }
     }
-
+   
     window.onload = () => {
       window.addEventListener('resize', scaleApp);
       window.addEventListener('load', scaleApp);
@@ -548,6 +575,7 @@
       if (robot){
         robot.addEventListener('click', toggleRobot);
       }
+
     };
   </script>
 </body>

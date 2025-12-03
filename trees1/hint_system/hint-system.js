@@ -12,7 +12,6 @@ hintSystem.history[0] = {
     viewedHints: [],
     currentHintIndex: -1
 }
-
 */
 
 // Hint levels in order
@@ -39,45 +38,45 @@ function getCodeContext(){
         },
         1: {
             current_line: "delete_item(70)",
-            line_number: 17,
+            line_number: 18,
             step_number: 1,
             variables: { item: 70, root: "root value" },
             visualization_state: "delete_item(70) called on the root – it is not 70"
         },
         2: {
-            current_line: "for subtree in self._subtrees:",
-            line_number: 15,
+            current_line: "if self._root == item:",
+            line_number: 11,
             step_number: 2,
             variables: { item: 70, subtree: "subtree[0]", root: 30 },
             visualization_state: "delete_item(70) called on subtree[0] but 30 is not 70"
         },
         3: {
-            current_line: "subtree.delete_item(item)",
-            line_number: 16,
+            current_line: "for subtree in self._subtrees:",
+            line_number: 15,
             step_number: 3,
             variables: { item: 70, subtree: "subtree[1]", root: 70 },
             visualization_state: "delete_item(70) called on subtree[1] and this node should be deleted"
         },
         4: {
-            current_line: "self._delete_root()",
-            line_number: 12,
+            current_line: "for subtree in self._subtrees:",
+            line_number: 15,
             step_number: 4,
-            variables: { item: 70, child: 80 },
-            visualization_state: "Need to promote the last child (80) – pop() it"
-        },
+            variables: { item: 70, self: "id24", _subtrees: "id25", child_to_promote: "id28" }, 
+            visualization_state: "Need to promote the last child (80) – pop() it from _subtrees, then replace self._root with the child's root"
+        },        
         5: {
-            current_line: "Replace current tree's node",
-            line_number: 12,
+            current_line: "subtree.delete_item(item)",
+            line_number: 16,
             step_number: 5,
-            variables: { item: 70, new_root: 80 },
-            visualization_state: "Replace current tree's node with child's root"
+            variables: { item: 70, new_root: 80, old_root: 70, promoted_child: "id28" },
+            visualization_state: "Replace current tree's root with the promoted child's root (80 replaces 70)"
         },
         6: {
-            current_line: "New tree",
-            line_number: 0,
+            current_line: "subtree.delete_item(item)",
+            line_number: 16,
             step_number: 6,
-            variables: { item: 70 },
-            visualization_state: "New tree structure after deletion"
+            variables: { item: 70, deleted: true, final_root:80 },
+            visualization_state: "Deletion complete. New tree structure with 70 removed and 80 promoted"
         }
     };
     return contexts[step] || contexts[0];
@@ -204,7 +203,8 @@ function revealHintLevel(stepData){
 
     // Show hint in speech bubble
     const goBack = stepData.currentHintIndex > 0;
-    displayHintInBubble(hintText, currentStep, level_key, index, goBack);
+    const goForward = stepData.currentHintIndex < stepData.viewedHints.length - 1;
+    displayHintInBubble(hintText, currentStep, level_key, index, goBack, goForward);
 
     // Activate robot assistant
     activateRobotAssistant();
@@ -268,7 +268,8 @@ function goBacktoPreviousHint(step, event){
         const previousHint = stepData.viewedHints[stepData.currentHintIndex]
         // Show hint in speech bubble
         const goBack = stepData.currentHintIndex >0;
-        displayHintInBubble(previousHint.hintText,currentStep, previousHint.level, previousHint.levelIndex, goBack);
+        const goForward = stepData.currentHintIndex < stepData.viewedHints.length - 1;
+        displayHintInBubble(previousHint.hintText,currentStep, previousHint.level, previousHint.levelIndex, goBack, goForward);
         // Activate robot assistant
         activateRobotAssistant();
 
@@ -276,7 +277,41 @@ function goBacktoPreviousHint(step, event){
     }
 }
 
+function goForwardToNextHint(step, event){
+    // Stop event propagation to prevent triggering robot toggle
+    if (event) {
+        event.stopPropagation();
+        event.preventDefault();
+    }
+    
+    const stepData = hintSystem.history[step];
+    const currentStep = window.currentStep ?? 0;
+    if (!stepData || !stepData.viewedHints || stepData.viewedHints.length <= 1){
+        return;
+    }
+    
+    const maxIndex = stepData.viewedHints.length - 1;
+    if (stepData.currentHintIndex < maxIndex){
+        stepData.currentHintIndex += 1;
+        stepData.isNavigating = true; // to prevent adding duplicate hints
+        
+        const nextHint = stepData.viewedHints[stepData.currentHintIndex];
+        // Show hint in speech bubble
+        const goBack = stepData.currentHintIndex > 0;
+        const goForward = stepData.currentHintIndex < maxIndex;
+        displayHintInBubble(nextHint.hintText, currentStep, nextHint.level, nextHint.levelIndex, goBack, goForward);
+        // Activate robot assistant
+        activateRobotAssistant();
 
+        stepData.isNavigating = false; //reset flag
+        
+        logInteraction('hint_navigation',{
+            step: currentStep,
+            fromIndex: stepData.currentHintIndex - 1,
+            toIndex: stepData.currentHintIndex
+        });
+    }
+}
 
 // Create + activate the robot assistant
 function activateRobotAssistant(){
@@ -351,7 +386,7 @@ function toggleRobot(){
 }
 
 
-function displayHintInBubble(hint, currentStep, levelKey, levelIndex, canGoBack){
+function displayHintInBubble(hint, currentStep, levelKey, levelIndex, canGoBack, canGoForward){
     /*
     Function that displays a hint in the speech bubble.
     */
@@ -361,6 +396,7 @@ function displayHintInBubble(hint, currentStep, levelKey, levelIndex, canGoBack)
         <div class="hint-header">
             ${canGoBack ? `<button class="hint-back-btn" onclick="goBacktoPreviousHint(${currentStep}, event)" title="Previous">👈</button>` : ''}
             <h3>${hint_labels[levelKey]}</h3>
+            ${canGoForward ? `<button class="hint-forward-btn" onclick="goForwardToNextHint(${currentStep}, event)" title="Next">👉</button>` : ''}
         </div>
             <p>${hint}</p>
             <div class="speech-bubble-feedback">

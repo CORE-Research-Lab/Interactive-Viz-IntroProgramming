@@ -204,7 +204,8 @@ function revealHintLevel(stepData){
 
     // Show hint in speech bubble
     const goBack = stepData.currentHintIndex > 0;
-    displayHintInBubble(hintText, currentStep, level_key, index, goBack);
+    const goForward = stepData.currentHintIndex < stepData.viewedHints.length - 1;
+    displayHintInBubble(hintText, currentStep, level_key, index, goBack, goForward);
 
     // Activate robot assistant
     activateRobotAssistant();
@@ -268,7 +269,8 @@ function goBacktoPreviousHint(step, event){
         const previousHint = stepData.viewedHints[stepData.currentHintIndex]
         // Show hint in speech bubble
         const goBack = stepData.currentHintIndex >0;
-        displayHintInBubble(previousHint.hintText,currentStep, previousHint.level, previousHint.levelIndex, goBack);
+        const goForward = stepData.currentHintIndex < stepData.viewedHints.length - 1;
+        displayHintInBubble(previousHint.hintText,currentStep, previousHint.level, previousHint.levelIndex, goBack, goForward);
         // Activate robot assistant
         activateRobotAssistant();
 
@@ -276,7 +278,41 @@ function goBacktoPreviousHint(step, event){
     }
 }
 
+function goForwardToNextHint(step, event){
+    // Stop event propagation to prevent triggering robot toggle
+    if (event) {
+        event.stopPropagation();
+        event.preventDefault();
+    }
+    
+    const stepData = hintSystem.history[step];
+    const currentStep = window.currentStep ?? 0;
+    if (!stepData || !stepData.viewedHints || stepData.viewedHints.length <= 1){
+        return;
+    }
+    
+    const maxIndex = stepData.viewedHints.length - 1;
+    if (stepData.currentHintIndex < maxIndex){
+        stepData.currentHintIndex += 1;
+        stepData.isNavigating = true; // to prevent adding duplicate hints
+        
+        const nextHint = stepData.viewedHints[stepData.currentHintIndex];
+        // Show hint in speech bubble
+        const goBack = stepData.currentHintIndex > 0;
+        const goForward = stepData.currentHintIndex < maxIndex;
+        displayHintInBubble(nextHint.hintText, currentStep, nextHint.level, nextHint.levelIndex, goBack, goForward);
+        // Activate robot assistant
+        activateRobotAssistant();
 
+        stepData.isNavigating = false; //reset flag
+        
+        logInteraction('hint_navigation',{
+            step: currentStep,
+            fromIndex: stepData.currentHintIndex - 1,
+            toIndex: stepData.currentHintIndex
+        });
+    }
+}
 
 // Create + activate the robot assistant
 function activateRobotAssistant(){
@@ -351,7 +387,7 @@ function toggleRobot(){
 }
 
 
-function displayHintInBubble(hint, currentStep, levelKey, levelIndex, canGoBack){
+function displayHintInBubble(hint, currentStep, levelKey, levelIndex, canGoBack, canGoForward){
     /*
     Function that displays a hint in the speech bubble.
     */
@@ -361,6 +397,7 @@ function displayHintInBubble(hint, currentStep, levelKey, levelIndex, canGoBack)
         <div class="hint-header">
             ${canGoBack ? `<button class="hint-back-btn" onclick="goBacktoPreviousHint(${currentStep}, event)" title="Previous">👈</button>` : ''}
             <h3>${hint_labels[levelKey]}</h3>
+            ${canGoForward ? `<button class="hint-forward-btn" onclick="goForwardToNextHint(${currentStep}, event)" title="Next">👉</button>` : ''}
         </div>
             <p>${hint}</p>
             <div class="speech-bubble-feedback">
