@@ -25,7 +25,15 @@ const hint_labels = {
     'connection': 'Connection',
     'next_step': 'Next Step'
 };
-
+// Backend URL configuration - automatically detects environment
+const BACKEND_URL = (() => {
+    // If running on localhost, use local backend
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        return 'http://localhost:5000';
+    }
+    // Otherwise, use your Render backend URL
+    return 'https://interactive-viz-introprogramming.onrender.com';
+})();
 function getCodeContext(){
     // Get the code context for the current step
     const step = window.currentStep ?? 0;
@@ -125,8 +133,7 @@ async function generateHint(){
         }
     try{
         // Sending request to the backend 
-        const response = await fetch("http://localhost:5000/generate_hint", {
-            method: "POST",
+        const response = await fetch(`${BACKEND_URL}/generate_hint`, {            method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({code_context, current_node, previousAvgHintUsage})
         });
