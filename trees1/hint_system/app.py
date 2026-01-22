@@ -3,6 +3,7 @@ from flask_cors import CORS
 from utils.llm_client import generate_hints
 from utils.prompt_builder import llm_prompt
 from utils.response_parser import parse_hints
+import os
 
 
 app = Flask(__name__)
@@ -36,4 +37,5 @@ def generate_hint():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=False)
