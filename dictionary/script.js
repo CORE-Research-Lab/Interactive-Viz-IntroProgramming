@@ -152,8 +152,6 @@ function updateMemory() {
    
     const memoryLstValue = document.getElementById('memory-lst-value');
 
-
-
     // Display and highlight based on the current step
     if (currentStep === 0) { // Initializing searching
         memoryLstValue.style.display = 'block'; // Show lst
@@ -168,31 +166,27 @@ function updateMemory() {
         document.getElementById('cont2').style.border = '';
 
         document.getElementById('cont3').style.visibility = 'hidden';
-        // document.getElementById('cont3').style.visibility = 'visible';
-       
         
+        // Reset Alice's value to original
+        document.getElementById('val0').innerText = 85;
 
         memoryLstValue.style.backgroundColor = 'yellow';
         memoryLstValue.style.border = '3px solid #ff6a00';
         document.getElementById('val1').style.backgroundColor = '#e8e8e8';
         document.getElementById('val1').style.border = '1px solid #000000';
-        
-      
-
 
     } else if (currentStep === 1) { 
 
         memoryLstValue.style.backgroundColor = '#e8e8e8';
         memoryLstValue.style.border = '#e8e8e8';
 
-
         document.getElementById('val1').style.backgroundColor = 'yellow';
         document.getElementById('val1').style.border = '3px solid #ff6a00';
 
         document.getElementById('cont3').style.visibility = 'hidden';
-   
         
-
+        // Reset Alice's value to original
+        document.getElementById('val0').innerText = 85;
 
     } else if (currentStep === 2) { 
         document.getElementById('val1').style.backgroundColor = '#e8e8e8';
@@ -204,8 +198,9 @@ function updateMemory() {
         document.getElementById('cont3').style.border = '3px solid #ff6a00';
         document.getElementById('val3').style.backgroundColor = '#e8e8e8';
         document.getElementById('val3').style.border = '1px solid #000000';
-       
-
+        
+        // Reset Alice's value to original
+        document.getElementById('val0').innerText = 85;
 
     } else if (currentStep === 3) { 
         document.getElementById('cont3').style.backgroundColor = '#e8e8e8';
@@ -222,11 +217,9 @@ function updateMemory() {
         
         document.getElementById('cont0').style.backgroundColor = '#e8e8e8';
         document.getElementById('cont0').style.border = '#e8e8e8';
-
         
-
-
-
+        // Reset Alice's value to original
+        document.getElementById('val0').innerText = 85;
 
     } else if (currentStep === 4) { 
 
@@ -241,13 +234,12 @@ function updateMemory() {
 
         document.getElementById('cont0').style.backgroundColor = 'yellow';
         document.getElementById('cont0').style.border = '3px solid #ff6a00';
+        
+        // Update Alice's value to 90 at this step
         document.getElementById('val0').innerText = 90;
 
         document.getElementById('val0').style.backgroundColor = '#e8e8e8';
         document.getElementById('val0').style.border = '1px solid #000000';
-
-       
-       
 
     } else if (currentStep === 5) { 
         document.getElementById('cont3').style.backgroundColor = '#e8e8e8';
@@ -262,20 +254,14 @@ function updateMemory() {
         document.getElementById('val0').style.backgroundColor = 'yellow';
         document.getElementById('val0').style.border = '3px solid #ff6a00';
 
-         memoryLstValue.style.backgroundColor = '#e8e8e8';
+        memoryLstValue.style.backgroundColor = '#e8e8e8';
         memoryLstValue.style.border = '1px solid #000000';
         
-
-        
-      
-        
-        
-        
     }
-    else if (currentIteration === 6) { // nothing
+    else if (currentIteration === 6) { 
         document.getElementById('val0').style.backgroundColor = '#e8e8e8';
         document.getElementById('val0').style.border = '1px solid #000000';
-         memoryLstValue.style.backgroundColor = 'yellow';
+        memoryLstValue.style.backgroundColor = 'yellow';
         memoryLstValue.style.border = '3px solid #ff6a00';
 
         document.getElementById('cont0').style.backgroundColor = '';
@@ -286,21 +272,14 @@ function updateMemory() {
 
         document.getElementById('cont2').style.backgroundColor = '';
         document.getElementById('cont2').style.border = '';
-        
-      
-    
     }
     else if(currentIteration === 7){
         memoryLstValue.style.backgroundColor = '#e8e8e8';
         memoryLstValue.style.border = '1px solid #000000';
-
     }
-    
-    
-    
-     
-
 }
+
+
 
 
 
