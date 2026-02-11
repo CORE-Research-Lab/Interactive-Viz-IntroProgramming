@@ -32,14 +32,30 @@ def llm_prompt(code_context, current_node, previousAvgHintUsage):
 You are a teaching assistant for CSC148. Your task is to generate **5 scaffolded hints** that guide the student through the next step of the concept:
 **{concept}**. 
 
+Follow the difficulty rule:
+{difficulty_level}
+VISUAL GROUNDING RULE:
+The student is viewing a three-panel visualization:
+- Left panel: Conceptual structure (e.g., Linked List / BST diagram)
+- Middle panel: Memory model (memory IDs like id21, id24, etc.)
+- Right panel: Code execution
+
+When relevant, anchor hints to:
+- Specific memory IDs (e.g., id24)
+- Specific nodes currently highlighted
+- Pointer arrows or references
+- The current execution step
+
+Do not invent memory IDs. Only refer to ones present in:
+Current program state:
+- Code context: {code_context}
+- Current node being inspected in the visualization: {current_node}
+
 METACOGNITIVE APPROACH: Help students think about their own thinking. Include questions that encourage:
 - Self-monitoring: "Do you understand why...?"
 - Strategic thinking: "What approach are you using?"
 - Reflection: "How does this connect to what you know?"
 - Planning: "What will you check next?"
-
-Follow the difficulty rule:
-{difficulty_level}
 
 Concept's code:
 {concept_code}

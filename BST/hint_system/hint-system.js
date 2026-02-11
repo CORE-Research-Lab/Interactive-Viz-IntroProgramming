@@ -49,28 +49,28 @@ function getCodeContext(){
             current_line: "if self.is_empty():",
             line_number: 3,
             step_number: 1,
-            variables: { item: 30, root: 40 },
+            variables: { item: 30, root: 40, self:"id30" },
             visualization_state: "Checking if tree is empty, then comparing root (40) with item (30)"
         },
         2: {
             current_line: "elif item < self._root:",
             line_number: 7,
             step_number: 2,
-            variables: { item: 30, root: 40, comparison: "30 < 40" },
+            variables: { item: 30, root: 40, comparison: "30 < 40", self:"id31", _left: "id33", _right: "id34" },
             visualization_state: "Navigating to left subtree (rooted at 20)"
         },
         3: {
             current_line: "elif item > self._root:",
             line_number: 9,
             step_number: 3,
-            variables: { item: 30, root: 20, comparison: "30 > 20" },
+            variables: { item: 30, root: 20, comparison: "30 > 20", self:"id34"},
             visualization_state: "In left subtree, comparing with node 20, moving to right subtree"
         },
         4: {
             current_line: "return item in self._right",
             line_number: 10,
             step_number: 4,
-            variables: { item: 30, root: 30, found: true },
+            variables: { item: 30, root: 30, found: true, self:"id34" },
             visualization_state: "Found item 30 in right subtree of node 20"
         }
     };
