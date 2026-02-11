@@ -13,6 +13,17 @@ def __contains__(self, item: Any) -> bool:
 bst1.__contains__(30)
 """
 
+
+def _memory_ids_from_context(code_context):
+    """Extract memory IDs from code context variables for the prompt."""
+    variables = code_context.get("variables") if isinstance(code_context, dict) else {}
+    if not variables:
+        return "None in this step."
+    ids = [f"{k}={v}" for k, v in variables.items() if isinstance(v, str) and v.startswith("id")]
+    print(f'ids: {ids}')
+    return ", ".join(ids) if ids else "None in this step."
+
+
 def llm_prompt(code_context, current_node, previousAvgHintUsage):
     """
     Function for creating the prompt that the LLM will use which changes dynamically 
@@ -27,29 +38,27 @@ def llm_prompt(code_context, current_node, previousAvgHintUsage):
             difficulty_level = f"The student previously required a moderate number of hints: {previousAvgHintUsage}. Provide normal-level hints."
         else:
             difficulty_level = f"The student previously required none/ very few hints on average: {previousAvgHintUsage}. Provide more challenging hints."
-    print(f'difficulty level: {difficulty_level}')    
+    print(f'difficulty level: {difficulty_level}')
+    memory_ids_list = _memory_ids_from_context(code_context)
     return f"""
 You are a teaching assistant for CSC148. Your task is to generate **5 scaffolded hints** that guide the student through the next step of the concept:
 **{concept}**. 
 
 Follow the difficulty rule:
 {difficulty_level}
-VISUAL GROUNDING RULE:
-The student is viewing a three-panel visualization:
-- Left panel: Conceptual structure (e.g., Linked List / BST diagram)
-- Middle panel: Memory model (memory IDs like id21, id24, etc.)
-- Right panel: Code execution
+VISUAL GROUNDING RULE (REQUIRED):
+The student is viewing a three-panel visualization: left = BST diagram, middle = Memory model (objects with IDs like id30, id33), right = code.
 
-When relevant, anchor hints to:
-- Specific memory IDs (e.g., id24)
-- Specific nodes currently highlighted
-- Pointer arrows or references
-- The current execution step
+You MUST reference at least one memory ID from "Memory IDs in this step" in at least 2 of your 5 hints. Use the exact IDs from the current program state (e.g. id30, id33). Do not invent IDs.
 
-Do not invent memory IDs. Only refer to ones present in:
+Examples of including memory IDs:
+- "In the memory panel, look at the object at id30. What is its _root?"
+- "The reference in id33 points to the left subtree; what do you think we should do next?"
+
 Current program state:
 - Code context: {code_context}
 - Current node being inspected in the visualization: {current_node}
+- Memory IDs in this step (YOU MUST use some of these in your hints): {memory_ids_list}
 
 METACOGNITIVE APPROACH: Help students think about their own thinking. Include questions that encourage:
 - Self-monitoring: "Do you understand why...?"
@@ -66,9 +75,9 @@ Current program state:
 
 Only once, produce one list of 5 hints that follow this format, using exactly the numbering shown:
 1. Prompt (a METACOGNITIVE question that is reflective and helps the student think about the concept)
-2. Reasoning (the logic behind what to check or infer)
-3. Explanation (conceptual summary)
-4. Connection (link this reasoning to previous steps)
+2. Reasoning (the logic behind what to check or infer; MUST make use of one/more of the relevant memory IDs)
+3. Explanation (conceptual summary; MUST make use of one/more of the relevant memory IDs)
+4. Connection (link this reasoning to previous steps; MUST make use of one/more of the relevant memory IDs)
 5. Next Step (suggest upcoming thinking)
 
 IMPORTANT: Each line must start with the number (1., 2., 3., 4., 5.) followed by a space, then directly the hint content. Do NOT include words like "Prompt:", "Reasoning:", "Explanation:", "Connection:", or "Next Step:" in your response. The numbering alone indicates the hint type.

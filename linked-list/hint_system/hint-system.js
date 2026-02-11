@@ -25,6 +25,12 @@ const hint_labels = {
     'connection': 'Connection',
     'next_step': 'Next Step'
 };
+
+function formatHintWithCode(hint) {
+    if (!hint) return '';
+    var escaped = (hint + '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    return escaped.replace(/`([^`]+)`/g, '<code>$1</code>');
+}
 // Backend URL configuration - automatically detects environment
 const BACKEND_URL = (() => {
     // If running on localhost, use local backend
@@ -407,7 +413,7 @@ function displayHintInBubble(hint, currentStep, levelKey, levelIndex, canGoBack,
             <h3>${hint_labels[levelKey]}</h3>
             ${canGoForward ? `<button class="hint-forward-btn" onclick="goForwardToNextHint(${currentStep}, event)" title="Next">👉</button>` : ''}
         </div>
-            <p>${hint}</p>
+            <p>${formatHintWithCode(hint)}</p>
             <div class="speech-bubble-feedback">
                 <p>Was this hint helpful?</p>
                 <button onclick="submitHintFeedback(${currentStep}, ${levelIndex}, 'up', event)"
